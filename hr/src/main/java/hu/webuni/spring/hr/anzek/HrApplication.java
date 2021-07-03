@@ -7,16 +7,12 @@ package hu.webuni.spring.hr.anzek;
 
 import hu.webuni.spring.hr.anzek.model.Employee;
 import hu.webuni.spring.hr.anzek.config.EmployeeDataInputApplicationProperties;
-import hu.webuni.spring.hr.anzek.service.DefaultEmployeeService;
-import hu.webuni.spring.hr.anzek.service.EmployeeService;
 import hu.webuni.spring.hr.anzek.service.SalaryService;
-import hu.webuni.spring.hr.anzek.service.SmartEmployeeService;
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class HrApplication implements CommandLineRunner {
