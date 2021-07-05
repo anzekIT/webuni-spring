@@ -31,10 +31,10 @@ public class HrApplication implements CommandLineRunner {
         
         Employee employee = new Employee();
         
-        EmployeeDataInputApplicationProperties adiap = new EmployeeDataInputApplicationProperties();
-        adiap.setEmployeeId(1);
-        System.out.println("1. dolgozo neve______________ : " + adiap.getEmployee().getWorkerName() );
-        System.out.println("1. dolgozo fizuja___________ : " + adiap.getEmployee().getMonthlySalary() );
+        //EmployeeDataInputApplicationProperties adiap = new EmployeeDataInputApplicationProperties();
+        //adiap.setEmployeeId(1);
+        //System.out.println("1. dolgozo neve______________ : " + adiap.getEmployee().getWorkerName() );
+        //System.out.println("1. dolgozo fizuja___________ : " + adiap.getEmployee().getMonthlySalary() );
        
         employee.setId( 1L );
         employee.setJobPosition( "Fo_fo_Mufti" );

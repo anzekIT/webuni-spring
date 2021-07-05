@@ -25,8 +25,7 @@ import org.springframework.stereotype.Component;
 @Component
 public final class EmployeeDataInputApplicationProperties {
  
-    @Autowired
-    Employee employee;
+    Employee employee = new Employee();
             
     //@Value("${employee.elso.id}")                        
     //Long id1;

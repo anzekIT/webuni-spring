@@ -23,7 +23,7 @@ public class ProdEmployeeConfiguration {
 
     
     @Bean
-    public EmployeeService employService(){
+    public EmployeeService employeeService(){
     
         return new SmartEmployeeService();
     }         
