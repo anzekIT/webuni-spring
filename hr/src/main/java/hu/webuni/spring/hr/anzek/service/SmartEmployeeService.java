@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 public class SmartEmployeeService implements Serializable,EmployeeService {
 
     // egy private konstans-ertek a felev masodpercben kifejezve : 15768000 sec...
-    private final long FELEV = 15768000;
+    private final long FELEV = 15768000;    
     
     /**
      * Torzsgarda alapu progressziv jovedelem szazalekos novekmeny szamito metodus<br>
@@ -73,5 +73,48 @@ public class SmartEmployeeService implements Serializable,EmployeeService {
         }
         
         return szazalek;
+    }
+    
+    /**
+     * Visszaadja a munkaviszonyban toltott idoszak utan jaro szazalekot szoveges tartalomban<br>
+     * @param employee a dolgozo injektalt osztalypeldanya<br>
+     * @return a torzsgardatagsag merteke<br>
+     */
+    @Override
+    public String getTorzsGarda( Employee employee ) {
+        
+        String torzsGarda = "nincs megadott munkaviszony, igy a beremeles = 0%";
+          // aktualis idopont masodpercekben (1970-01-01 -tol)
+        long jelenIdo = LocalDateTime.now().toEpochSecond( ZoneOffset.UTC ) ;
+        // Ha a jelenIdo-bol kivonom a munkabaallas idopontja masodpercekben (1970-01-01 -tol), 
+        // akkor megapom hany masodperce van munkaban:
+        long torzsGardasag = jelenIdo - employee.getStartOfEmployment().toEpochSecond( ZoneOffset.UTC ) ;
+       
+        if ( torzsGardasag < ( 5 * FELEV )  ){
+            
+            // kevesebb mint 2,5 ev:
+            
+            torzsGarda = "Torzsgarda kevesebb mint 2,5 ev utan = 0%" ;
+        }else{
+            
+            if ( torzsGardasag < ( 10 * FELEV ) ){
+                
+                // tobb mint 2,5, de kevesebb mint 5 ev:
+                torzsGarda = "Torzsgarda tobb mint 2,5 ev , de kevesebb mint 5 utan = 2%";
+            }else{
+                
+                if ( torzsGardasag < ( 20 * FELEV ) ){
+
+                    // tobb mint 5 ev, de kevesebb mint 10 ev
+                    torzsGarda = "Torzsgarda tobb mint 5 ev , de kevesebb mint 10 utan = 5%";
+                }else{
+                    
+                    // legalabb 10 eve:
+                    torzsGarda = "Torzsgarda legalabb 10 utan = 10%";
+                }                
+            }
+        }
+        
+        return torzsGarda;
     }
 }

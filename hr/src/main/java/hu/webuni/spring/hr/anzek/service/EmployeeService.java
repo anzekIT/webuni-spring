@@ -22,4 +22,10 @@ public interface EmployeeService {
      * @return visszaad egy INT erteket<br>
      */
     int getPayRaisePercent( Employee employee );
+    
+    /**
+     * Visszaadja a munkaviszonbyban toltott idoszak utan jaro szazalekot szoveges tartalomban<br>
+     * @return a torzsgardatagsag merteke<br>
+     */
+    String getTorzsGarda( Employee employee );
 }

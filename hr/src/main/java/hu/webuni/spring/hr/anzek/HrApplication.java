@@ -39,7 +39,7 @@ public class HrApplication implements CommandLineRunner {
         employee.setId( 1L );
         employee.setJobPosition( "Fo_fo_Mufti" );
         employee.setMonthlySalary( 500000 );
-        employee.setStartOfEmployment( LocalDateTime.of( 2010, 1, 1, 0, 0, 0 ) );
+        employee.setStartOfEmployment( LocalDateTime.of( 2015, 1, 1, 0, 0, 0 ) );
         employee.setWorkerName( "Kovács Pistike" );        
         
         // elmentjuk a fizeteset:
@@ -47,13 +47,18 @@ public class HrApplication implements CommandLineRunner {
         
         // megvaltoztatjuk a fizeteset:
         salaryService.setEmployee( employee );        
-        
+  
         // modositjuk, majd vissza is toltjuk a mododosult adatokat:
         employee = salaryService.incomeService();        
         
         // kiiratjuk a Munkavallaloi aktualis adatokat:
-        System.out.println( "1. dolgozo neve______________ : " + employee.getWorkerName() );
-        System.out.println( "1. dolgozo old_fizu__________ : " + oldFizu );
+        System.out.println( "1. dolgozokod________________ : " + employee.getId() );
+        System.out.println( "   dolgozo neve______________ : " + employee.getWorkerName() );
+        System.out.println( "   dolgozo munkakore_________ : " + employee.getJobPosition() );
+        System.out.println( "   dolgozo munaviszony kezdet : " + employee.getStartOfEmployment() );
+        System.out.println( "_Fizetes valtozas_____________: " );
+        System.out.println( "   a letoltott munkaido utani % " + employee.getTorzsGarda() );
+        System.out.println( "   dolgozo old_fizu__________ : " + oldFizu );
         System.out.println( "1. dolgozo uj_fizu___________ : " + employee.getMonthlySalary() );
     }    
 }

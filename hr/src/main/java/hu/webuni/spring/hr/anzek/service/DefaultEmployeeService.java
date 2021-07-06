@@ -31,4 +31,15 @@ public class DefaultEmployeeService implements Serializable,EmployeeService {
         
         return 5;
     }    
+    
+    /**
+     * Visszaadja a fix emeles mertekenek szazalekat, egy szoveges tartalomban<br>
+     * @param employee a dolgozo injektalt osztalypeldanya<br>
+     * @return fix emeles merteke<br>
+     */
+    @Override
+    public String getTorzsGarda( Employee employee ) {
+        
+        return "Nincs figyelembevett munkaviszony, fixEmeles = 5%"; 
+    }
 }

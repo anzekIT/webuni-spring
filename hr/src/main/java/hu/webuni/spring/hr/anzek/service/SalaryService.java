@@ -24,6 +24,7 @@ public class SalaryService {
     
     private int fizetesEmeles = 0;
     private Employee employee = null ;
+    private String torzsGarda = "nincs adat";
     
     /**
      * A jovedelem beallito metodus<br>
@@ -39,9 +40,15 @@ public class SalaryService {
             // Az aktualis fizetes es a "jarandosag szazaleka" (azaz pl. 1.12 a 12 % -hoz):
             // mivel a metodus interfeszenek 2 fajta implementacioja van, most nem dontheto el, melyikkel dolgozik majd:
             this.fizetesEmeles = (int) ( this.employee.getMonthlySalary() * ( 1 + this.employeeService.getPayRaisePercent( this.employee ) / 100.00 ) );
-
+            
+            // miert annyi amennyi a fizetesenek emelese:
+            this.torzsGarda = this.employeeService.getTorzsGarda( this.employee );
+            
             // A megemelt fizetes visszairasa az objektumba:
             this.employee.setMonthlySalary( this.fizetesEmeles );
+            
+            // A torzsgarda visszairasa az objektumba:
+            this.employee.setTorzsGarda( this.torzsGarda );            
         }
         
         return this.employee;
@@ -54,15 +61,5 @@ public class SalaryService {
     public void setEmployee( Employee employee ){
     
         this.employee = employee;
-    }
-    
-    /**
-     * Ha utobb szukseg lenne meg ra,...<br> 
-     * ...a metodus visszaadja aaz epp aktualis Munkavallaloi objektum tartalmat<br>
-     * @return aktualis Munkavallaloi adatok<br>
-     */
-    public Employee getEmployee(){
-    
-        return this.employee;
     }
 }

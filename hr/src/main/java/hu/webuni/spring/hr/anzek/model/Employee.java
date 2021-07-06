@@ -41,11 +41,11 @@ public class Employee {
      * A munkaviszony kezdete <br>
      */
     private LocalDateTime startOfEmployment;
-    
+
     /**
-     * Logger <br>
+     * A munnkaviszony utan jaro beremeles szazalekos merteke szoveges megjeleniteshez<br>
      */
-    private static final Logger LOG = Logger.getLogger( Employee.class.getName() );
+    private String torzsGarda = "nincs adat";
     
     /**
      * A munkavallalo osztalypeldany konstruktora <br>
@@ -147,4 +147,21 @@ public class Employee {
         
         this.startOfEmployment = startOfEmployment;
     }    
+    /**
+     * Visszaadja a  munnkaviszony utan jaro beremeles szazalekos merteke szoveges megjeleniteshez<br>
+     * @return a torzsGarda szoveges tartalom<rb>
+     */
+    public String getTorzsGarda() {
+        
+        return this.torzsGarda;
+    }
+    
+    /**
+     * Beallitja a  munnkaviszony utan jaro beremeles szazalekos merteke szoveges megjeleniteshez<br>
+     * @param torzsGarda a szoveges tartalom<br>
+     */
+    public void setTorzsGarda( String torzsGarda ) {
+        
+        this.torzsGarda = torzsGarda;
+    }
 }
