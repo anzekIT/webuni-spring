@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org">
+    <head>
+        <title>Anzek-Hr Application</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        
+        <h1>List of Employees</h1>
+        
+        <ul>
+            
+            <li th:each="employee : ${outemployees}">
+                
+                <span th:text="${employee.id}">id</span>
+                <span th:text="${employee.workerName}">workerName</span>
+                <span th:text="${employee.jobPosition}">jobPosition</span>
+                <span th:text="${employee.monthlySalary}">monthlySalary</span>       
+                <span th:text="${employee.startOfEmployment}">startOfEmployment</span> 
+            </li>
+        </ul>
+        
+    </body>
+</html>

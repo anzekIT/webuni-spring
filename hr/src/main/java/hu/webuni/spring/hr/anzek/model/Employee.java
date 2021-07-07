@@ -6,7 +6,6 @@
 package hu.webuni.spring.hr.anzek.model;
 
 import java.time.LocalDateTime;
-import java.util.logging.Logger;
 
 
 /**
@@ -56,6 +55,26 @@ public class Employee {
      * A havi jovedelme "monthlySalary"<br>     
      */
     public Employee() {
+    }
+
+    /**
+     * Teljes feltolto konstruktor<br>
+     * @param id A munkavalallo azonositoja <br>
+     * @param workerName A dolgozo neve <br> 
+     * @param jobPosition Munkakori beosztasa <br>
+     * @param monthlySalary A havi jovedelme <br>
+     * @param startOfEmployment A munkaviszony kezdete <br> 
+     */
+    public Employee(Long id,
+                    String workerName,
+                    String jobPosition,
+                    Integer monthlySalary,
+                    LocalDateTime startOfEmployment) {
+        this.id = id;
+        this.workerName = workerName;
+        this.jobPosition = jobPosition;
+        this.monthlySalary = monthlySalary;
+        this.startOfEmployment = startOfEmployment;
     }
 
     /**
