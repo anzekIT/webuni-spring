@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
- *
+ * 
  * @author User
  */
 @Controller
@@ -31,46 +31,62 @@ public final class EmployeeWebController {
     void InitController()
     {
        
-        allEmployees.add( new EmployeeDto ( 1L, "Kovács Pistika", "Fo_fo_Mufti", 500000, LocalDateTime.of( 2015, 1, 1, 0, 0, 0 ) ) );
-        allEmployees.add( new EmployeeDto ( 2L, "Siker Kulcsa", "Fo_al_Mufti", 400000, LocalDateTime.of( 2010, 1, 1, 0, 0, 0 ) ) );
+        this.allEmployees.add( new EmployeeDto ( 1L, "Kovács Pistika", "Fo_fo_Mufti", 500000, LocalDateTime.of( 2015, 1, 1, 0, 0, 0 ) ) );
+        this.allEmployees.add( new EmployeeDto ( 2L, "Siker Kulcsa", "Fo_al_Mufti", 400000, LocalDateTime.of( 2010, 1, 1, 0, 0, 0 ) ) );
     }
     
-    // ez azt jelenti, hogy a gyokerre erkezo kereseket 
-    // az index.html" -valaszra kenyszeriti (iranyitja at):
+    /**
+     * 
+     * @return 
+     * ez azt jelenti, hogy a gyokerre erkezo kereseket <br>
+     * az index.html" -valaszra kenyszeriti (iranyitja at):<br>
+     */
     @GetMapping("/")
     public String home(){
         
-        System.out.println("weboldal Frissitesek Szama = " + this.weboldalFrissitesekSzama++ );     
+        System.out.println( "weboldal Frissitesek Szama = " + this.weboldalFrissitesekSzama++ );     
         return "index";
     }
     
     /**
      * Az "./employees" URL-re erkezo keres<br>
      * a "model"- adattartalomba behelyez egy "AllEmployees" adatot (egyelore csak memoriabol)<br>
-     * @param model egy MAP kollekcio<br>
+     * @param model a GET metodus altal atvett parameter<br>
      * @return viszaadja z employees.html" tartalmat a beilleszett valtozo adatokkal<br>
      */
     @GetMapping("/employees")
     public String getListEmployees( Map<String, Object> model ){
-    
-        model.put( "outemployees", allEmployees );
+          
+        // feltolti a listat
+        model.put( "outemployees", this.allEmployees );
+
+        // Ez itt kell, hogy mukodjon a Html-oldalrol valo bekeres (egy POST metodus):
+        model.put( "newEmployee", new EmployeeDto() );    
         
-        // Ez pedig itt kell, hogy mukodjon a (ha lesz) a Html-oldalon a bekeres:
-        model.put( "newEmployee", new EmployeeDto() );
-        
-        return "employees.html";
+        // Altalaban : return "employees.html";
+        return "employees";
     }
     
     /**
      * Az "./employees" URL-re kuldendo "POST keres" elokeszitese<br>
      * a "model"- adattartalomba behelyez egy "AllEmployees" adatot (egyelore csak memoriabol)<br>
-     * @param employeeDto egy az Employees kollekcio eleme<br>
-     * @return viszaadja z employees.html" tartalmat a beilleszett valtozo adatokkal<br>
+     * @param employeeDto egy injektalt osztaly, amely az Employees kollekcio eleme lesz<br>
+     * @return viszaadja a redirectelt employees.html" tartalmat a beilleszett valtozo adatokkal<br>
      */
     @PostMapping("/employees")
     public String addtListEmployees( EmployeeDto employeeDto ){
     
-        allEmployees.add(employeeDto) ;
-        return "employees.html";
+        // egyelore kiegeszitjuk...
+        employeeDto.setStartOfEmployment( LocalDateTime.now() );
+        
+        this.allEmployees.add( employeeDto ) ;
+        
+        // Fontos: ha csak return "employees.html" el terunk vissza az alabbi hibar futunk:
+        // "Neither BindingResult nor plain target object for bean name 'newEmployee' available as request attribute"
+        // a 'newEmployee' nincs benne ebben "addtListEmployees()" a request metodusban.
+        // bele is tehetnenk - valahogy - de nem ez a suoksos eljaras, hanem ez:
+        // Megkerjuk a bongeszot, hogy a bongeszo, egy GET keressel un.: redirect -eljen... 
+        // ...vagyis magatol hivja meg az elozo, fenti "getListEmployees(...)" metodust, hogy az, 
+        return "redirect:employees";
     }    
 }

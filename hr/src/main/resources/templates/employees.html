@@ -1,4 +1,46 @@
 <!DOCTYPE html>
+<!--
+    Elso feladat:
+    A kontrolletben ket/harom dolognak kell meglennie:
+    - kell egy beerkezo kerest fekdolgotni tudo netodus (altalaban valamifele getMetodus() 
+    - fel kell legyen Mappingelve a setviceURL @GetMapping("...url/service")
+    ha es amennyiben lesz webes adatbevitel, 
+    - akkor azt is itt kell elokesziteni a patametreben keszitett Model-ben !
+
+        Az alabbi technologia lenyegeben a fejlett-forciklus 
+        kollekcion valo bejarasanak a webes valtozata ...
+        <li th:each="employee : ${outemployees}">
+            <ul>...</u>
+        <li...    
+        
+        <span th:text="${employee.id}">id</span>
+            ez pedig egy sima Output()  
+            itt megmondjuk, hogy a kollekciobol betoltott aktualis elem 
+            melyik mezojet irja ki a weboldalon eppen a kovetkezo adatkent  
+
+  
+    Masik Feladat:
+    Irjunk egy formot es kossuk ossze egy objektummal
+    Az objekrumnak mar a kontroller GET metodusaban elokeszitettnek kell lenni (lasd egyel fentebb)! 
+
+    Vagyis: elotte a konreoller mar beleteszi a Model-jebe azt az Ogectet ami itt kell!
+    Kulonben kivetelt fog dobni!
+
+    Ehhez a kontrolletben fel kell legyen Mappingelve a setviceURL @GetMapping("...url/service")
+
+        - a "th:action" azt mondja meg, hogy "hova posztolűdjon"
+        - a "method" az alkalmazott tecgnologia..
+        - a "th:object" pedig mi az a "model"-beli objektum, amit ki kell toltenie
+
+    Id_____________________:    <input th:field="*{id}"> <br>    
+    a fenti sor egy sima Input() 
+    a webes feluletrol,
+    itt megmondjuk a "newEmployee" melyik mezojet toltse ki: 
+    
+    ez lesz az "elkuldo gomb"
+    <input type="submit" name="ROGZIT" value="Rogzitem" />
+-->
+
 <html xmlns:th="http://wwww.thymeleaf.org">
     <head>
         <title>Anzek-Hr Application</title>
@@ -8,104 +50,33 @@
     <body>
         
         <h1>Munkavallaoi lista, List of "Employees"</h1>
-        <!--
-            Ehhez a kontrolletben ket/harom dolognak kell meglennie:
-            - kell egy beerkezo kerest fekdolgotni tudo netodus (altalaban valamifele getMetodus() 
-            - fel kell legyen Mappingelve a setviceURL @GetMapping("...url/service")
-            ha es amennyiben lesz webes adatbevitel, 
-            - akkor azt is itt kell elokesziteni a patametreben keszitett Model-ben !
-        -->
+
         <ul>
-            
-            <!-- 
-                Az alabbi technologia lenyegeben a fejlett-forciklus 
-                kollekcion valo bejarasanak a webes valtozata 
-            -->
-            
+
             <li th:each="employee : ${outemployees}">
-                
-                <!-- 
-                    ez egy sima Output()  
-                    itt megmondjuk, hogy a kollekciobol betoltott aktualis elem 
-                    melyik mezojet irja ki a weboldalon eppen a kovetkezo adatkent 
-                -->
-                
+
                 <span th:text="${employee.id}">id</span>
                 <span th:text="${employee.workerName}">workerName</span>
                 <span th:text="${employee.jobPosition}">jobPosition</span>
                 <span th:text="${employee.monthlySalary}">monthlySalary</span>       
-                <!--                
-                    <span th:text="${employee.startOfEmployment}">startOfEmployment</span> 
-                -->
-            </li>
+                <span th:text="${employee.startOfEmployment}">startOfEmployment</span> 
+            
+            </li> <br>
             
             Lista vege <br>
                 
         </ul>
         
         <h1>Adatfelvitel/modositas of "Employees"</h1>
-        <!--    
-            Feladat:
-            Irjunk egy formot es kossuk ossze egy objektummal
-            Az objekrumnak mar a kontroller GET metodusaban elokeszitettnek kell lenni (lasd egyel fentebb)! 
-        
-            Vagyis: elotte a konreoller mar beleteszi a Model-jebe azt az Ogectet ami itt kell!
-            Kulonben kivetelt fog dobni!
-        
-            Ehhez a kontrolletben fel kell legyen Mappingelve a setviceURL @GetMapping("...url/service")
-        
-                - a "th:action" azt mondja meg, hogy "hová posztolűdjon"
-                - a "method" az alkalmazott tecgnológia..
-                - a "th:object" pedig mi az a "model"-beli objektum, amit ki kell töltenie
-        -->
+
         <form th:action="@{/employees}" method="post" th:object="${newEmployee}">
-            
-            <!-- 
-                ez egy sima Input() 
-                a webes feluletrol,
-                itt megmondjuk a "newEmployee" melyik mezojet toltse ki: 
-                Employee(id, workerName, jobPosition, monthlySalary, startOfEmployment); 
-            -->
-            Id:                 <input th:field="*{id}">
-            WorkerName:         <input th:field="*{workerName}">
-            JobPosition:        <input th:field="*{jobPosition}">
-            MonthlySalary:      <input th:field="*{monthlySalary}">
-            <!--            
-                StartOfEmployment:  <input th:field="*{startOfEmployment}">
-            -->
-            <!-- ez lesz az "elkuldo gomb" -->
+
+            Id_____________________:    <input th:field="*{id}"> <br>
+            A munkvallalo meve______:    <input th:field="*{workerName}"> <br>
+            Munkakore _____________:    <input th:field="*{jobPosition}"> <br>
+            Havi fix-juttatasa_________:    <input th:field="*{monthlySalary}"> <br>
+
             <input type="submit" name="ROGZIT" value="Rogzitem" />
-        </form>
-        
-        <h1>List of Employees</h1>
-        
-        <ul>
-            
-            <!-- Az alabbi technologia lenyegeben a fejlett-forciklus 
-                 kollekcion valo bejarasanak a webes valtozata -->
-            
-            <li th:each="employee : ${outemployees}">
-                
-                <!-- ez egy sima Output()  
-                     itt megmondjuk, hogy a kollekciobol betoltott aktualis elem 
-                     melyik mezojet irja ki a weboldalon eppen a kovetkezo adatkent -->
-                
-                <span th:text="${employee.id}">id</span>
-                <br>
-                <span th:text="${employee.workerName}">workerName</span>
-                <br>
-                <span th:text="${employee.jobPosition}">jobPosition</span>
-                <br>
-                <span th:text="${employee.monthlySalary}">monthlySalary</span>  
-                <br>
-                <!--                
-                    <span th:text="${employee.startOfEmployment}">startOfEmployment</span> 
-                    <br>
-                -->
-            </li>
-            
-            Modosjtott lista vege.... <br>
-                
-        </ul>        
+        </form>              
     </body>
 </html>
