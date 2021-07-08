@@ -16,7 +16,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
- * 
+ * Szerveroldali rendereles Thymealeaf -el<br>
+ * Hozzatartozik az "/temlapte/employees.html"<br>
+ * Harom fo egysege an:<br>
+ * - az init.blokk, amely kiindulo adatokat tolt be...<br>
+ * - a GET metodus : "@GetMapping("/employees") public String getListEmployees( Map[String, Object] model )"<br>
+ * - a POST metodus : "@PostMapping("/employees") public String getListEmployees( Map[String, Object] model )"<br>
  * @author User
  */
 @Controller
@@ -27,8 +32,7 @@ public final class EmployeeWebController {
     private final List<EmployeeDto> allEmployees = new ArrayList<>();
     
     // INIT BLOKK:
-    // nem konstruktor, hanem egy inicializalo blokk:  
-    void InitController()
+    // nem konstruktor, nem metodus hanem egy szimpla inicializalo blokk:    
     {
        
         this.allEmployees.add( new EmployeeDto ( 1L, "Kovács Pistika", "Fo_fo_Mufti", 500000, LocalDateTime.of( 2015, 1, 1, 0, 0, 0 ) ) );
