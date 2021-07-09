@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://wwww.thymeleaf.org">
+    <head>
+        <title>ASPC (ANZEK IT L.T.D SINGULARITY PRIVATE CLOUD)</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+
+        <h1>ASPC - Anzek Informatika Kft Singularity Private Cloud</h1></br>
+        <!--<img src="../static/samplecloud.jpg"/></br>-->
+        
+        <h2>Szolgatatoi adatok</h2>
+        <ul>
+            <li>SzerverIdo =  
+            <a th:text="${ServerTime}">ServerTime</a></li>
+            <li>RendszerTerulet = 
+            <a th:text="${SystemSize}">SystemSize</a></li>
+            <li>Szolgaltato : Anzek Informatika Kft</li>
+            <li>Savszelesseg : 1GB / sec</li>
+            <li>A szolgaltatas hozzaferese : kizarolag az "LSZMG ERP" rendszer elofizetoi szamara!</li>
+            <li>Technikai fuggosege : az "LSZMG ERP" rendszer es egyes kliensei automatikus eleressel</li>
+            <li>Bongeszobol inditott manualis lekresek inditasa = nem lehetseges, nem megoldhato!</li>
+        </ul>
+        
+        <h2>LSZMG CLOUD API EndPoints (az ERP szolgaltatasok VegPontjai)</h2>
+        <a>(Figyelem! Az alabbi vegpontokra titkositott, szoftveres kereseket var a backEndKiszolgalo!)</a></br>
+        <ul>
+            <li>.../api/anzekcloud/techinfo = a felho tarhely (a backend kiszolgalo es az adatbazis) adatai</li>
+            <li>.../api/anzekcloud/userinfo = a felhasznalo nyilvatartott adatai</li>
+            <li>.../api/anzekcloud/softwareinfo = a backend kiszolgalo- es az adatbazisverziok adatai</li>
+            <li>.../api/anzekcloud/consumer/product = termelesi adatok</li>
+            <li>.../api/anzekcloud/consumer/resorces = gyartasi- es egyeb eroforras adatok</li>
+            <li>.../api/anzekcloud/consumer/warehouse = raktari adatok</li>
+            <li>.../api/anzekcloud/consumer/stocks = keszletezesi adatok</li>
+            <li>.../api/anzekcloud/consumer/sales = ertekesitesi adatok</li>
+            <li>.../api/anzekcloud/consumer/invoices = kimeno-szamlak adatai</li>
+            <li>.../api/anzekcloud/consumer/incoming = beerkezo keszletek adatai</li>
+        </ul>
+    </body>
+</html>

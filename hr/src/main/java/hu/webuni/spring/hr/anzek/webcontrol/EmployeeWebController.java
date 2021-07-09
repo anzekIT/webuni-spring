@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +37,7 @@ public final class EmployeeWebController {
     int weboldalFrissitesekSzama = 0;
     
     private final List<EmployeeDto> allEmployees = new ArrayList<>();
-    
+        
     // INIT BLOKK:
     //
     // Az adatokat most meg csak egy LISTABAN taroljuk (nem adatbazisban)
@@ -58,7 +59,23 @@ public final class EmployeeWebController {
     public String home(){
         
         System.out.println( "weboldal Frissitesek Szama = " + this.weboldalFrissitesekSzama++ );     
-        return "index";
+        // return "http://192.168.1.20/index.html";
+        return "index.html";
+    }
+    
+    /**
+     * Az "./api/anzekcloud" URL-re erkezo keres<br>
+     * csak egy demot ad vissza<br>
+     * @param model a rendereleshez szukseges model<br>
+     * @return viszaadja az anzekcloud.html-t<br>
+     */
+    @GetMapping("/api/anzekcloud")    
+    // @GetMapping("/api/asc")
+    public String getAnzekSingularityCloud(  Map<String, Object> model ){
+        
+        model.put( "ServerTime", LocalDateTime.now() );
+        model.put( "SystemSize", System.getProperties().size() );
+        return "anzekcloud.xhtml";
     }
     
     /**
