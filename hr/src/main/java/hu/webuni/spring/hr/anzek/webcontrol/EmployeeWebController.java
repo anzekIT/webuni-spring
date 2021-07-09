@@ -18,10 +18,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 /**
  * Szerveroldali rendereles Thymealeaf -el<br>
  * Hozzatartozik az "/temlapte/employees.html"<br>
- * Harom fo egysege an:<br>
+ * Harom fo egysege van:<br>
  * - az init.blokk, amely kiindulo adatokat tolt be...<br>
  * - a GET metodus : "@GetMapping("/employees") public String getListEmployees( Map[String, Object] model )"<br>
  * - a POST metodus : "@PostMapping("/employees") public String getListEmployees( Map[String, Object] model )"<br>
+ * FONTOS! <br>
+ * A webController MINDEN ESETBEN egy "Model model"-t hasznal<br> 
+ * "Model model"-t, vagy mar ujabban a map interfeszt a Model helyett: "Map[K,V] model" -t!<br> 
+ * (a ket interfesz kb ugyan az, de a map ujabb es tobbet tud<br>
+ * Megpedig azert: <br>
+ * mert a "View" ott talalja meg a valszt es onna, igy tudja kirenderelni!<br>
  * @author User
  */
 @Controller
@@ -32,6 +38,9 @@ public final class EmployeeWebController {
     private final List<EmployeeDto> allEmployees = new ArrayList<>();
     
     // INIT BLOKK:
+    //
+    // Az adatokat most meg csak egy LISTABAN taroljuk (nem adatbazisban)
+    //
     // nem konstruktor, nem metodus hanem egy szimpla inicializalo blokk:    
     {
        
