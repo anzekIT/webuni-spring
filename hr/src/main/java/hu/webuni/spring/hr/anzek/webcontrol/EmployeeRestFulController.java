@@ -50,8 +50,11 @@ public class EmployeeRestFulController {
      */   
     {
        
-        this.employees.put( 1L, new EmployeeDto ( 1L, "Kovács Pistika", "Fo_fo_Mufti", 500000, LocalDateTime.of( 2015, 1, 1, 0, 0, 0 ) ) );
-        this.employees.put( 2L, new EmployeeDto ( 2L, "Siker Kulcsa", "Fo_al_Mufti", 400000, LocalDateTime.of( 2010, 1, 1, 0, 0, 0 ) ) );
+        this.employees.put( 1L, new EmployeeDto ( 1L, "Kovács Patkó", "Fo_fo_Mufti", 500000, LocalDateTime.of( 2015, 1, 1, 0, 0, 0 ) ) );
+        this.employees.put( 2L, new EmployeeDto ( 2L, "Siker Kulcsa", "Fo_al_Vezír", 400000, LocalDateTime.of( 2010, 1, 1, 0, 0, 0 ) ) );
+        this.employees.put( 3L, new EmployeeDto ( 3L, "Mocsalyi Muhi", "Al_fo_Manager", 300000, LocalDateTime.of( 2010, 1, 1, 0, 0, 0 ) ) );
+        this.employees.put( 4L, new EmployeeDto ( 4L, "Roggyant Henger", "Al_al_Főnök", 200000, LocalDateTime.of( 2010, 1, 1, 0, 0, 0 ) ) );
+        this.employees.put( 5L, new EmployeeDto ( 5L, "Alsó Gatya", "Munkás", 100000, LocalDateTime.of( 2010, 1, 1, 0, 0, 0 ) ) );
     }  
 
     /**
@@ -71,13 +74,13 @@ public class EmployeeRestFulController {
         return new ArrayList<>( this.employees.values() );
     }
     
-
     /**
      * GET-METHOD<br>
      * Kerjunk le EGY KONKRET "id"-vel rendelkezo elemet:<br>
      * Ez szinten egy GET -kerest valosit meg,<br>
      * DE !<br>
-     * Itt van egy fontos "tolaleka" a mappa (utvonal) felmappingelesnel, megpedig az ADATMEZO neve a keres LEGVEGEN egy PER jellel elvalasztva:<br>
+     * Itt van egy fontos "tolaleka" a mappa (utvonal) felmappingelesnel,<br>
+     * megpedig, hogy az ADATERTEK a keres LEGVEGEN egy PER jellel elvalasztva, a alegutolso adat legyen!<br>
      * igy kell megni:<br>
      * @param id @PathVariable annotacioval kell beolvasni, majd a parameterben "beadni" a GET keresben atadott erteket:<br>
      * @return visszaad egy body - entitast<br>
@@ -86,7 +89,7 @@ public class EmployeeRestFulController {
     public ResponseEntity<EmployeeDto> getById( @PathVariable long id ){
         
         // a MAP kollekciobol kiolvassa az "id" -ben levő kulcserteknek megfelelo entitast
-        final EmployeeDto employeeDto = employees.get( id );
+        final EmployeeDto employeeDto = this.employees.get( id );
         // a visszatero torzs (body)
         ResponseEntity entity;
         // erdekesseg:
@@ -105,6 +108,50 @@ public class EmployeeRestFulController {
         return entity;
     }
  
+        /**
+     * GET-METHOD<br>
+     * Kerjunk le a megadott service utvonalon bekuldott erteknel magasabb fizetessel rendelkezo elemet:<br>
+     * Egy alservice mappaban...<br>
+     * @param limit @PathVariable annotacioval kell beolvasni, majd a parameterben "beadni" a GET keresben atadott erteket:<br>
+     * @return visszaad egy body - List-entitas kollekciot<br>
+     */
+    @GetMapping("salarylimit/{limit}")
+    public ResponseEntity< List<EmployeeDto> > getBySalaryLimit( @PathVariable Integer limit ){
+        
+        // a MAP kollekciobol kiolvassa az "id" -ben levő kulcserteknek megfelelo entitast
+        List< EmployeeDto > dto = new ArrayList<>();
+        if ( limit != null ){
+            
+            for( int i=0; i<this.employees.size(); i++){
+
+                if ( this.employees.get( (long) i ) != null ){
+                    
+                    EmployeeDto employeeDto = this.employees.get( (long) i );
+                    if( employeeDto.getMonthlySalary() > limit ){
+                        
+                        dto.add(employeeDto);
+                    }
+                }
+            }
+        }
+        // a visszatero torzs (body)
+        ResponseEntity entity;
+        // erdekesseg:
+        // Ha LETEZO kodot kerdeznk le : "200 OK" - lesz a szerver valasza
+        // Ha NEM LETEZO -t kerdezunk le, akkor is "200 OK" -t ad vissza (ures erteket)
+        // .... de a konvencio szerint ezt a "404 Page Not Found" uzenetre szoktak cserelni.
+        if ( limit != null ){
+            
+            // ez le is gartja a "body"-t
+            entity = ResponseEntity.ok( dto );
+        }else{
+            
+            // a noFound(9 nem gyartja le, tehat le kell gyartatni a build() metodusaval:
+            entity = ResponseEntity.notFound().build();
+        }
+        return entity;
+    }
+    
     /**
      * POST-METHOD<br>
      * Letrehozas<br>
@@ -114,7 +161,7 @@ public class EmployeeRestFulController {
     @PostMapping
     public EmployeeDto createEmployeeDto( @RequestBody EmployeeDto employeeDto ){
         
-        employees.put( employeeDto.getId(), employeeDto );
+        this.employees.put( employeeDto.getId(), employeeDto );
         return employeeDto;
     }
     
@@ -131,12 +178,12 @@ public class EmployeeRestFulController {
         ResponseEntity entity;
         employeeDto.setId(id);
         
-        if ( ! employees.containsKey(id) ){
+        if ( ! this.employees.containsKey(id) ){
             
             entity = ResponseEntity.notFound().build();
         }else{
             
-            employees.put(id, employeeDto);
+            this.employees.put(id, employeeDto);
             entity = ResponseEntity.ok( employeeDto );
         }
                 
@@ -153,12 +200,12 @@ public class EmployeeRestFulController {
     
         ResponseEntity entity;
  
-        if ( ! employees.containsKey(id) ){
+        if ( ! this.employees.containsKey(id) ){
             
             entity = ResponseEntity.notFound().build();
         }else{
             
-            employees.remove(id);
+            this.employees.remove(id);
             entity = ResponseEntity.ok( "Torles rendben!" );
         }
                 

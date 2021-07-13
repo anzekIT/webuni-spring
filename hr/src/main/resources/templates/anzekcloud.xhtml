@@ -24,9 +24,12 @@
             <li>Bongeszobol inditott manualis lekresek inditasa = nem lehetseges, nem megoldhato!</li>
         </ul>
         
-        <h2>LSZMG CLOUD API EndPoints (az ERP szolgaltatasok VegPontjai)</h2>
-        <a>(Figyelem! Az alabbi vegpontokra titkositott, szoftveres kereseket var a backEndKiszolgalo!)</a></br>
+        <h2>LSZMG CLOUD API EndPoints (az LSZMG ERP szolgaltatasok VegPontjai)</h2>
+        <a>(Figyelem! Az alabbi vegpontokra (szovegesen titkositott tartalommal), szoftveres kereseket var a kiszolgalo!)</a></br>
         <ul>
+            <li>.../api/anzekcloud/login = bejelentkezes bongeszobol (5 perces token keres/kuldes -> e-mail/sms) </li>
+            <li>.../api/anzekcloud/autologin = bejelentkezes az ERP-bol (5 perces token keres/kuldes -> erp-be)</li>
+            <li>.../api/anzekcloud/logout = kijelentkezes (a token torlese)</li>
             <li>.../api/anzekcloud/techinfo = a felho tarhely (a backend kiszolgalo es az adatbazis) adatai</li>
             <li>.../api/anzekcloud/userinfo = a felhasznalo nyilvatartott adatai</li>
             <li>.../api/anzekcloud/softwareinfo = a backend kiszolgalo- es az adatbazisverziok adatai</li>
