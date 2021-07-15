@@ -5,7 +5,6 @@
  */
 package hu.webuni.spring.hr.anzek.config;
 
-import hu.webuni.spring.hr.anzek.service.DefaultEmployeeService;
 import hu.webuni.spring.hr.anzek.service.EmployeeService;
 import hu.webuni.spring.hr.anzek.service.SmartEmployeeService;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +18,7 @@ import org.springframework.context.annotation.Profile;
  */
 @Configuration
 @Profile("!prod")
-public class EmployeeConfiguration {
+public class LekapcsoltProdEmployeeConfiguration {
 
     @Bean
     public EmployeeService employeeService(){

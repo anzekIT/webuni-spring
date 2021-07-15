@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-
 /**
  * Eles uzemi Munkavallaloi konfiguracios bean<br>
  * "prod" - azaz bekapcsolt profile<br>
@@ -19,12 +18,11 @@ import org.springframework.context.annotation.Profile;
  */
 @Configuration
 @Profile("prod")
-public class ProdEmployeeConfiguration {
+public class BekapcsoltProdEmployesConfiguration {
 
-    
     @Bean
     public EmployeeService employeeService(){
-    
+
         return new SmartEmployeeService();
-    }         
+    }     
 }

@@ -46,15 +46,30 @@
         <title>Anzek-Hr Application</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <head>
+        <title>Anzek-Hr Application</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+              crossorigin="anonymus">
     </head>
     <body>
         
         <h1>Munkavallaoi lista, List of "Employees"</h1>
-
+        
+        <form th:action="@{/employees}" method="get">
+            <input id="txtSearch" type="text" name="id">
+            <button type="submit">Modositas</button>            
+        </form>     
+        
         <ul>
-
+            <!--for-each-ciklus-->
             <li th:each="employee : ${outemployees}">
 
+            <td border="1" class="table table-striped table-responsive-md">
+                <a id="Modositas" th:href="@{(id=${employee.id})}">
                 <span th:text="${employee.id}">id</span>
                 <span th:text="${employee.workerName}">workerName</span>
                 <span th:text="${employee.jobPosition}">jobPosition</span>
@@ -64,10 +79,9 @@
             </li> <br>
             
             Lista vege <br>
-                
-        </ul>
+        </ul>  
         
-        <h1>Adatfelvitel/modositas of "Employees"</h1>
+        <h1>Munkavállaló adatainak Módositasa</h1>
 
         <form th:action="@{/employees}" method="post" th:object="${newEmployee}">
 
@@ -77,6 +91,6 @@
             Havi fix-juttatasa_________:    <input th:field="*{monthlySalary}"> <br>
 
             <input type="submit" name="ROGZIT" value="Rogzitem" />
-        </form>              
+        </form>                          
     </body>
 </html>

@@ -4,8 +4,47 @@
         <title>Anzek-Hr Application</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+              crossorigin="anonymus">
     </head>
     <body>
-        <h1>Welcome-2 Anzek-Hr application</h1>
+        
+        <div class="container my-2" align="center">
+            
+            <h1>Welcome in the ANZEK-HR APP</h1>
+            <h3>Az alkalmazottak listaja</h3>
+            <table border="1" class="table table-striped table-responsive-md">
+                <thead>
+                    <tr>
+                        <th>
+                            Employes id
+                        </th>
+                        <th>
+                            Employes workerName
+                        </th>
+                        <th>
+                            Employes jobPosition
+                        </th>
+                        <th>
+                            Employes monthlySalary
+                        </th>
+                        <th>
+                            Employes startOfEmployment
+                        </th>                    
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="employee : ${outemployees}">
+                        <td th:text="${employee.id}">id</td>
+                        <td th:text="${employee.workerName}">workerName</td>
+                        <td th:text="${employee.jobPosition}">jobPosition</td>
+                        <td th:text="${employee.monthlySalary}">monthlySalary</td>       
+                        <td th:text="${employee.startOfEmployment}">startOfEmployment</td> 
+                    </tr>                
+                </tbody>
+            </table>
+        </div>    
     </body>
 </html>

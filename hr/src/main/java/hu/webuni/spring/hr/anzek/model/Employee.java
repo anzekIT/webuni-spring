@@ -168,7 +168,7 @@ public class Employee {
     }    
     /**
      * Visszaadja a  munnkaviszony utan jaro beremeles szazalekos merteke szoveges megjeleniteshez<br>
-     * @return a torzsGarda szoveges tartalom<rb>
+     * @return a torzsGarda szoveges tartalom<br>
      */
     public String getTorzsGarda() {
         

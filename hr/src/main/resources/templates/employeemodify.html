@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!--
+    Modositasi Feladat:
+    Irjunk egy formot es kossuk ossze egy objektummal
+    Az objekrumnak mar a kontroller GET metodusaban elokeszitettnek kell lenni (lasd egyel fentebb)! 
+
+    Vagyis: elotte a konreoller mar beleteszi a Model-jebe azt az Ogectet ami itt kell!
+    Kulonben kivetelt fog dobni!
+
+    Ehhez a kontrolletben fel kell legyen Mappingelve a setviceURL @GetMapping("...url/service")
+
+        - a "th:action" azt mondja meg, hogy "hova posztolűdjon"
+        - a "method" az alkalmazott tecgnologia..
+        - a "th:object" pedig mi az a "model"-beli objektum, amit ki kell toltenie
+
+    Id_____________________:    <input th:field="*{id}"> <br>    
+    a fenti sor egy sima Input() 
+    a webes feluletrol,
+    itt megmondjuk a "newEmployee" melyik mezojet toltse ki: 
+    
+    ez lesz az "elkuldo gomb"
+    <input type="submit" name="ROGZIT" value="Rogzitem" />
+-->
+
+<html xmlns:th="http://wwww.thymeleaf.org">
+    <head>
+        <title>Anzek-Hr Application</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        
+        <h1>Munkavállaló adatainak Módositasa</h1>
+
+        <form th:action="@{/employees}" method="post" th:object="${newEmployee}">
+
+            Id_____________________:    <input th:field="*{id}"> <br>
+            A munkvallalo meve______:    <input th:field="*{workerName}"> <br>
+            Munkakore _____________:    <input th:field="*{jobPosition}"> <br>
+            Havi fix-juttatasa_________:    <input th:field="*{monthlySalary}"> <br>
+
+            <input type="submit" name="ROGZIT" value="Rogzitem" />
+        </form>              
+    </body>
+</html>

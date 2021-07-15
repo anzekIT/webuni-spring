@@ -1,0 +1,28 @@
+## YAML Template.
+---
+spring:
+    profiles:
+        active:
+            - prod
+    
+    thymeleaf:
+        cache: false
+    
+    mvc:
+        format:
+            date-time: yyyy-MM-dd HH:mm:ss
+            
+hr:
+    salary:
+        def:
+            fixszazalek: 5
+        smart:
+            limit1: 2.5
+            limit2: 5
+            limit3: 10
+            szazalek0: 0
+            szazalek1: 2
+            szazalek2: 5
+            szazalek3: 10    
+            
+        

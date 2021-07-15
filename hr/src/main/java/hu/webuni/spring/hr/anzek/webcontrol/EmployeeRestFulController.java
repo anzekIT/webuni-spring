@@ -108,7 +108,7 @@ public class EmployeeRestFulController {
         return entity;
     }
  
-        /**
+    /**
      * GET-METHOD<br>
      * Kerjunk le a megadott service utvonalon bekuldott erteknel magasabb fizetessel rendelkezo elemet:<br>
      * Egy alservice mappaban...<br>
@@ -154,8 +154,8 @@ public class EmployeeRestFulController {
     
     /**
      * POST-METHOD<br>
-     * Letrehozas<br>
-     * @param employeeDto az uj berogzitendo peldany<br>
+     * Egy j elem letrehozasa<br>
+     * @param employeeDto az uj objektum elem berogzitendo adatai<br>
      * @return viszaadja a parameterben szereplo uj peldanyt<br> 
      */
     @PostMapping
@@ -167,10 +167,10 @@ public class EmployeeRestFulController {
     
     /**
      * PUT-METHOD<br>
-     * Egy uj tetel behelyezese az adhalmazba<br>
-     * @param id az ujonnan rogizendo tetel ID-je<br>
-     * @param employeeDto az ujonnan rogzitendo entitas<br>
-     * @return visszaadja: sikeres volt -e a torles (lezűtezett-e elotte) vagy sem<br> 
+     * Egy tetel modositasa az adhalmazba<br>
+     * @param id a keresendo tetel ID-je<br>
+     * @param employeeDto a modositando entitas<br>
+     * @return visszaadja: sikeres volt -e a modositas: letezett-e egyaltalan ezt megelozoen, vagy sem<br> 
      */
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeDto> modifyEmployeeDto( @PathVariable long id, @RequestBody EmployeeDto employeeDto ){
@@ -193,7 +193,7 @@ public class EmployeeRestFulController {
     /**
      * DELETE METHOD<br>
      * @param id a torlesre jelolt tetel ID azonositoja<br>
-     * @return visszaadja: sikeres volt -e a torles (lezűtezett-e elotte) vagy sem<br>
+     * @return visszaadja: sikeres volt -e a modositas: letezett-e egyaltalan ezt megelozoen, vagy sem<br> 
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEmployeeDto( @PathVariable long id ){
