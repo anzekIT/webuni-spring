@@ -12,17 +12,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * Tesztkornyezeti Munkavallaloi konfiguracios bean<br>
- * "!prod" - azaz kikapcsolt profile<br>
+ * Eles uzemi Munkavallaloi konfiguracios bean<br>
+ * "prod" - azaz bekapcsolt profile<br>
  * @author User
  */
 @Configuration
-@Profile("!prod")
-public class LekapcsoltProdEmployeeConfiguration {
+@Profile("smart")
+public class BekapcsoltSmartSalaryConfiguration {
 
     @Bean
     public EmployeeService employeeService(){
-
+        
+        System.out.println("SMART******");
         return new SmartEmployeeService();
     }     
 }

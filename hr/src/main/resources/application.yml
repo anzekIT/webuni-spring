@@ -1,0 +1,36 @@
+#spring:
+#    profiles:
+#        active:
+#        - smart
+#    
+#    thymeleaf:
+#        cache: false
+#    
+#    mvc:
+#        format:
+#            date-time: yyyy-MM-dd HH:mm:ss
+#            
+#hr:
+#    propertfile: 
+#            yamlproperties
+#            
+#    salary:
+#
+#        deflt:           
+#            fixszazalek: 5            
+#        smart:            
+#            limit1: 2.5
+#            limit2: 5
+#            limit3: 10
+#            szazalek0: 0
+#            szazalek1: 2
+#            szazalek2: 5
+#            szazalek3: 10      
+#            limits:
+#                2.5: 0
+#                25: 15
+#                5: 2
+#                30: 20 
+#                20: 10
+#                10: 5
+#                 

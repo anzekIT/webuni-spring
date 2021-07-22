@@ -6,98 +6,208 @@
 package hu.webuni.spring.hr.anzek.config;
 
 
+import java.util.TreeMap;
+//import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-
 /**
- *
+ * Spring boot konfiguracios osztaly a fizetesemeles szazalekos mertekehez<br>
+ * A propertis fajlokban beallitott "hr" gyoker hierarchia menten gyujti fel a parametereket<br>
  * @author User
  */
-@ConfigurationProperties( prefix= "hr" )
 @Component
+@ConfigurationProperties( prefix="hr" )
 public class HrConfigProperties {
+
+    // hr.salary.smart.limit1=2.5
     
-    private Szazalek szazlek = new Szazalek();
+    // @Value("${hr.propertfile}")
+    private String propertfile;    
+            
+    private Salary salary = new Salary();
+   
+    public String getPropertfile(){
 
-    public void setSzazalek( Szazalek percent ) {
+        return this.propertfile;     
+    }  
 
-        this.szazlek = percent ;
+    public void setPropertfile(String propertfile) {
+        
+        this.propertfile = propertfile;
     }
 
-    public Szazalek getSzazalek() {
+    public Salary getSalary() {
 
-        return this.szazlek;                     
+        return this.salary;                     
+    }    
+
+    public void setSalary( Salary salary ) {
+
+        this.salary = salary ;
     }
 
-    public static class Szazalek {
+    public static class Salary {
 
-        private final Default def = new Default();
-        private final Smart smart = new Smart();
+        private Smart smart = new Smart();         
+        private Deflt deflt = new Deflt();
 
-        public Default getByDefault() {
-
-            return def;
-        }
-
-        public Smart getBySmart() {
-
+        public Smart getSmart() {
+            
             return smart;
         }
 
-        public static class Smart {
+        public void setSmart( Smart smart ){
+        
+            this.smart = smart;
+        }
 
-            // ennyi ev munkaviszony utan:
-            private int evekszama1;
-            private int evekszama2;
-            private int evekszama3;
+        public void setDeflt(Deflt deflt) {
             
-            // ennyi szazalek beremeles jar:
-            private int szazlek0;
-            private int szazlek1;
-            private int szazlek2;
-            private int szazlek3;
-
-            public int getEvekszama1() {
-                
-                return evekszama1;
-            }
-
-            public int getEvekszama2() {
-                
-                return evekszama2;
-            }
-
-            public int getEvekszama3() {
-                
-                return evekszama3;
-            }         
-
-            public int getSzazlek0() {
-                return szazlek0;
-            }
+            this.deflt = deflt;
+        }
+        
+        public Deflt getDeflt() {
             
-            public int getSzazlek1() {
-                return szazlek1;
-            }
-
-            public int getSzazlek2() {
-                return szazlek2;
-            }
-
-            public int getSzazlek3() {
-                return szazlek3;
-            }
-            
-        }            
-
-        public static class Default {
-
-            private int fixszazalek;
-            public int getDef(){
-
-                return fixszazalek;
-            }   
-        }   
+            return deflt;
+        }
     }
+    
+    public static class Smart {
+
+        private int statikus_dinamikus;
+        
+        // Ezek itt a statikus adatok:
+        // ennyi ev munkaviszony utan: 
+        // @Value("hr.salary.smart.limit1")
+        private Double limit1;
+        // @Value("hr.salary.smart.limit2")
+        private Double limit2;
+        // @Value("hr.salary.smart.limit3")
+        private Double limit3;
+
+        // ennyi szazalek beremeles jar:
+        // @Value("hr.salary.smart.szazlek0")
+        private Double szazlek0;
+        // @Value("hr.salary.smart.szazlek1")
+        private Double szazlek1;
+        // @Value("hr.salary.smart.szazlek2")
+        private Double szazlek2;
+        // @Value("hr.salary.smart.szazlek3")
+        private Double szazlek3;
+
+        // Ezek itt a dinamikus adatok:
+        // egy TreeMap<K,V> -t alkalmazunk a dinamikus adatokhoz:
+        // a TreeMap egy kulcsok szerint rendezett, indexelt, MAP -lista
+        // minden ledolgozott evhez tartozik egy fix szazalekos ertek  
+        // @Value("hr.salary.smart.limits")
+        public TreeMap<Double, Integer> limits;
+
+        public int getStatikus_dinamikus() {
+            
+            return this.statikus_dinamikus;
+        }
+
+        public void setStatikus_dinamikus(int statikus_dinamikus) {
+            
+            this.statikus_dinamikus = statikus_dinamikus;
+        }
+
+        public Double getLimit1() {
+            
+            return this.limit1;
+        }
+
+        public void setLimit1(Double limit1) {
+            
+            this.limit1 = limit1;
+        }
+
+        public Double getLimit2() {
+            
+            return limit2;
+        }
+
+        public void setLimit2(Double limit2) {
+            
+            this.limit2 = limit2;
+        }
+
+        public Double getLimit3() {
+            
+            return this.limit3;
+        }
+
+        public void setLimit3(Double limit3) {
+            
+            this.limit3 = limit3;
+        }
+
+        public Double getSzazlek0() {
+            
+            return this.szazlek0;
+        }
+
+        public void setSzazlek0(Double szazlek0) {
+            
+            this.szazlek0 = szazlek0;
+        }
+
+        public Double getSzazlek1() {
+            
+            return this.szazlek1;
+        }
+
+        public void setSzazlek1(Double szazlek1) {
+            
+            this.szazlek1 = szazlek1;
+        }
+
+        public Double getSzazlek2() {
+            
+            return this.szazlek2;
+        }
+
+        public void setSzazlek2(Double szazlek2) {
+            
+            this.szazlek2 = szazlek2;
+        }
+
+        public Double getSzazlek3() {
+            
+            return this.szazlek3;
+        }
+
+        public void setSzazlek3(Double szazlek3) {
+            
+            this.szazlek3 = szazlek3;
+        }
+
+        public TreeMap<Double, Integer> getLimits() {
+            
+            return this.limits;
+        }
+
+        public void setLimits(TreeMap<Double, Integer> limits) {
+            
+            this.limits = limits;
+        }
+    }            
+
+    public static class Deflt {
+
+        // @Value("${hr.salary.deflt.fixszazalek}")
+        private Double fixszazalek;
+
+        public Double getFixszazalek() {
+            
+            return this.fixszazalek;
+        }
+
+        public void setFixszazalek(Double fixszazalek) {
+            
+            this.fixszazalek = fixszazalek;
+        }
+ 
+    }   
 }

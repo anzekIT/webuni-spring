@@ -57,40 +57,73 @@
     </head>
     <body>
         
-        <h1>Munkavallaoi lista, List of "Employees"</h1>
-        
-        <form th:action="@{/employees}" method="get">
-            <input id="txtSearch" type="text" name="id">
-            <button type="submit">Modositas</button>            
-        </form>     
-        
-        <ul>
-            <!--for-each-ciklus-->
-            <li th:each="employee : ${outemployees}">
-
-            <td border="1" class="table table-striped table-responsive-md">
-                <a id="Modositas" th:href="@{(id=${employee.id})}">
-                <span th:text="${employee.id}">id</span>
-                <span th:text="${employee.workerName}">workerName</span>
-                <span th:text="${employee.jobPosition}">jobPosition</span>
-                <span th:text="${employee.monthlySalary}">monthlySalary</span>       
-                <span th:text="${employee.startOfEmployment}">startOfEmployment</span> 
+        <div class="container my-2" align="center">
             
-            </li> <br>
+            <h1>Munkavallaoi lista, List of "Employees"</h1>
+
+            <table border="1" class="table table-striped table-responsive-md">
+
+                <tbody>
+
+                    <tr>
+                        <th>NAME</th>
+                        <th>JobPosition</th>
+                        <th>monthlySalary</th>
+                        <th>StartOfEmployment</th>
+                    </tr>
+                    
+                    <!--for-each-ciklus-->
+                    <tr border="1" align="right" th:each="employee : ${outemployees}">
+                        
+                        <td th:text="${employee.id}">id</td>
+
+                        <!--    aModositas:
+                                az "./employees/..." szolgaltatasi vegpontra 
+                                varjuk a modositando "id" -t !
+                        -->
+                        <td><a th:href="@{/employees/{id}(id=${employee.id})}" th:text="${employee.workerName}">Name</td> 
+
+                        <td th:text="${employee.jobPosition}">JobPosition</td>
+                        <td th:text="${employee.monthlySalary}">monthlySalary</td> 
+                        <td th:text="${employee.startOfEmployment}">StartOfEmployment</td>  
+
+                        <!--
+                                az "./deleteEmployees/..." szolgaltatsi vegpontra 
+                                varjuk a torlendo "id" -t !
+                        -->
+                        <td><a th:href="@{/deleteEmployees/{id}(id=${employee.id})}">DeleteEmployee</a></td>  
+                    </tr>        
+                </tbody>
+            </table>
+            <br><br>
+                
+            <h1>Munkavállaló adatainak Újbevitel/Módositas</h1>
+            <h2>Létező kód megadása -> Módositas</h2>
+            <h2>Új kód megadása -> Újbevitel</h2>
             
-            Lista vege <br>
-        </ul>  
-        
-        <h1>Munkavállaló adatainak Módositasa</h1>
+            <table border="1" align="right" class="table table-striped table-responsive-md">
+                
+                <!--
+                         az "./deleteEmployees/..." szolgaltatsi vegponton adatbevitel
+                -->
+                <tbody>
+                    
+                    <form th:action="@{/employees}" method="post" th:object="${newEmployee}">
 
-        <form th:action="@{/employees}" method="post" th:object="${newEmployee}">
+                        Id_____________________:    <input th:field="*{id}"> <br>
+                        A munkvallalo meve______:    <input th:field="*{workerName}"> <br>
+                        Munkakore _____________:    <input th:field="*{jobPosition}"> <br>
+                        Havi fix-juttatasa_________:    <input th:field="*{monthlySalary}"> <br>
+                        Munkaba allasa_________:    <input th:field="*{startOfEmployment}"> <br>
 
-            Id_____________________:    <input th:field="*{id}"> <br>
-            A munkvallalo meve______:    <input th:field="*{workerName}"> <br>
-            Munkakore _____________:    <input th:field="*{jobPosition}"> <br>
-            Havi fix-juttatasa_________:    <input th:field="*{monthlySalary}"> <br>
-
-            <input type="submit" name="ROGZIT" value="Rogzitem" />
-        </form>                          
+                        <!--    - "type" - submit (bekulde)
+                                - "name" - egy azonosito
+                                - "value" - caption
+                        -->
+                        <input type="submit" name="ROGZIT" value="Add" />
+                    </form>
+                </tbody>
+            </table>
+        </div>
     </body>
 </html>

@@ -6,23 +6,24 @@
 package hu.webuni.spring.hr.anzek.config;
 
 import hu.webuni.spring.hr.anzek.service.EmployeeService;
-import hu.webuni.spring.hr.anzek.service.SmartEmployeeService;
+import hu.webuni.spring.hr.anzek.service.DefaultEmployeeService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * Eles uzemi Munkavallaloi konfiguracios bean<br>
- * "prod" - azaz bekapcsolt profile<br>
+ * Tesztkornyezeti Munkavallaloi konfiguracios bean<br>
+ * "!prod" - azaz kikapcsolt profile<br>
  * @author User
  */
 @Configuration
-@Profile("prod")
-public class BekapcsoltProdEmployesConfiguration {
+@Profile("!smart")
+public class LekapcsoltDefaultProfileSalaryConfiguration {
 
     @Bean
     public EmployeeService employeeService(){
-
-        return new SmartEmployeeService();
+        
+        System.out.println("ByDEFAULT******");
+        return new DefaultEmployeeService();
     }     
 }

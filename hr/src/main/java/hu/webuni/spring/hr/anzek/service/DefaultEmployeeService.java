@@ -6,7 +6,6 @@
 package hu.webuni.spring.hr.anzek.service;
 
 
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers;
 import hu.webuni.spring.hr.anzek.config.HrConfigProperties;
 import hu.webuni.spring.hr.anzek.model.Employee;
 import java.io.Serializable;
@@ -24,9 +23,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class DefaultEmployeeService implements Serializable,EmployeeService {
     
+
     @Autowired
-    HrConfigProperties hrConfig;      
-            
+    HrConfigProperties cfgProp;
+        
     /**
      * Fix novekmenyt visszaado metodus<br>
      * "EmployeeService" implementacioja<br>
@@ -36,18 +36,13 @@ public class DefaultEmployeeService implements Serializable,EmployeeService {
     @Override
     public int getPayRaisePercent( Employee employee ) {
         
-        return this.hrConfig.getSzazalek().getByDefault().getDef();
+        return cfgProp.getSalary().getDeflt().getFixszazalek().intValue() ;
     }    
-    
-    /**
-     * Visszaadja a fix emeles mertekenek szazalekat, egy szoveges tartalomban<br>
-     * @param employee a dolgozo injektalt osztalypeldanya<br>
-     * @return fix emeles merteke<br>
-     */
+
     @Override
-    public String getTorzsGarda( Employee employee ) {
+    public String getTorzsGarda(Employee employee) {
         
-        return "Nincs figyelembevett munkaviszony, fixEmeles = 5%"; 
+        return "By Deault - " + cfgProp.getSalary().getDeflt().getFixszazalek() + " %";
     }
 
     @Override

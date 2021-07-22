@@ -1,5 +1,6 @@
 package hu.webuni.spring.hr.anzek;
         
+import hu.webuni.spring.hr.anzek.config.HrConfigProperties;
 import hu.webuni.spring.hr.anzek.dto.EmployeeDto;
 import hu.webuni.spring.hr.anzek.model.Employee;
 import hu.webuni.spring.hr.anzek.service.SalaryService;
@@ -16,6 +17,9 @@ public class HrApplication implements CommandLineRunner {
 
     @Autowired
     public SalaryService salaryService;
+    
+    @Autowired
+    HrConfigProperties configProperties;
     
     /**
      * lesz olyan funkcio, hogy adott ID-ju tetelt adjunk vissza, hogy modositsuk, hogy toroljuk, stb.   
@@ -54,19 +58,24 @@ public class HrApplication implements CommandLineRunner {
             this.employees.put( 7L, new EmployeeDto ( 7L, "Él Béla", "Segéderő", 25000, LocalDateTime.of( 2021, 05, 11, 0, 0, 0 ) ) );
         }  
         
-        // egy MAP - iteracio peladak:
-        
-        this.employees.entrySet()
-                .stream()
-                .forEach( e -> this.employees.put( e.getKey(), (EmployeeDto) this.salaryService.incomeService( e.getValue() )) );
-        
-        //      Normal for ciklussal a fenti megoldas :
-        //        for (int i=1; i<8; i++){
+        // honnan jonnek az adatok?
+        // .yml vagy application.properties ?
+        System.out.println( "honnan jonnek az adatok? " + this.configProperties.getPropertfile() );
+        System.out.println( "kiolvasott fix-ev/szazalek adatok? " + this.configProperties.getSalary().getDeflt().getFixszazalek() );
+        System.out.println( "Statikus vagy a dinamikus adatok futnak? (0/1) = " + this.configProperties.getSalary().getSmart().getStatikus_dinamikus());
+        // egy MAP - iteracio peladak:        
+//        
+//        this.employees.entrySet()
+//                .stream()
+//                .forEach( e -> this.employees.put( e.getKey(), (EmployeeDto) this.salaryService.incomeService( e.getValue() )) );
+//        
+        //  Normal for ciklussal a fenti megoldas :
+        //for (int i=1; i<8; i++){
         //
-        //            EmployeeDto dto = this.employees.get( (long) i ) ;          
-        //            dto = (EmployeeDto) this.salaryService.incomeService( (Employee) dto );             
-        //            this.employees.put( dto.getId() , dto );             
-        //        }  
+        //    EmployeeDto dto = this.employees.get( (long) i ) ;          
+        //    dto = (EmployeeDto) this.salaryService.incomeService( (Employee) dto );             
+        //    this.employees.put( dto.getId() , dto );             
+        //}  
         
         // Lamdaval, illetve a full lambda-streammel, majdnem ugyanez :
         this.employees.entrySet()

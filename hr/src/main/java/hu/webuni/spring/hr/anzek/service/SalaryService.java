@@ -6,14 +6,13 @@
 package hu.webuni.spring.hr.anzek.service;
 
 import hu.webuni.spring.hr.anzek.model.Employee;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
  * INJEKTOR MINTA!<br>
  * ---------------<br>
- * Jovedelem beallito springes bean (osztaly)<br>
+ * Jovedelem beallito springes service- bean (osztaly)<br>
  * Ez lenyegileg olyan, mint egy abstract osztaly, <br>
  * a felhasznalt beanek nem (feltetlenul) rendelkeznek meg implementacioval!<br>
  * A jovedelmet az "incomeService()" metodus allitja es vissza is adja a megvaltozott Munkavallaloi adatokat is<br>
@@ -21,26 +20,28 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SalaryService {
-
+    
     /**
-     * AZ INJEKTOR MAGYARAZTATA : <br>
+     * AZ INJEKTOR MAGYARAZATA : <br>
+     * Ez itt egy KonstruktorInjektalas<br>
      * Az injektor injektalja a deklaracio neve helyere : <br> 
-     * - az aktualisan ervenyes "prod" vagy "!prod" -nak megfelelo<br>
-     * - implementaciot...<br>
-     * Igy vegulis ez maga az injektor lenyege. Vagyis :<br>
+     * - az aktualisan ervenyes profile beallitasban a "prod" vagy "!prod" -nak megfelelo<br>
+     * implementaciot...<br>
+     * Igy vegulis ez maga az injektor lenyege.Vagyis :<br>
      * Nyugodtan hivatkozhatunk a deklaraciora (de csak injektalasanal)<br> 
      * es nem kell magara az implementaciora hivatkozni (ami lehetseges, hogy meg nem is letezik...)<br>
      * Igy azt sem kell tudnunk, hogy ki, hol, mit irt meg mogeje, csak azt, hogy ezt, meg azt kell tudnia...<br>
      * ..es az ahhoz itt nekunk mar elegseges ismeret!<br>
      * Egyebkent direkt modon magara az implementaciora is hivatkozhatunk, pl: osztalypeldanyositassal, stb!<br>
-     */
+     * @param employeeService az Injektalt service Interface<br>
+     */  
     @Autowired
-    EmployeeService employeeService ;
+    private EmployeeService employeeService ;    
     
     private int fizetesEmeles = 0;
     private Employee employee = null ;
     private String torzsGarda = "nincs adat";
-    
+
     /**
      * A jovedelem beallito metodus<br>
      * Az aktualis fizetest megemeli a "jarandosagi" szazalekkal a munkviszony hosszanak fuggvenyenben<br>
@@ -50,7 +51,7 @@ public class SalaryService {
      * @return a modositott Munkavallaloi (objektum) adatok<br>
      */
     public Employee incomeService( Employee employee ) {
-    
+   
         this.employee = employee;
         
         if ( this.employee != null ){
@@ -70,14 +71,5 @@ public class SalaryService {
         }
                 
         return this.employee;
-    }
-    
-    /**
-     * Beallitja az aktualis munkavallao adatoka<br>
-     * @param employee a munkavallalo objektum<br>
-     */
-    public void setEmployee( Employee employee ){
-    
-        this.employee = employee;
     }
 }

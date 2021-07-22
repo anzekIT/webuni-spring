@@ -10,7 +10,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * A munkavallaloval kapcsolatos service metodus deklaraciok<br>
+ * A munkavallaloi szerviz Interace<br>
+ * A munkavallaloval kapcsolatos service metodus deklaracioi<br>
  * Metodusai:<br>
  * 1, Megadaja, hany szazalekos fizetesemeles jar az adott (parameter) munkavallalo szamara<br>
  * "int getPayRaisePercent( Employee employe )"<br>

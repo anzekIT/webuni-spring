@@ -12,72 +12,96 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
  * Intelligens "torzsgarda" alapu progressziv novekmeny szamito bean<br>
  * Metodusa :<br>
  * "getPayRaisePercent( dolgozoObject )" szamitja kia progressziv novekmenyt<br>
- * kevesebb mint 2,5 ev: 0% <br>
- * tobb mint 2,5, de kevesebb mint 5 ev: 2 % <br>
- * tobb mint 5 ev, de kevesebb mint 10 ev 5 % <br>
- * legalabb 10 eve : 10% bernovekmeny <br>
+ * Ehhez eloszor is:<br>
+ * Injektalni szukseges a konfiguracios osztalyt !<br>
+ * A konfig osztalyban van implementalva<br> 
+ * a profiles "hr" gyokerhierarchia fole felepitett<br>
+ * "parameter-elem-ertekparok" kiolvaso osztalyai<br>
  * @author User
  */
 @Service
 public class SmartEmployeeService implements Serializable,EmployeeService {
 
+    @Autowired
+    HrConfigProperties cfgProp;
+    
     // egy private konstans-ertek a felev masodpercben kifejezve : 15768000 sec...
     private final long FELEV = 15768000;    
     
     /**
      * Torzsgarda alapu progressziv jovedelem szazalekos novekmeny szamito metodus<br>
      * "EmployeeService" implementacioja<br>
-     * kevesebb mint 2,5 ev: 0% <br>
-     * tobb mint 2,5, de kevesebb mint 5 ev: 2 % <br>
-     * tobb mint 5 ev, de kevesebb mint 10 ev 5 % <br>
-     * legalabb 10 eve : 10% bernovekmeny <br>
      * @param employee a dolgozo injektalt osztalypeldanya<br>
      * @return a progressziv szazalekos novekmeny INT tipusban<br>
      */
     @Override
     public int getPayRaisePercent( Employee employee ) {
        
-        HrConfigProperties cfgProp = new HrConfigProperties();
-        
         // aktualis idopont masodpercekben (1970-01-01 -tol)
         long jelenIdo = LocalDateTime.now().toEpochSecond( ZoneOffset.UTC ) ;
+        
         // Ha a jelenIdo-bol kivonom a munkabaallas idopontja masodpercekben (1970-01-01 -tol), 
         // akkor megapom hany masodperce van munkaban:
         long torzsGardasag = jelenIdo - employee.getStartOfEmployment().toEpochSecond( ZoneOffset.UTC ) ;
         
-        int szazalek = 0;
+        Double szazalek = 0.00;
+        Integer ledolgozottEvekSzam = 0;
         
-        if ( torzsGardasag < ( (cfgProp.getSzazalek().getBySmart().getEvekszama1() *2) * FELEV )  ){
+        if ( cfgProp.getSalary().getSmart().getStatikus_dinamikus() == 0 ){
             
-            // kevesebb mint 2,5 ev:
-            szazalek = cfgProp.getSzazalek().getBySmart().getSzazlek0();
+            if ( torzsGardasag < ( (cfgProp.getSalary().getSmart().getLimit1() *2) * FELEV )  ){
+
+                // kevesebb mint 2,5 ev:
+                szazalek = cfgProp.getSalary().getSmart().getSzazlek0();
+            }else{
+
+                if ( torzsGardasag < ( (cfgProp.getSalary().getSmart().getLimit2() *2) * FELEV ) ){
+
+                    // tobb mint 2,5, de kevesebb mint 5 ev:
+                    szazalek = cfgProp.getSalary().getSmart().getSzazlek1();
+                }else{
+
+                    if ( torzsGardasag < ( (cfgProp.getSalary().getSmart().getLimit3() *2) * FELEV ) ){
+
+                        // tobb mint 5 ev, de kevesebb mint 10 ev
+                        szazalek = cfgProp.getSalary().getSmart().getSzazlek2();
+                    }else{
+
+                        // legalabb 10 eve:
+                        szazalek = cfgProp.getSalary().getSmart().getSzazlek3();
+                    }                
+                }
+            }
         }else{
             
-            if ( torzsGardasag < ( (cfgProp.getSzazalek().getBySmart().getEvekszama2() *2) * FELEV ) ){
-                
-                // tobb mint 2,5, de kevesebb mint 5 ev:
-                szazalek = cfgProp.getSzazalek().getBySmart().getSzazlek1();
-            }else{
-                
-                if ( torzsGardasag < ( (cfgProp.getSzazalek().getBySmart().getEvekszama3() *2) * FELEV ) ){
+            TreeMap<Double, Integer> limits = cfgProp.getSalary().getSmart().getLimits();
+            
+            for( var entry: limits.entrySet()){
 
-                    // tobb mint 5 ev, de kevesebb mint 10 ev
-                    szazalek = cfgProp.getSzazalek().getBySmart().getSzazlek2();
+                if (  torzsGardasag < ( entry.getKey() * 2) ){
+
+                    ledolgozottEvekSzam = entry.getValue();
                 }else{
-                    
-                    // legalabb 10 eve:
-                    szazalek = cfgProp.getSzazalek().getBySmart().getSzazlek3();
-                }                
+
+                    break;
+                }
             }
         }
         
-        return szazalek;
+        return ( cfgProp.getSalary().getSmart().getStatikus_dinamikus()==0
+                ?
+                szazalek.intValue()
+                : 
+                ( ledolgozottEvekSzam == null ? 0 : ledolgozottEvekSzam )
+                );
     }
     
     /**
@@ -87,9 +111,7 @@ public class SmartEmployeeService implements Serializable,EmployeeService {
      */
     @Override
     public String getTorzsGarda( Employee employee ) {
-        
-        HrConfigProperties cfgProp = new HrConfigProperties();
-        
+
         String torzsGarda = "nincs megadott munkaviszony, igy a beremeles = 0%";
           // aktualis idopont masodpercekben (1970-01-01 -tol)
         long jelenIdo = LocalDateTime.now().toEpochSecond( ZoneOffset.UTC ) ;
@@ -97,42 +119,42 @@ public class SmartEmployeeService implements Serializable,EmployeeService {
         // akkor megapom hany masodperce van munkaban:
         long torzsGardasag = jelenIdo - employee.getStartOfEmployment().toEpochSecond( ZoneOffset.UTC ) ;
        
-        if ( torzsGardasag < ( (cfgProp.getSzazalek().getBySmart().getEvekszama1() *2) * FELEV )  ){
+        if ( torzsGardasag < ( (cfgProp.getSalary().getSmart().getLimit1() *2) * FELEV )  ){
             
             // kevesebb mint 2,5 ev:
             
             torzsGarda = "Torzsgarda kevesebb mint " 
-                            + (cfgProp.getSzazalek().getBySmart().getEvekszama1() *2) 
-                            + " ev utan = " + cfgProp.getSzazalek().getBySmart().getSzazlek0() 
+                            + (cfgProp.getSalary().getSmart().getLimit1() *2) 
+                            + " ev utan = " + cfgProp.getSalary().getSmart().getSzazlek0() 
                             + " %" ;
         }else{
             
-            if ( torzsGardasag < ( (cfgProp.getSzazalek().getBySmart().getEvekszama1() *2) * FELEV ) ){
+            if ( torzsGardasag < ( (cfgProp.getSalary().getSmart().getLimit1() *2) * FELEV ) ){
                 
                 // tobb mint 2,5, de kevesebb mint 5 ev:
                 torzsGarda = "Torzsgarda tobb mint " 
-                                + (cfgProp.getSzazalek().getBySmart().getEvekszama1() *2) 
+                                + (cfgProp.getSalary().getSmart().getLimit1() *2) 
                                 + " ev , de kevesebb mint " 
-                                + (cfgProp.getSzazalek().getBySmart().getEvekszama2() *2) 
-                                + " utan = " + cfgProp.getSzazalek().getBySmart().getSzazlek1() 
+                                + (cfgProp.getSalary().getSmart().getLimit2() *2) 
+                                + " utan = " + cfgProp.getSalary().getSmart().getSzazlek1() 
                                 + " %";
             }else{
                 
-                if ( torzsGardasag < ( (cfgProp.getSzazalek().getBySmart().getEvekszama3() *2) * FELEV ) ){
+                if ( torzsGardasag < ( (cfgProp.getSalary().getSmart().getLimit3() *2) * FELEV ) ){
 
                     // tobb mint 5 ev, de kevesebb mint 10 ev
                     torzsGarda = "Torzsgarda tobb mint " 
-                                    + (cfgProp.getSzazalek().getBySmart().getEvekszama2() *2) 
+                                    + (cfgProp.getSalary().getSmart().getLimit2() *2) 
                                     + " ev , de kevesebb mint " 
-                                    + (cfgProp.getSzazalek().getBySmart().getEvekszama3() *2) 
-                                    + " utan = " + cfgProp.getSzazalek().getBySmart().getSzazlek2() 
+                                    + (cfgProp.getSalary().getSmart().getLimit3() *2) 
+                                    + " utan = " + cfgProp.getSalary().getSmart().getSzazlek2() 
                                     + " %";
                 }else{
                     
                     // legalabb 10 eve:
                     torzsGarda = "Torzsgarda legalabb " 
-                                    + (cfgProp.getSzazalek().getBySmart().getEvekszama3() *2) 
-                                    + " utan = " + cfgProp.getSzazalek().getBySmart().getSzazlek3() 
+                                    + (cfgProp.getSalary().getSmart().getLimit3() *2) 
+                                    + " utan = " + cfgProp.getSalary().getSmart().getSzazlek3() 
                                     + " %";
                 }                
             }
