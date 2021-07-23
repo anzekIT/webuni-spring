@@ -14,6 +14,7 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -55,6 +56,23 @@ public final class EmployeeWebController {
         this.allEmployees.add( new EmployeeDto ( 6L, "Kevés Alé", "Melós", 50000, LocalDateTime.of( 2016, 3, 8, 0, 0, 0 ) ) );
         this.allEmployees.add( new EmployeeDto ( 7L, "Gaz Ember", "segéderő", 25000, LocalDateTime.of( 2019, 11, 2, 0, 0, 0 ) ) );
     }
+        
+    /**
+     * Ez itt "KAKUKKTOJAS" -- mivel ez is egy XHTML- viszatero, de nem az Employee-hez tartozik!<br>
+     * De itt a helye, mert az API-khoz tarotozo HELP-tablazatot ad vissza<br>
+     * Az "./api/anzekcloud" URL-re erkezo keresre sima tajekozatato HTML-t<br>
+     * @param model a rendereleshez szukseges model<br>
+     * @return viszaadja az anzekcloud.html-t<br>
+     */
+    @GetMapping("/api/anzekcloud/sysinfo")    
+    public String getAnzekSingularityCloud(  Map<String, Object> model ){
+        
+        model.put( "ServerTime", LocalDateTime.now() );
+        model.put( "SystemSize", System.getProperties().size() );
+        return "anzekcloud.xhtml";
+    }
+        
+    ////////////////// ---- innen vanna az Employee feladat metodusok ------------------:
     
     /**
      * HOME-GET<br>
@@ -63,7 +81,7 @@ public final class EmployeeWebController {
      * ez azt jelenti, hogy a gyokeren belul a "./web"-re erkezo kereseket dolgozza fel <br>
      * az index.html" -valaszra kenyszeriti (iranyitja at):<br>
      */
-    @GetMapping("/web")
+    @GetMapping("/")
     public String home( Model model ){
      
         System.out.println( "weboldal Frissitesek Szama = " + this.weboldalFrissitesekSzama++ );     
@@ -106,7 +124,7 @@ public final class EmployeeWebController {
      * @return viszaadja a redirectelt employees.html" tartalmat a beilleszett valtozo adatokkal<br>
      */
     @PostMapping("/web/employees")
-    public String addtListEmployees( EmployeeDto employeeDto ){
+    public String addToListEmployees( EmployeeDto employeeDto ){
     
         this.allEmployees.add( employeeDto ) ;
         
@@ -116,22 +134,36 @@ public final class EmployeeWebController {
         // bele is tehetnenk - valahogy - de nem ez a suoksos eljaras, hanem ez:
         // Megkerjuk a bongeszot, hogy a bongeszo, egy GET keressel un.: redirect -eljen... 
         // ...vagyis magatol hivja meg az elozo, fenti "getListEmployees(...)" metodust, hogy az, 
-        return "redirect:/employees";
+        return "redirect:/web/employees";
     }    
-        
+
     /**
      * Ez itt "KAKUKKTOJAS" -- mivel ez is egy XHTML- viszatero, de nem az Employee-hez tartozik!<br>
      * De itt a helye, mert az API-khoz tarotozo HELP-tablazatot ad vissza<br>
      * Az "./api/anzekcloud" URL-re erkezo keresre sima tajekozatato HTML-t<br>
-     * @param model a rendereleshez szukseges model<br>
+     * @param id a torlendo munkavallalo ID -je<br>
      * @return viszaadja az anzekcloud.html-t<br>
      */
-    @GetMapping("/api/anzekcloud/sysinfo")    
-    public String getAnzekSingularityCloud(  Map<String, Object> model ){
+    @GetMapping("/web/employees/deleteEmployees/{id}")    
+    public String delFromListEmployees( @PathVariable long id ){
         
-        model.put( "ServerTime", LocalDateTime.now() );
-        model.put( "SystemSize", System.getProperties().size() );
-        return "anzekcloud.xhtml";
-    }
+        // for( int i = 0; i < this.allEmployees.size(); i++ ){
+        //
+        //     if ( this.allEmployees.get(i).getId().equals( id ) ){
+        //
+        //         this.allEmployees.remove(i);
+        //         break;
+        //     }
+        // }
+        // vagy ugyan az (a fenti for() ciklusos megholdas Lambda valtozata :
+        this.allEmployees.removeIf( e -> e.getId() == id );
         
+        // FONTOS!
+        // minden metodus getmapping annotacioja, 
+        // itt pl a "@GetMapping("/web/employees/deleteEmployees/{id}")"
+        // ATALLITJA az ALAPERTELMEZETT "@RequestMapping("...barmi...")" beallitast
+        // igy a visszatero adat "nem jo helyen akarja megjelenni a HTML-t!
+        // Vagyis itt a redirect utan meg kell adni ujra a helyet a visszatero adatokat view -olo HTML-nek!
+        return "redirect:/web/employees";
+    }        
 }
