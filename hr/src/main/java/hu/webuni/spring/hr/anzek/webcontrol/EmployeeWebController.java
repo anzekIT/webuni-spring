@@ -7,6 +7,7 @@
 package hu.webuni.spring.hr.anzek.webcontrol;
 
 import hu.webuni.spring.hr.anzek.dto.EmployeeDto;
+import hu.webuni.spring.hr.anzek.model.Employee;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +114,7 @@ public final class EmployeeWebController {
         model.put( "newEmployee", new EmployeeDto() );  
         
         // ez konkretabban a : return "employeemodify.html";
-        return "employees";
+        return "/employees.html";
     }
 
     /**
@@ -128,13 +129,16 @@ public final class EmployeeWebController {
     
         this.allEmployees.add( employeeDto ) ;
         
-        // Fontos: ha csak return "employees.html" el terunk vissza az alabbi hibara futunk:
+        // Fontos: 
+        // Mi is a "redirect"
+        // ha csak return "employees.html" el terunk vissza az alabbi hibara futunk:
         // "Neither BindingResult nor plain target object for bean name 'newEmployee' available as request attribute"
         // a 'newEmployee' nincs benne ebben "addtListEmployees()" a request metodusban.
-        // bele is tehetnenk - valahogy - de nem ez a suoksos eljaras, hanem ez:
-        // Megkerjuk a bongeszot, hogy a bongeszo, egy GET keressel un.: redirect -eljen... 
-        // ...vagyis magatol hivja meg az elozo, fenti "getListEmployees(...)" metodust, hogy az, 
-        return "redirect:/web/employees";
+        // bele is tehetnenk - valahogy - de nem ez a szokasos eljaras, hanem ez:
+        // Megkerjuk a bongeszot, hogy maga a bongeszo, egy ujabb GET keressel kerdezze vissza, azaz un.: redirect -eljen... 
+        // ...vagyis magatol hivja meg az elozo, fenti "getListEmployees(...)" metodust, 
+        // hogy az, mar a modositott adatokkkal terjen vissza 
+        return "redirect:/employees.html";
     }    
 
     /**
@@ -164,6 +168,41 @@ public final class EmployeeWebController {
         // ATALLITJA az ALAPERTELMEZETT "@RequestMapping("...barmi...")" beallitast
         // igy a visszatero adat "nem jo helyen akarja megjelenni a HTML-t!
         // Vagyis itt a redirect utan meg kell adni ujra a helyet a visszatero adatokat view -olo HTML-nek!
-        return "redirect:/web/employees";
-    }        
+        return "redirect:/employees.html";
+    }    
+
+    /**
+     * GETPOST -EDIT metodusok<br>
+     * Egyik nincs a masik nelkul<br>
+     * Az "employess.html" -ben egy URL-re linkelve (most eppen a Munkavallalo nevere linkelve)<br>
+     * "atdob" az editalo HTML -re!<br>
+     * Vagyis az "editEmployee.HTML" -re<br>
+     * DE !!<br>
+     * Ez onmagaban igy semmit sem fogy csinalni, mert az "ediEmployee.html" -nek meg szuksege van egy POST metodusra!<br>
+     * Megpedig az "/web/updateEployees" path-ra... Az lesz vegul maga a modositas eredmenye<br>
+     * @param model a Model, amibe varja a kivalasztott eredeti Munkvalallo adatait<br>
+     * @param id a kivalasztott Munkavalloloi objektumpeldany azonositoja automatikusan jon be)<br>
+     * @return elobb bevitelre meghivja a "editEmployee.html", majd a masik metodus a redirecttel az ujratoltott "employee.html" -t<br>
+     */
+    @GetMapping("/web/employees/{id}")    
+    public String editEmployees(  Map<String, Object> model, @PathVariable long id ){
+        
+        model.put( "employee", this.allEmployees.stream().filter(e -> e.getId() == id ).findFirst().get() );
+        
+        return "/editEmployee.html";
+    }    
+    @PostMapping("/web/employees/updateEmployee")    
+    public String updateEmployees( Employee employee ){
+        
+        for( int i = 0; i < this.allEmployees.size(); i++ ){
+        
+            if ( this.allEmployees.get(i).getId().equals( employee.getId() ) ){
+                
+                this.allEmployees.set( i , (EmployeeDto) employee );
+                break;
+            }
+        }
+        return "redirect:/employees.html";
+    } 
 }
+

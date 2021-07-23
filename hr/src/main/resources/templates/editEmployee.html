@@ -24,8 +24,10 @@
         <!--        
             az "./updateEmployee" url-re mutat egy  POST metodusssal....
             es a Model-ben pedig egy "employee" objektumot var!
+            Az alabbi  megoldast igy summazhatuk:
+            Folposztoljuk itt a tozsben, a <form> parameterekkel az "employee" osztaly egy peldanyat:
         -->
-        <form th:action="@{/web/updateEmployee}" method="post" th:object="${newEmployee}">
+        <form th:action="@{/web/employees/updateEmployee}" method="post" th:object="${newEmployee}">
             <!--            
                 ez itt egy rafineria
                 azert van, hogy ne fogadjon el masik "ID"-t, hiszen az egy azonosito, 
@@ -34,16 +36,17 @@
                 Kell ide ez a hidden input is!
                 Megpedig azert, hogy (bar valtoztatni nem lehet) de kitoltott legyen a visszatero Model-be az ID is!
             -->
-            Id: <span th:text="*{id}"> </span><br>
+            
+            Id: <span th:text="*{id}"> </span><br>            
             <input th:field="*{id}" type="hidden" />
             <!--            
                 innen mar normal adatbevitel
             -->
-            Neve__________________: <input th:field="*{workerName}" type="text"/><br>
-            Munkakore_____________: <input th:field="*{jobPosition}" type="text"/><br>
-            Fix havi jovedelme____: <input th:field="*{monthlySalary}" type="number"/><br>
-            Munkaviszony kezdete__: <input th:field="*{startOfEmployment}" type="datetime-local"/><br>
-            <input type="submit" value="ADATMENTÉS"/><br>
+            Neve__________________: <input th:field="*{workerName}" /><br>
+            Munkakore_____________: <input th:field="*{jobPosition}" /><br>
+            Fix havi jovedelme____: <input th:field="*{monthlySalary}" /><br>
+            Munkaviszony kezdete__: <input th:field="*{startOfEmployment}" /><br>
+            <input type="submit" value="ADATMENT"/><br>
         </form>            
     </body>
 </html>

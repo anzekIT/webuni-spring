@@ -79,13 +79,18 @@
                         
                         <td th:text="${employee.id}">id</td>
 
-                        <!--    aModositas:
+                        <!--    Ez itt a Modositas (linkje lesz):
                                 az "/web/employees/..." szolgaltatasi vegpontra 
                                 varjuk a modositando "id" -t !
                                 Es, hogy hogy mi "legyen" majd az "id" az a futasidoben valik el...
                                 .. ezert a ( id = ${employee.id} ) -formaban kell megadnunk!
+                                ----
+                                az alabbi Link hivatkozik pl egy ilyenre (ha  mondjuk a 2.es id-vel rendelkezore mutatunk:
+                                "localhost:8080/web/employees/2"
+                                ... ekkor meg kell hivnunk az "editEmployee.HTML"-t az "Id=2" -vel !
+                                Ezt egy "@GetMapping" es GET metodus, parameterben a "Model" -el oldja meg
                         -->
-                        <td><a th:href="@{/web/employees/{id}( id = ${employee.id} )}" th:text="${employee.workerName}">Name</a></td> 
+                        <td><a th:href="@{/web/employees/updateEmployees/{id}( id = ${employee.id} )}" th:text="${employee.workerName}">Name</a></td> 
 
                         <td th:text="${employee.jobPosition}">JobPosition</td>
                         <td th:text="${employee.monthlySalary}">monthlySalary</td> 
@@ -124,7 +129,7 @@
                                 - "name" - egy azonosito
                                 - "value" - caption
                         -->
-                        <input type="submit" name="ROGZIT" value="Add" />
+                        <input type="submit" name="add" value="ROGZIT" />
                     </form>
                 </tbody>
             </table>
