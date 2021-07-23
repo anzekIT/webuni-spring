@@ -33,8 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @author User
  */
 @RestController
-@RequestMapping("/api/employees")
-public class EmployeeRestFulController {
+@RequestMapping("/api")
+public class EmployeeRestFulApiController {
 
     /**
      * lesz olyan funkcio, hogy adott ID-ju tetelt adjunk vissza, hogy modositsuk, hogy toroljuk, stb.   
@@ -71,6 +71,7 @@ public class EmployeeRestFulController {
         // minden objektum value() erteke egy kollekcio-lista:
         // igy pedig lenyegeben egy tomblista lesz belole:
         // Alapvetoen egy JSON objectum jon letre:
+        System.out.println("Ez fut -> EmployeeRestFulController.getAll()");
         return new ArrayList<>( this.employees.values() );
     }
     
@@ -85,7 +86,7 @@ public class EmployeeRestFulController {
      * @param id @PathVariable annotacioval kell beolvasni, majd a parameterben "beadni" a GET keresben atadott erteket:<br>
      * @return visszaad egy body - entitast<br>
      */
-    @GetMapping("/{id}")
+    @GetMapping("/employee/{id}")
     public ResponseEntity<EmployeeDto> getById( @PathVariable long id ){
         
         // a MAP kollekciobol kiolvassa az "id" -ben levő kulcserteknek megfelelo entitast
@@ -115,7 +116,7 @@ public class EmployeeRestFulController {
      * @param limit @PathVariable annotacioval kell beolvasni, majd a parameterben "beadni" a GET keresben atadott erteket:<br>
      * @return visszaad egy body - List-entitas kollekciot<br>
      */
-    @GetMapping("salarylimit/{limit}")
+    @GetMapping("/employee/salarylimit/{limit}")
     public ResponseEntity< List<EmployeeDto> > getBySalaryLimit( @PathVariable Integer limit ){
         
         // a MAP kollekciobol kiolvassa az "id" -ben levő kulcserteknek megfelelo entitast
@@ -172,7 +173,7 @@ public class EmployeeRestFulController {
      * @param employeeDto a modositando entitas<br>
      * @return visszaadja: sikeres volt -e a modositas: letezett-e egyaltalan ezt megelozoen, vagy sem<br> 
      */
-    @PutMapping("/{id}")
+    @PutMapping("/employee/{id}")
     public ResponseEntity<EmployeeDto> modifyEmployeeDto( @PathVariable long id, @RequestBody EmployeeDto employeeDto ){
     
         ResponseEntity entity;
@@ -195,7 +196,7 @@ public class EmployeeRestFulController {
      * @param id a torlesre jelolt tetel ID azonositoja<br>
      * @return visszaadja: sikeres volt -e a modositas: letezett-e egyaltalan ezt megelozoen, vagy sem<br> 
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/employee/{id}")
     public ResponseEntity<String> deleteEmployeeDto( @PathVariable long id ){
     
         ResponseEntity entity;

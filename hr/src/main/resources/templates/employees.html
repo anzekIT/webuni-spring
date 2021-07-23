@@ -66,10 +66,12 @@
                 <tbody>
 
                     <tr>
-                        <th>NAME</th>
+                        <th>IdOfEmployee</th>    
+                        <th>ModifyEmployee</th>
                         <th>JobPosition</th>
                         <th>monthlySalary</th>
                         <th>StartOfEmployment</th>
+                        <th>DeleteOfEmploye</th>
                     </tr>
                     
                     <!--for-each-ciklus-->
@@ -80,8 +82,10 @@
                         <!--    aModositas:
                                 az "./employees/..." szolgaltatasi vegpontra 
                                 varjuk a modositando "id" -t !
+                                Es, hogy hogy mi "legyen" majd az "id" az a futasidoben valik el...
+                                .. ezert a ( id = ${employee.id} ) -formaban kell megadnunk!
                         -->
-                        <td><a th:href="@{/employees/{id}(id=${employee.id})}" th:text="${employee.workerName}">Name</td> 
+                        <td><a th:href="@{/employees/{id}( id = ${employee.id} )}" th:text="${employee.workerName}">Name</a></td> 
 
                         <td th:text="${employee.jobPosition}">JobPosition</td>
                         <td th:text="${employee.monthlySalary}">monthlySalary</td> 
@@ -91,7 +95,7 @@
                                 az "./deleteEmployees/..." szolgaltatsi vegpontra 
                                 varjuk a torlendo "id" -t !
                         -->
-                        <td><a th:href="@{/deleteEmployees/{id}(id=${employee.id})}">DeleteEmployee</a></td>  
+                        <td><a th:href="@{/deleteEmployees/{id}( id = ${employee.id} )}">DeleteEmployee</a></td>  
                     </tr>        
                 </tbody>
             </table>

@@ -2,44 +2,259 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://wwww.thymeleaf.org">
     <head>
-        <title>ASPC (ANZEK IT L.T.D SINGULARITY PRIVATE CLOUD)</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>ASPC INFO-TABLE (ANZEK IT L.T.D SINGULARITY PRIVATE CLOUD)</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+              crossorigin="anonymus">
     </head>
     <body>
 
-        <h1>ASPC - Anzek Informatika Kft Singularity Private Cloud</h1></br>
+        <div class="container my-2" align="center">
+            
+        <h1>ASPC INFO-TABLE<br>Anzek Informatika Kft<br>Singularity Private Cloud<br>System Informations</h1></br>
         <!--<img src="../static/samplecloud.jpg"/></br>-->
         
         <h2>Szolgatatoi adatok</h2>
-        <ul>
-            <li>SzerverIdo =  
-            <a th:text="${ServerTime}">ServerTime</a></li>
-            <li>RendszerTerulet = 
-            <a th:text="${SystemSize}">SystemSize</a></li>
-            <li>Szolgaltato : Anzek Informatika Kft</li>
-            <li>Savszelesseg : 1GB / sec</li>
-            <li>Location : 162.158.111.157/Magyar Telekom plc./Hungary/Budapest</li>
-            <li>A szolgaltatas hozzaferese : kizarolag az "LSZMG ERP" rendszer elofizetoi szamara!</li>
-            <li>Technikai fuggosege : az "LSZMG ERP" rendszer es egyes kliensei automatikus eleressel</li>
-            <li>Bongeszobol inditott manualis lekresek inditasa = nem lehetseges, nem megoldhato!</li>
-        </ul>
+        <table border="1" class="table table-striped table-responsive-md">
+            <thead>
+                <tr>
+                    <th>
+                        SzerverIdo
+                    </th>
+                    <th>
+                        RendszerTerulet
+                    </th>       
+                    <th>
+                        Szolgaltato
+                    </th> 
+                </tr>
+            </thead> 
+            <tbody>
+                <tr>
+                    <td><a th:text="${ServerTime}">ServerTime</a></td>
+                    <td><a th:text="${SystemSize}">SystemSize</a></td>
+                    <td>Anzek Informatika Kft</td>
+                </tr>
+            </tbody>    
+            <thead>             
+                <tr>
+                    <th>
+                        Savszelesseg
+                    </th> 
+                    <th>
+                        Location
+                    </th> 
+                    <th>
+                        Uzleti logiaki szolgaltatasok hozzaferese
+                    </th> 
+                </tr>
+            </thead>     
+            <tbody>
+                <tr>
+                    <td>1GBit / sec</td>
+                    <td>162.158.111.157<br>/Magyar Telekom plc.<br>/Hungary/Budapest</td>
+                    <td>Csakis ehhez valo kulonleges jogosultsaggal<br>es kizarolag az "LSZMG ERP" rendszer<br>elofizetok szamara!</td>                
+                </tr>
+            </tbody>
+            <thead> 
+                <tr>
+                    <th>
+                        Technikai fuggosege
+                    </th> 
+                    <th>
+                        Bongeszobol inditott keres
+                    </th>                     
+                </tr>
+            </thead>     
+            <tbody>
+                <tr>
+                    <td>"LSZMG ERP" rendszer es egyes kliensei automatikus eleressel</td>
+                    <td>korlatozott lekeresek eseteben lehetseges!<br>Mas, adatbevitel es feldolgozas indiatsa nem megoldhato!</td>
+                </tr>
+             </tbody>         
+        </table>
         
         <h2>LSZMG CLOUD API EndPoints (az LSZMG ERP szolgaltatasok VegPontjai)</h2>
         <a>(Figyelem! Az alabbi vegpontokra (szovegesen titkositott tartalommal), szoftveres kereseket var a kiszolgalo!)</a></br>
-        <ul>
-            <li>.../api/anzekcloud/login = bejelentkezes bongeszobol (5 perces token keres/kuldes -> e-mail/sms) </li>
-            <li>.../api/anzekcloud/autologin = bejelentkezes az ERP-bol (5 perces token keres/kuldes -> erp-be)</li>
-            <li>.../api/anzekcloud/logout = kijelentkezes (a token torlese)</li>
-            <li>.../api/anzekcloud/techinfo = a felho tarhely (a backend kiszolgalo es az adatbazis) adatai</li>
-            <li>.../api/anzekcloud/userinfo = a felhasznalo nyilvatartott adatai</li>
-            <li>.../api/anzekcloud/softwareinfo = a backend kiszolgalo- es az adatbazisverziok adatai</li>
-            <li>.../api/anzekcloud/consumer/product = termelesi adatok</li>
-            <li>.../api/anzekcloud/consumer/resorces = gyartasi- es egyeb eroforras adatok</li>
-            <li>.../api/anzekcloud/consumer/warehouse = raktari adatok</li>
-            <li>.../api/anzekcloud/consumer/stocks = keszletezesi adatok</li>
-            <li>.../api/anzekcloud/consumer/sales = ertekesitesi adatok</li>
-            <li>.../api/anzekcloud/consumer/invoices = kimeno-szamlak adatai</li>
-            <li>.../api/anzekcloud/consumer/incoming = beerkezo keszletek adatai</li>
-        </ul>
+        <table border="1" class="table table-striped table-responsive-md">
+            <thead>
+                <tr>
+                    <th>
+                        SZOLGALTATOI VEGPONTOK
+                    </th>                  
+                </tr>
+            </thead> 
+            <thead> 
+                <tr>
+                    <th>
+                        .../api/anzekcloud/sysinfo 
+                    </th>                  
+                </tr>
+            </thead>  
+            <tbody>
+                <tr>
+                    <td>ennek a rendszerinformacios tablazatnak a megjelenitese</td>            
+                </tr>
+            </tbody>
+            <thead> 
+                <tr>
+                    <th>
+                        .../api/anzekcloud/login 
+                    </th>                  
+                </tr>
+            </thead>  
+            <tbody>
+                <tr>
+                    <td>bejelentkezes bongeszobol (5 perces token keres/kuldes -> e-mail/sms)</td>            
+                </tr>
+            </tbody>  
+            <thead> 
+                <tr>
+                    <th>
+                        .../api/anzekcloud/autologin 
+                    </th>                  
+                </tr>
+            </thead>  
+            <tbody>
+                <tr>
+                    <td>bejelentkezes az ERP-bol (5 perces token keres/kuldes -> erp-be)</td>            
+                </tr>
+            </tbody>    
+            <thead> 
+                <tr>
+                    <th>
+                        .../api/anzekcloud/logout 
+                    </th>                  
+                </tr>
+            </thead>  
+            <tbody>
+                <tr>
+                    <td>kijelentkezes (a token torlese)</td>            
+                </tr>
+            </tbody>        
+            <thead> 
+                <tr>
+                    <th>
+                        .../api/anzekcloud/techinfo 
+                    </th>                  
+                </tr>
+            </thead>  
+            <tbody>
+                <tr>
+                    <td>a felho tarhely (a backend kiszolgalo es az adatbazis) adatai</td>            
+                </tr>
+            </tbody>    
+            <thead> 
+                <tr>
+                    <th>
+                        .../api/anzekcloud/userinfo 
+                    </th>                  
+                </tr>
+            </thead>  
+            <tbody>
+                <tr>
+                    <td>a felhasznalo nyilvatartott adatai</td>            
+                </tr>
+            </tbody>  
+            <thead> 
+                <tr>
+                    <th>
+                        .../api/anzekcloud/softwareinfo 
+                    </th>                  
+                </tr>
+            </thead>  
+            <tbody>
+                <tr>
+                    <td>a backend kiszolgalo- es az adatbazisverziok adatai</td>            
+                </tr>
+            </tbody> 
+            <thead> 
+                <tr>
+                    <th>
+                        .../api/anzekcloud/consumer/product 
+                    </th>                  
+                </tr>
+            </thead>  
+            <tbody>
+                <tr>
+                    <td>termelesi adatok</td>            
+                </tr>
+            </tbody>  
+            <thead> 
+                <tr>
+                    <th>
+                        .../api/anzekcloud/consumer/resorces 
+                    </th>                  
+                </tr>
+            </thead>  
+            <tbody>
+                <tr>
+                    <td>gyartasi- es egyeb eroforras adatok</td>            
+                </tr>
+            </tbody> 
+            <thead> 
+                <tr>
+                    <th>
+                        .../api/anzekcloud/consumer/warehouse 
+                    </th>                  
+                </tr>
+            </thead>  
+            <tbody>
+                <tr>
+                    <td>raktari adatok</td>            
+                </tr>
+            </tbody>            
+            <thead> 
+                <tr>
+                    <th>
+                        .../api/anzekcloud/consumer/stocks 
+                    </th>                  
+                </tr>
+            </thead>  
+            <tbody>
+                <tr>
+                    <td>keszletezesi adatok</td>            
+                </tr>
+            </tbody>   
+            <thead> 
+                <tr>
+                    <th>
+                        .../api/anzekcloud/consumer/sales 
+                    </th>                  
+                </tr>
+            </thead>  
+            <tbody>
+                <tr>
+                    <td>ertekesitesi adatok</td>            
+                </tr>
+            </tbody>    
+            <thead> 
+                <tr>
+                    <th>
+                        .../api/anzekcloud/consumer/invoices 
+                    </th>                  
+                </tr>
+            </thead>  
+            <tbody>
+                <tr>
+                    <td>kimeno-szamlak adatai</td>            
+                </tr>
+            </tbody>  
+            <thead> 
+                <tr>
+                    <th>
+                        .../api/anzekcloud/consumer/incoming 
+                    </th>                  
+                </tr>
+            </thead>  
+            <tbody>
+                <tr>
+                    <td>beerkezo keszletek adatai</td>            
+                </tr>
+            </tbody>                     
+        </table>
     </body>
 </html>

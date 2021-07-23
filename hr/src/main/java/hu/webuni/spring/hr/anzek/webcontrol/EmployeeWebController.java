@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Szerveroldali rendereles Thymealeaf -el<br>
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.PostMapping;
  * @author User
  */
 @Controller
+@RequestMapping("/")
 public final class EmployeeWebController {
 
     int weboldalFrissitesekSzama = 0;
@@ -58,10 +60,10 @@ public final class EmployeeWebController {
      * HOME-GET<br>
      * @param model a GET metodus altal kiolvasott adatok tarolasara es megjelenjresere valo injektalt parameter<br>
      * @return 
-     * ez azt jelenti, hogy a gyokerre erkezo kereseket <br>
+     * ez azt jelenti, hogy a gyokeren belul a "./web"-re erkezo kereseket dolgozza fel <br>
      * az index.html" -valaszra kenyszeriti (iranyitja at):<br>
      */
-    @GetMapping("/")
+    @GetMapping("/web")
     public String home( Model model ){
      
         System.out.println( "weboldal Frissitesek Szama = " + this.weboldalFrissitesekSzama++ );     
@@ -78,10 +80,13 @@ public final class EmployeeWebController {
      * @param model a GET metodus altal kiolvasott adatok tarolasara es megjelenjresere valo injektalt parameterr<br>
      * @return viszaadja az "employees.html" tartalmat a beilleszett valtozo adatokkal<br>
      */
-    @GetMapping("/employees")
+    @GetMapping("/web/employees")
     public String getListEmployees( Map<String, Object> model ){
-          
-        // feltolti a listat
+    // leetne meg ezek valamelyike is (de ezek "regi" verziok:    
+    // public String getListEmployees( ModelMap model ) {
+    // public String getListEmployees( Model model ) {
+       
+        // elobb feltolti a listat "outemployees" Kulccsal - ezt olvassa majd mindegyik xxx.html
         model.put( "outemployees", this.allEmployees );
 
         // Ez itt csak azert kell (amugy ha csak kilistaznank nem kellene), 
@@ -100,12 +105,9 @@ public final class EmployeeWebController {
      * @param employeeDto injektalt osztaly, amely az Employees kollekcio eleme lesz<br>
      * @return viszaadja a redirectelt employees.html" tartalmat a beilleszett valtozo adatokkal<br>
      */
-    @PostMapping("/employees")
+    @PostMapping("/web/employees")
     public String addtListEmployees( EmployeeDto employeeDto ){
     
-        // egyelore kiegeszitjuk...
-        employeeDto.setStartOfEmployment( LocalDateTime.now() );
-        
         this.allEmployees.add( employeeDto ) ;
         
         // Fontos: ha csak return "employees.html" el terunk vissza az alabbi hibara futunk:
@@ -118,18 +120,18 @@ public final class EmployeeWebController {
     }    
         
     /**
-     * Az "./api/anzekcloud" URL-re erkezo keres<br>
-     * csak egy demot ad vissza<br>
+     * Ez itt "KAKUKKTOJAS" -- mivel ez is egy XHTML- viszatero, de nem az Employee-hez tartozik!<br>
+     * De itt a helye, mert az API-khoz tarotozo HELP-tablazatot ad vissza<br>
+     * Az "./api/anzekcloud" URL-re erkezo keresre sima tajekozatato HTML-t<br>
      * @param model a rendereleshez szukseges model<br>
      * @return viszaadja az anzekcloud.html-t<br>
      */
-    @GetMapping("/api/anzekcloud")    
-    // @GetMapping("/api/asc")
+    @GetMapping("/api/anzekcloud/sysinfo")    
     public String getAnzekSingularityCloud(  Map<String, Object> model ){
         
         model.put( "ServerTime", LocalDateTime.now() );
         model.put( "SystemSize", System.getProperties().size() );
         return "anzekcloud.xhtml";
     }
-    
+        
 }

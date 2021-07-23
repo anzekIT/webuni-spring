@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--
+    WEBCONTROLLER iranyitotta Web-bongeszo tranzakcio
+    UPDATE
+-->
+
+<html xmlns:th="http://wwww.thymeleaf.org">
+    <head>
+        <title>Anzek-Hr Application</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <head>
+        <title>Anzek-Hr Application</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+              crossorigin="anonymus">
+    </head>
+    <body>
+        <h1>Munkavállaló szerkesztése</h1>
+        
+        <!--        
+            az "./updateEmployee" url-re mutat egy  POST metodusssal....
+            es a Model-ben pedig egy "employee" objektumot var!
+        -->
+        <form th:action="@{/web/updateEmployee}" method="post" th:object="${newEmployee}">
+            <!--            
+                ez itt egy rafineria
+                azert van, hogy ne fogadjon el masik "ID"-t, hiszen az egy azonosito, 
+                viszont legyen lathato, hogy mivel dolgozunk,tehat csak a spam- tag-ben kiirjuk!
+                De!
+                Kell ide ez a hidden input is!
+                Megpedig azert, hogy (bar valtoztatni nem lehet) de kitoltott legyen a visszatero Model-be az ID is!
+            -->
+            Id: <span th:text="*{id}"> </span><br>
+            <input th:field="*{id}" type="hidden" />
+            <!--            
+                innen mar normal adatbevitel
+            -->
+            Neve__________________: <input th:field="*{workerName}" type="text"/><br>
+            Munkakore_____________: <input th:field="*{jobPosition}" type="text"/><br>
+            Fix havi jovedelme____: <input th:field="*{monthlySalary}" type="number"/><br>
+            Munkaviszony kezdete__: <input th:field="*{startOfEmployment}" type="datetime-local"/><br>
+            <input type="submit" value="ADATMENTÉS"/><br>
+        </form>            
+    </body>
+</html>
