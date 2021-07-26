@@ -74,13 +74,16 @@
                         <th>DeleteOfEmploye</th>
                     </tr>
                     
-                    <!--for-each-ciklus-->
+                    <!--
+                        Ez egy for-each-ciklus, amely a "EmployeeWebController.getListEmployees()" -ben deklaralt
+                        "outemployees" peldany mezoit olvassa:
+                    -->
                     <tr border="1" align="right" th:each="employee : ${outemployees}">
                         
                         <td th:text="${employee.id}">id</td>
 
                         <!--    Ez itt a Modositas (linkje lesz):
-                                az "/employees/..." szolgaltatasi vegpontra 
+                                az "/employees/updateEployee/{id}..." szolgaltatasi vegpontra 
                                 varjuk a modositando "id" -t !
                                 Es, hogy hogy mi "legyen" majd az "id" az a futasidoben valik el...
                                 .. ezert a ( id = ${employee.id} ) -formaban kell megadnunk!
@@ -90,7 +93,7 @@
                                 ... ekkor meg kell hivnunk az "editEmployee.HTML"-t az "Id=2" -vel !
                                 Ezt egy "@GetMapping" es GET metodus, parameterben a "Model" -el oldja meg
                         -->
-                        <td><a th:href="@{/employees/{id}( id = ${employee.id} )}" th:text="${employee.workerName}">Name</a></td> 
+                        <td><a th:href="@{/employees/updateEployee/{id}( id = ${employee.id} )}" th:text="${employee.workerName}">Name</a></td> 
 
                         <td th:text="${employee.jobPosition}">JobPosition</td>
                         <td th:text="${employee.monthlySalary}">monthlySalary</td> 
@@ -123,7 +126,7 @@
                         A munkvallalo meve______:    <input th:field="*{workerName}"> <br>
                         Munkakore _____________:    <input th:field="*{jobPosition}"> <br>
                         Havi fix-juttatasa_________:    <input th:field="*{monthlySalary}"> <br>
-                        Munkaba allasa_________:    <input th:field="*{startOfEmployment}"> <br>
+                        Munkaba allasa_________:    <input th:field="*{startOfEmployment}" th:type="date-time"> <br>
 
                         <!--    - "type" - submit (bekulde)
                                 - "name" - egy azonosito

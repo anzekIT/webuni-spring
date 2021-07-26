@@ -92,19 +92,21 @@ public final class EmployeeWebController {
 //        return "index.html";
 //    }
 
+    ////////////////////////////////// ---- EZEK AZ ALAP HTML-BONGESZOS ADATKEZELESEK ---- //////////////////////////
     /**
      * GET METHOD<br>
      * Siman kiolvassa az adatokat<br>
-     * Az "./employees" URL-re erkezo keres<br>
+     * Az "./employees" URL-re erkezo keres eseten<br>
+     * Az "employees.html" -ben, a listat "futtatja"<br>
      * a "model"- adattartalomba behelyez egy "AllEmployees" adatot (egyelore csak memoriabol)<br>
      * @param model a GET metodus altal kiolvasott adatok tarolasara es megjelenjresere valo injektalt parameterr<br>
      * @return viszaadja az "employees.html" tartalmat a beilleszett valtozo adatokkal<br>
      */
     @GetMapping
     public String getListEmployees( Map<String, Object> model ){
-    // leetne meg ezek valamelyike is (de ezek "regi" verziok:    
-    // public String getListEmployees( ModelMap model ) {
-    // public String getListEmployees( Model model ) {
+        // leetne meg ezek valamelyike is (de ezek "regi" verziok:    
+        // public String getListEmployees( ModelMap model ) {
+        // public String getListEmployees( Model model ) {
        
         // elobb feltolti a listat "outemployees" Kulccsal - ezt olvassa majd mindegyik xxx.html
         model.put( "outemployees", this.allEmployees );
@@ -115,11 +117,15 @@ public final class EmployeeWebController {
         model.put( "newEmployee", new Employee() );  
         
         // ez konkretabban a : return "employeemodify.html";
-        return "/employees.html";
+        return "employees";
     }
 
     /**
      * POST - METHOD<br>
+     * Az "./employees" URL-re erkezo keres eseten<br>
+     * Az "employees.html" -ben, a listat "futtatja"..<br> 
+     * DE, mert egy Form-ot is tartalmaz, ha a formot kitoltjuk:<br>
+     * Azaz a "newEmployee" objektum erteket kap, akkor azt visszaposztolja a listabe es frissul a lista<br>
      * MODOSITAS (ha letezo kodot adott meg) / UJBEVITEL ha nem letezo kodot adott meg<br>
      * Az "./employees" URL-re kuldendo "POST keres" kontrollere<br>
      * @param employee injektalt osztaly, amely az Employees kollekcio eleme lesz<br>
@@ -139,9 +145,10 @@ public final class EmployeeWebController {
         // Megkerjuk a bongeszot, hogy maga a bongeszo, egy ujabb GET keressel kerdezze vissza, azaz un.: redirect -eljen... 
         // ...vagyis magatol hivja meg az elozo, fenti "getListEmployees(...)" metodust, 
         // hogy az, mar a modositott adatokkkal terjen vissza 
-        return "redirect:/employees.html";
+        return "redirect:/employees";
     }    
 
+    /////////////////////////// --- INNEN MAR KICSIT OSSZETETTEB, TORLES, MODOSITAS --- //////////////////
     /**
      * Ez itt "KAKUKKTOJAS" -- mivel ez is egy XHTML- viszatero, de nem az Employee-hez tartozik!<br>
      * De itt a helye, mert az API-khoz tarotozo HELP-tablazatot ad vissza<br>
@@ -169,7 +176,7 @@ public final class EmployeeWebController {
         // ATALLITJA az ALAPERTELMEZETT "@RequestMapping("...barmi...")" beallitast
         // igy a visszatero adat "nem jo helyen akarja megjelenni a HTML-t!
         // Vagyis itt a redirect utan meg kell adni ujra a helyet a visszatero adatokat view -olo HTML-nek!
-        return "redirect:/employees.html";
+        return "redirect:/employees";
     }    
 
     /**
@@ -180,12 +187,12 @@ public final class EmployeeWebController {
      * Vagyis az "editEmployee.HTML" -re<br>
      * DE !!<br>
      * Ez onmagaban igy semmit sem fogy csinalni, mert az "ediEmployee.html" -nek meg szuksege van egy POST metodusra!<br>
-     * Megpedig az "/updateEployees" path-ra... Az lesz vegul maga a modositas eredmenye<br>
+     * Megpedig az "/updateEployee" path-ra... Az lesz vegul maga a modositas eredmenye<br>
      * @param model a Model, amibe varja a kivalasztott eredeti Munkvalallo adatait<br>
      * @param id a kivalasztott Munkavalloloi objektumpeldany azonositoja automatikusan jon be)<br>
      * @return elobb bevitelre meghivja a "editEmployee.html", majd a masik metodus a redirecttel az ujratoltott "employee.html" -t<br>
      */
-    @GetMapping("/{id}")    
+    @GetMapping("/updateEmployee/{id}")    
     public String editEmployees(  Map<String, Object> model, @PathVariable long id ){
         
 //        model.put( "employee", this.allEmployees.stream()
@@ -198,8 +205,7 @@ public final class EmployeeWebController {
                                                       .get() );
         return "editEmployee";
     }    
-    // @PostMapping("/updateEmployee")    
-    @PostMapping("/") 
+    @PostMapping("/updateEmployee")    
     public String updateEmployees( Employee employee ){
         
         for( int i = 0; i < this.allEmployees.size(); i++ ){

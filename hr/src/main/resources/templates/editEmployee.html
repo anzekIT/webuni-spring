@@ -22,14 +22,29 @@
         <h1>Munkavállaló szerkesztése</h1>
         
         <!--        
-            az "./updateEmployee" url-re mutat egy  POST metodusssal....
-            es a Model-ben pedig egy "employee" objektumot var!
-            Az alabbi  megoldast igy summazhatuk:
-            Folposztoljuk itt a tozsben, a <form> parameterekkel az "employee" osztaly egy peldanyat:
+            Nem ezzel kezdodik...
+            A sima "employees.html" a gyoker szolgaltatasi URL-en megjeleno lista minden soraban tartalmaz egy linket.
+            Ez a link egy ID-t kuld az "./employees/updateEmployee" URL-re.
+            Ezt "eszleli" egy GET metodus, az "EmployeeWebController.editEmployees()" amely megkeresi ezt az ID-ju peldany
+            ...azt betolti egy "modifyEmployee" Kulccsala a MAP<K,V> .be... majd 
+            atdob erre a (editEmployee) html feldolgozora. 
+            Ez kiolvassa a "modifyEmployee" peldanyt...
+            ... es felposztolja azt!    
+            Ez a html ezutan az ADATMENT gomb lenyomasra ezt a "modifyEmployee" peldanyt visszaposztolja ugyan ide az URL-re...
+            ...es ezt eszleli a POST-, az "EmployeeWebController.updateEmployees()" metodus, 
+            amely a bemeno parametereben, egy Model-ben, egy "employee" objektumpeldanyt var!
+            Azt beemeli a ListaTombbe (kikeresi melyik adatiűot modositottuk es kicsereli) ...
+            ...es redirectel ujralistazza (frissiti) a bongeszoben a listat!
+            Ezt a fenti megoldast (itt, a HTML-ben) igy summazhatuk:
+            - Beallitjuk a szolgaltats UR-jet, a metodust, es az osztalypeldanyt
+            - Folposztoljuk itt a html-tozsben, a <form> parameterekkel az "employee" osztalypeldanyt
+            - meghivaskor kitolti a user,
+            - visszadjuk a kitoltott peldanyt a POST metodusnak, 
+            - amely majd kikeresi melyik adatiűot modositottuk es kicsereli
         -->
-        <form th:action="@{/employees/}" method="post" th:object="${modifyEmployee}">
+        <form th:action="@{/employees/updateEmployee}" method="post" th:object="${modifyEmployee}">
             <!--            
-                ez itt egy rafineria
+                ez itt egy kis rafineria
                 azert van, hogy ne fogadjon el masik "ID"-t, hiszen az egy azonosito, 
                 viszont legyen lathato, hogy mivel dolgozunk,tehat csak a spam- tag-ben kiirjuk!
                 De!
