@@ -33,14 +33,14 @@
             Ez a html ezutan az ADATMENT gomb lenyomasra ezt a "modifyEmployee" peldanyt visszaposztolja ugyan ide az URL-re...
             ...es ezt eszleli a POST-, az "EmployeeWebController.updateEmployees()" metodus, 
             amely a bemeno parametereben, egy Model-ben, egy "employee" objektumpeldanyt var!
-            Azt beemeli a ListaTombbe (kikeresi melyik adatiűot modositottuk es kicsereli) ...
+            Azt beemeli a ListaTombbe (kikeresi melyik adatait modositottuk es kicsereli) ...
             ...es redirectel ujralistazza (frissiti) a bongeszoben a listat!
             Ezt a fenti megoldast (itt, a HTML-ben) igy summazhatuk:
             - Beallitjuk a szolgaltats UR-jet, a metodust, es az osztalypeldanyt
             - Folposztoljuk itt a html-tozsben, a <form> parameterekkel az "employee" osztalypeldanyt
             - meghivaskor kitolti a user,
             - visszadjuk a kitoltott peldanyt a POST metodusnak, 
-            - amely majd kikeresi melyik adatiűot modositottuk es kicsereli
+            - amely majd kikeresi melyik adatait modositottuk es kicsereli
         -->
         <form th:action="@{/employees/updateEmployee}" method="post" th:object="${modifyEmployee}">
             <!--            

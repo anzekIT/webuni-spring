@@ -93,7 +93,7 @@
                                 ... ekkor meg kell hivnunk az "editEmployee.HTML"-t az "Id=2" -vel !
                                 Ezt egy "@GetMapping" es GET metodus, parameterben a "Model" -el oldja meg
                         -->
-                        <td><a th:href="@{/employees/updateEployee/{id}( id = ${employee.id} )}" th:text="${employee.workerName}">Name</a></td> 
+                        <td><a th:href="@{/employees/updateEmployee/{id}( id = ${employee.id} )}" th:text="${employee.workerName}">Name</a></td> 
 
                         <td th:text="${employee.jobPosition}">JobPosition</td>
                         <td th:text="${employee.monthlySalary}">monthlySalary</td> 
