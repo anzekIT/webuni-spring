@@ -27,7 +27,7 @@
             Az alabbi  megoldast igy summazhatuk:
             Folposztoljuk itt a tozsben, a <form> parameterekkel az "employee" osztaly egy peldanyat:
         -->
-        <form th:action="@{/web/employees/updateEmployee}" method="post" th:object="${newEmployee}">
+        <form th:action="@{/employees/}" method="post" th:object="${modifyEmployee}">
             <!--            
                 ez itt egy rafineria
                 azert van, hogy ne fogadjon el masik "ID"-t, hiszen az egy azonosito, 
@@ -39,7 +39,7 @@
             
             Id: <span th:text="*{id}"> </span><br>            
             <input th:field="*{id}" type="hidden" />
-            <!--            
+            <!--           
                 innen mar normal adatbevitel
             -->
             Neve__________________: <input th:field="*{workerName}" /><br>
