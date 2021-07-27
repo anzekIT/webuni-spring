@@ -272,6 +272,34 @@ public final class CompanyRestController1 {
         return entity;   
     }
      
+    /**
+     * /v1/ - 7 az osszes munkavallalo csereje egyszerre (egy Lista-O_tombbol)<br>
+     * @param companyId a ceg azonositoja<br>
+     * @param newEmployeesDto a dolgozo adatokat atrtalmazo Objektum-tomb<br>
+     * @return a JSON body-ban a ceg komplex adatait adja vissza<br>
+     */
+    @PutMapping("/v1/{companyId}/employees")
+    public ResponseEntity<CompanyDto>  replaceAllEmployee(  @PathVariable long companyId,                                         
+                                                            @RequestBody List<EmployeeDto> newEmployeesDto){    
+        
+        ResponseEntity entity;
+        CompanyDto companyDto = this.allCompanies.get(companyId);
+        
+        if( companyDto != null ){ 
+        
+            // kitoroljuk az osszeset
+            companyDto.getEmployees().clear();
+            
+            // most hozzaadjuk az ujakat:
+            companyDto.setEmployees(newEmployeesDto);
+            entity = ResponseEntity.ok( companyDto );
+        }else{
+        
+            entity = ResponseEntity.notFound().build();
+        }
+        return entity;
+    }
+    
     ////////////////////////  --- Innen egy masfajta megoldassal ugyan ezek, egymasik szolgaltatasi vegponton --- //////////////////
     
     //////////////////////// ---- (B) THRO -al vagy objektumpeldannyal --- ///////////////////////////
@@ -372,8 +400,8 @@ public final class CompanyRestController1 {
      */
     @PutMapping("/v2/{companyId}/employees/{employeeId}")
     public CompanyDto addNewV2Employee( @PathVariable long companyId, 
-                                                      @PathVariable long employeeId, 
-                                                      @RequestBody EmployeeDto employeeDto){
+                                        @PathVariable long employeeId, 
+                                        @RequestBody EmployeeDto employeeDto){
         
         CompanyDto companyDto = findByIdOrThrow(companyId);              
         EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> Objects.equals(e.getId(), employeeDto.getId()) ).findFirst().get();
@@ -418,6 +446,26 @@ public final class CompanyRestController1 {
         }
 
         return companyDto;   
-    }    
+    }   
+    
+    /**
+     * /v2/ - 7 az osszes munkavallalo csereje egyszerre (egy Lista-O_tombbol)<br>
+     * @param companyId a ceg azonositoja<br>
+     * @param newEmployeesDto a dolgozo adatokat atrtalmazo Objektum-tomb<br>
+     * @return a JSON body-ban a ceg komplex adatait adja vissza<br>
+     */
+    @PutMapping("/v2/{companyId}/employees")
+    public CompanyDto replaceAllV2Employee( @PathVariable long companyId,                                         
+                                            @RequestBody List<EmployeeDto> newEmployeesDto){    
+        
+        CompanyDto companyDto = findByIdOrThrow(companyId); 
+        
+        // Kitoroljuk az osszes dolgozot:
+        companyDto.getEmployees().clear();
+        
+        // hozzaadjuk az uj munkavallalokat:
+        companyDto.setEmployees(newEmployeesDto);
+        return companyDto;
+    }
 }
 
