@@ -37,7 +37,7 @@ public final class CompanyRestController1 {
      * @return a Lista, amit a modellbol kiemelunk<br>
      */
     @GetMapping
-    public List<CompanyDto> Companies( Map<String, Object> model ){
+    public List<CompanyDto> companies( Map<String, Object> model ){
         
         return new ArrayList<>( this.allCompanies.values() );
     }
@@ -79,18 +79,15 @@ public final class CompanyRestController1 {
     @PostMapping("/v1/createMultiple/")
     public List<CompanyDto> createV1Companies( @RequestBody List<CompanyDto> companyList ){
 
-        ResponseEntity entity;
-        
         for( CompanyDto iterator : companyList ){
             
             if( ! this.allCompanies.containsKey( iterator.getId() )){        
 
                 // Nincs ilyen rogzitjuk:
                 this.allCompanies.put( iterator.getId(), iterator ) ;
-                entity = ResponseEntity.ok( iterator );
             }
         }
-        return companyList;
+        return new ArrayList<>( this.allCompanies.values() );
     }      
     
     //////////// --- Innen elvalsztodik, mert ketto fajta VALASZ OPCIO letezik, ez az egyik blokk
@@ -340,10 +337,11 @@ public final class CompanyRestController1 {
             if ( HttpStatusUzenet ){
                     
                 throw new ResponseStatusException( HttpStatus.ALREADY_REPORTED );
-            }else{
-            
-                companyId = -1L;
             }
+        }else{
+        
+            // nincs meg ilyen
+            companyId = -1L;
         }
         return companyId;
     }
@@ -384,11 +382,15 @@ public final class CompanyRestController1 {
             if ( id > -1 ){
          
                 // Nincs ilyen rogzitjuk:
-                this.allCompanies.put( iterator.getId(), iterator ) ;           
+                this.allCompanies.put( iterator.getId(), iterator ) ; 
+                System.out.println("- rögzitve : " + iterator.getId() );                
+            }else{
+            
+                System.out.println("- kihagyva : " + iterator.getId() ); 
             }
         }
 
-        return companyList;
+        return new ArrayList<>( this.allCompanies.values() );
     }  
     
     /**
