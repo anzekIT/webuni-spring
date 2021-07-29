@@ -22,7 +22,7 @@ public class Employee {
     /**
      * A munkavalallo azonositoja <br>
      */
-    private Long id;
+    private Long idEmployee;
     /**
      * A dolgozo neve <br>
      */
@@ -59,18 +59,18 @@ public class Employee {
 
     /**
      * Teljes feltolto konstruktor<br>
-     * @param id A munkavalallo azonositoja <br>
+     * @param idEmployee A munkavalallo azonositoja <br>
      * @param workerName A dolgozo neve <br> 
      * @param jobPosition Munkakori beosztasa <br>
      * @param monthlySalary A havi jovedelme <br>
      * @param startOfEmployment A munkaviszony kezdete <br> 
      */
-    public Employee(Long id,
+    public Employee(Long idEmployee,
                     String workerName,
                     String jobPosition,
                     Integer monthlySalary,
                     LocalDateTime startOfEmployment) {
-        this.id = id;
+        this.idEmployee = idEmployee;
         this.workerName = workerName;
         this.jobPosition = jobPosition;
         this.monthlySalary = monthlySalary;
@@ -81,18 +81,18 @@ public class Employee {
      * A munkavallalo azonosoto a kiolvasasa<br> 
      * @return az azonosito <br>
      */
-    public Long getId() {
+    public Long getIdEmployee() {
         
-        return id;
+        return idEmployee;
     }
 
     /**
      * A munkavallalo azonosito a beallitasa <br>
-     * @param id az azonosito <br>
+     * @param idEmployee az azonosito <br>
      */
-    public void setId( Long id ) {
+    public void setIdEmployee( Long idEmployee ) {
         
-        this.id = id;
+        this.idEmployee = idEmployee;
     }
 
     /**

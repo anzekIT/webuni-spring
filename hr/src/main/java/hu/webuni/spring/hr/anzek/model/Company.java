@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Company {
     
-    private long id;
+    private long idCompany;
     private int registrationNumber;
     private String name;
     private String address;
@@ -26,12 +26,12 @@ public class Company {
     
     }
 
-    public Company(long id,
-                      int registrationNumber,
-                      String name,
-                      String address,
-                      List<EmployeeDto> employees ) {
-        this.id = id;
+    public Company( long idCompany,
+                    int registrationNumber,
+                    String name,
+                    String address,
+                    List<EmployeeDto> employees ) {
+        this.idCompany = idCompany;
         this.registrationNumber = registrationNumber;
         this.name = name;
         this.address = address;
@@ -54,12 +54,12 @@ public class Company {
         return employees;
     }
 
-    public long getId() {
-        return id;
+    public long getIdCompany() {
+        return idCompany;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setIdCompany(long id) {
+        this.idCompany = id;
     }
 
     public int getRegistrationNumber() {

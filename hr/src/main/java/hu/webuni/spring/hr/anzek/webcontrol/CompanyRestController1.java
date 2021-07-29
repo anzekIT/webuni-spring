@@ -54,10 +54,10 @@ public final class CompanyRestController1 {
     public CompanyDto createV1Company( @RequestBody CompanyDto companyDto ){
 
         ResponseEntity entity;
-        if( ! this.allCompanies.containsKey( companyDto.getId() )){        
+        if( ! this.allCompanies.containsKey( companyDto.getIdCompany() )){        
         
             // Nincs ilyen rogzitjuk:
-            this.allCompanies.put( companyDto.getId(), companyDto ) ;
+            this.allCompanies.put( companyDto.getIdCompany(), companyDto ) ;
             entity = ResponseEntity.ok(companyDto);
         }else{
         
@@ -81,10 +81,10 @@ public final class CompanyRestController1 {
 
         for( CompanyDto iterator : companyList ){
             
-            if( ! this.allCompanies.containsKey( iterator.getId() )){        
+            if( ! this.allCompanies.containsKey( iterator.getIdCompany() )){        
 
                 // Nincs ilyen rogzitjuk:
-                this.allCompanies.put( iterator.getId(), iterator ) ;
+                this.allCompanies.put( iterator.getIdCompany(), iterator ) ;
             }
         }
         return new ArrayList<>( this.allCompanies.values() );
@@ -132,7 +132,7 @@ public final class CompanyRestController1 {
             entity = ResponseEntity.notFound().build();
         }else{
         
-            companyDto.setId(companyId);
+            companyDto.setIdCompany(companyId);
             this.allCompanies.put(companyId, companyDto);
         
             entity = ResponseEntity.ok(companyDto);
@@ -174,27 +174,27 @@ public final class CompanyRestController1 {
     public ResponseEntity<CompanyDto> addNewEmployee(@PathVariable long companyId, 
                                                      @RequestBody EmployeeDto employeeDto){
         
-        ResponseEntity entity;
+        ResponseEntity entity = ResponseEntity.notFound().build();
         CompanyDto companyDto = this.allCompanies.get(companyId);
         
         if( companyDto != null ){
              
-            EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> Objects.equals(e.getId(), employeeDto.getId()) ).findFirst().get();
-            if ( empdto == null ){
+//            EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> (e.getIdEmployee() != null) && (Objects.equals(e.getIdEmployee(), employeeDto.getIdEmployee()) ) ).findAny().get();
+//            if ( empdto == null ){
             
                 // Uj bevitel:
                 // Ha nem letezik meg, akkor hozzaadjuk a dolgozot:
                 companyDto.getEmployees().add(employeeDto);
                 
                 entity = ResponseEntity.ok( companyDto );
-            }else{
-            
-                // Mar van ilyen dolgozo
-                entity = ResponseEntity.status(HttpStatus.ALREADY_REPORTED).build();
-            }
-        }else{
-            // Nincs ilyen ceg
-            entity = ResponseEntity.notFound().build();
+//            }else{
+//            
+//                // Mar van ilyen dolgozo
+//                entity = ResponseEntity.status(HttpStatus.ALREADY_REPORTED).build();
+//            }
+//        }else{
+//            // Nincs ilyen ceg
+//            entity = ResponseEntity.notFound().build();
         }
         
         return entity;        
@@ -217,7 +217,7 @@ public final class CompanyRestController1 {
         
         if( companyDto != null ){
              
-            EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> Objects.equals(e.getId(), employeeDto.getId()) ).findFirst().get();
+            EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> Objects.equals(e.getIdEmployee(), employeeDto.getIdEmployee()) ).findFirst().get();
             if ( empdto == null ){
             
                 // nincs ilyen dolgozo
@@ -226,7 +226,7 @@ public final class CompanyRestController1 {
             
                 // Ez a modositas egy lehetseges modja:
                 // Ha letezik kitoroljuk es ujrairjuk:
-                companyDto.getEmployees().removeIf( e -> Objects.equals(e.getId(), empdto.getId()) );
+                companyDto.getEmployees().removeIf( e -> Objects.equals(e.getIdEmployee(), empdto.getIdEmployee()) );
                 companyDto.getEmployees().add(employeeDto);
             }
             entity = ResponseEntity.ok( companyDto );
@@ -255,11 +255,11 @@ public final class CompanyRestController1 {
         
         if( companyDto != null ){
 
-            EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> e.getId() == employeeId ).findFirst().get();
+            EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> e.getIdEmployee() == employeeId ).findFirst().get();
             if ( empdto != null ){  
                 
                 // Mivel letezik, igy kitoroljuk es ujrairjuk:
-                companyDto.getEmployees().removeIf( e -> Objects.equals(e.getId(), empdto.getId()) );
+                companyDto.getEmployees().removeIf( e -> Objects.equals(e.getIdEmployee(), empdto.getIdEmployee()) );
                 entity = ResponseEntity.ok( companyDto );
             }else{
             
@@ -357,11 +357,16 @@ public final class CompanyRestController1 {
     @PostMapping("/v2/createSingle/")
     public CompanyDto createV2Company( @RequestBody CompanyDto companyDto ){
 
-        long id = noFindByIdOrThrow( companyDto.getId() , true );
+        long id = noFindByIdOrThrow( companyDto.getIdCompany() , false );
+        if ( id > -1 ){
 
-        // Nincs ilyen rogzitjuk:
-        this.allCompanies.put( companyDto.getId(), companyDto ) ;
-        
+            // Nincs ilyen rogzitjuk:
+            this.allCompanies.put( companyDto.getIdCompany(), companyDto ) ;
+                System.out.println("- single-rögzitve : " + companyDto.getIdCompany() );                
+        }else{
+
+            System.out.println("- single-kihagyva : " + companyDto.getIdCompany() ); 
+        }
         return companyDto;
     }  
             
@@ -378,15 +383,15 @@ public final class CompanyRestController1 {
 
         for( CompanyDto iterator : companyList ){
         
-            long id = noFindByIdOrThrow( iterator.getId() , false );
+            long id = noFindByIdOrThrow( iterator.getIdCompany() , false );
             if ( id > -1 ){
          
                 // Nincs ilyen rogzitjuk:
-                this.allCompanies.put( iterator.getId(), iterator ) ; 
-                System.out.println("- rögzitve : " + iterator.getId() );                
+                this.allCompanies.put( iterator.getIdCompany(), iterator ) ; 
+                System.out.println("- multiple-rögzitve : " + iterator.getIdCompany() );                
             }else{
             
-                System.out.println("- kihagyva : " + iterator.getId() ); 
+                System.out.println("- multiple-kihagyva : " + iterator.getIdCompany() ); 
             }
         }
 
@@ -417,7 +422,7 @@ public final class CompanyRestController1 {
                                         @RequestBody CompanyDto companyDto ){
         
         CompanyDto cmDto = findByIdOrThrow(companyId);
-        cmDto.setId(companyId);
+        cmDto.setIdCompany(companyId);
         this.allCompanies.put(companyId, companyDto);
      
         return companyDto;
@@ -431,7 +436,7 @@ public final class CompanyRestController1 {
     @DeleteMapping("/v2/{companyId}")
     public CompanyDto deleteV2Company(@PathVariable long companyId){
     
-        CompanyDto companyDto = findByIdOrThrow(companyId);                   
+        CompanyDto companyDto = findByIdOrThrow(companyId);
         this.allCompanies.remove(companyId);
     
         return companyDto;             
@@ -448,17 +453,17 @@ public final class CompanyRestController1 {
                                         @RequestBody EmployeeDto employeeDto ){
         
         CompanyDto companyDto = findByIdOrThrow(companyId); 
-        EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> Objects.equals(e.getId(), employeeDto.getId()) ).findFirst().get();
-        if ( empdto == null ){
+//        EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> (e.getIdEmployee() != null) && (Objects.equals(e.getIdEmployee(), employeeDto.getIdEmployee()) ) ).findAny().get();
+//        if ( empdto == null ){
 
             // Uj bevitel:
             // Ha nem letezik meg, akkor hozzaadjuk a dolgozot:
             companyDto.getEmployees().add(employeeDto);
-        }else{
-        
-            // Letezik mar:
-            throw new ResponseStatusException(HttpStatus.ALREADY_REPORTED);
-        }
+//        }else{
+//        
+//            // Letezik mar:
+//            throw new ResponseStatusException(HttpStatus.ALREADY_REPORTED);
+//        }
         
         return companyDto;        
     }
@@ -476,7 +481,7 @@ public final class CompanyRestController1 {
                                         @RequestBody EmployeeDto employeeDto){
         
         CompanyDto companyDto = findByIdOrThrow(companyId);              
-        EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> Objects.equals(e.getId(), employeeDto.getId()) ).findFirst().get();
+        EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> Objects.equals(e.getIdEmployee(), employeeDto.getIdEmployee()) ).findFirst().get();
         
         if ( empdto == null ){
 
@@ -487,7 +492,7 @@ public final class CompanyRestController1 {
 
             // Ez a modositas egy lehetseges modja:
             // Ha letezik kitoroljuk es ujrairjuk:
-            companyDto.getEmployees().removeIf( e -> Objects.equals(e.getId(), empdto.getId()) );
+            companyDto.getEmployees().removeIf( e -> Objects.equals(e.getIdEmployee(), empdto.getIdEmployee()) );
             companyDto.getEmployees().add(employeeDto);
         }
            
@@ -506,11 +511,11 @@ public final class CompanyRestController1 {
                                                     @PathVariable long employeeId ){
         
         CompanyDto companyDto = findByIdOrThrow(companyId); 
-        EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> e.getId() == employeeId ).findFirst().get();
+        EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> e.getIdEmployee() == employeeId ).findFirst().get();
         if ( empdto != null ){  
 
             // Mivel letezik, igy kitoroljuk es ujrairjuk:
-            companyDto.getEmployees().removeIf( e -> Objects.equals(e.getId(), empdto.getId()) );
+            companyDto.getEmployees().removeIf( e -> Objects.equals(e.getIdEmployee(), empdto.getIdEmployee()) );
         }else{
 
         // Nem letezik meg:

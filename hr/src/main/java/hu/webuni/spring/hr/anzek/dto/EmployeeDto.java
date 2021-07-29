@@ -19,11 +19,11 @@ public class EmployeeDto extends Employee {
     public EmployeeDto() {
     }
 
-    public EmployeeDto(Long id,
+    public EmployeeDto(Long idEmployee,
                        String workerName,
                        String jobPosition,
                        Integer monthlySalary,
                        LocalDateTime startOfEmployment) {
-        super(id, workerName, jobPosition, monthlySalary, startOfEmployment);
+        super(idEmployee, workerName, jobPosition, monthlySalary, startOfEmployment);
     }    
 }

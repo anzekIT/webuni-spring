@@ -162,7 +162,7 @@ public class EmployeeRestFulApiController {
     @PostMapping
     public EmployeeDto createEmployeeDto( @RequestBody EmployeeDto employeeDto ){
         
-        this.employees.put( employeeDto.getId(), employeeDto );
+        this.employees.put( employeeDto.getIdEmployee(), employeeDto );
         return employeeDto;
     }
     
@@ -177,7 +177,7 @@ public class EmployeeRestFulApiController {
     public ResponseEntity<EmployeeDto> modifyEmployeeDto( @PathVariable long id, @RequestBody EmployeeDto employeeDto ){
     
         ResponseEntity entity;
-        employeeDto.setId(id);
+        employeeDto.setIdEmployee(id);
         
         if ( ! this.employees.containsKey(id) ){
             

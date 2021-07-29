@@ -165,7 +165,7 @@ public final class EmployeeWebController {
         //     }
         // }
         // vagy ugyan az (a fenti for() ciklusos megholdas Lambda valtozata :
-        this.allEmployees.removeIf( e -> e.getId() == id );
+        this.allEmployees.removeIf( e -> e.getIdEmployee() == id );
         
         // FONTOS!
         // minden metodus getmapping annotacioja, 
@@ -197,7 +197,7 @@ public final class EmployeeWebController {
 //                                                .findFirst()
 //                                                .get() );
         model.put( "modifyEmployee", this.allEmployees.stream()
-                                                      .filter( e -> e.getId() == id )
+                                                      .filter( e -> e.getIdEmployee() == id )
                                                       .findFirst()
                                                       .get() );
         return "editEmployee";
@@ -209,7 +209,7 @@ public final class EmployeeWebController {
        
 //            if ( ( Objects.equals(this.allEmployees.get(i).getId(), employee.getId()) ) 
 //                    || ( this.allEmployees.get(i).getId().equals( employee.getId() ) )){
-            if ( this.allEmployees.get(i).getId().equals( employee.getId() ) ){
+            if ( this.allEmployees.get(i).getIdEmployee().equals( employee.getIdEmployee() ) ){
                 
                 this.allEmployees.set( i , employee );
                 break;

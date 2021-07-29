@@ -17,12 +17,12 @@ public class CompanyDto extends Company{
     public CompanyDto() {
     }
 
-    public CompanyDto(long id,
-                      int registrationNumber,
-                      String name,
-                      String address,
-                      List<EmployeeDto> employees) {
+    public CompanyDto(  long idCompany,
+                        int registrationNumber,
+                        String name,
+                        String address,
+                        List<EmployeeDto> employees) {
         
-        super(id, registrationNumber, name, address, employees);
+        super(idCompany, registrationNumber, name, address, employees);
     }
 }
