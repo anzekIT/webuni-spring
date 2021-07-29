@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -53,7 +54,7 @@ public final class CompanyRestController {
      * @return a JSON bodyban, ha sikeres volt az osztalypeldanyt kapjuk visza, ha mar letezett, akkor a FOUND() uzenetet<br>
      */        
     @PostMapping("/v1/createSingle/")
-    public CompanyDto createV1Company( @RequestBody CompanyDto companyDto ){
+    public CompanyDto createV1Company( @RequestBody @Valid CompanyDto companyDto ){
 
         ResponseEntity entity;
         if( ! this.allCompanies.containsKey( companyDto.getIdCompany() )){        
@@ -79,7 +80,7 @@ public final class CompanyRestController {
      * @return a JSON bodyban, ha sikeres volt az osztalypeldanyt kapjuk visza, ha mar letezett, akkor a FOUND() uzenetet<br>
      */        
     @PostMapping("/v1/createMultiple/")
-    public List<CompanyDto> createV1Companies( @RequestBody List<CompanyDto> companyList ){
+    public List<CompanyDto> createV1Companies( @RequestBody @Valid List<CompanyDto> companyList ){
 
         for( CompanyDto iterator : companyList ){
             
@@ -126,7 +127,7 @@ public final class CompanyRestController {
      */
     @PutMapping("/v1/{companyId}")
     public ResponseEntity<CompanyDto> modifyCompany( @PathVariable long companyId, 
-                                                     @RequestBody CompanyDto companyDto ){
+                                                     @RequestBody @Valid CompanyDto companyDto ){
         
         ResponseEntity entity;
         if( ! this.allCompanies.containsKey(companyId)){
@@ -174,7 +175,7 @@ public final class CompanyRestController {
      */
     @PostMapping("/v1/{companyId}/employees/")
     public ResponseEntity<CompanyDto> addNewEmployee(@PathVariable long companyId, 
-                                                     @RequestBody EmployeeDto employeeDto){
+                                                     @RequestBody @Valid EmployeeDto employeeDto){
         
         ResponseEntity entity = ResponseEntity.notFound().build();
         CompanyDto companyDto = this.allCompanies.get(companyId);
@@ -207,7 +208,7 @@ public final class CompanyRestController {
     @PutMapping("/v1/{companyId}/employees/{employeeId}")
     public ResponseEntity<CompanyDto> modifyEmployee( @PathVariable long companyId, 
                                                       @PathVariable long employeeId, 
-                                                      @RequestBody EmployeeDto employeeDto){
+                                                      @RequestBody @Valid EmployeeDto employeeDto){
         
         ResponseEntity entity;
         CompanyDto companyDto = this.allCompanies.get(companyId);
@@ -277,7 +278,7 @@ public final class CompanyRestController {
      */
     @PutMapping("/v1/{companyId}/employees/")
     public ResponseEntity<CompanyDto> replaceAllEmployee(   @PathVariable long companyId,                                         
-                                                            @RequestBody List<EmployeeDto> newEmployeesDto){    
+                                                            @RequestBody @Valid List<EmployeeDto> newEmployeesDto){    
         
         ResponseEntity entity;
         CompanyDto companyDto = this.allCompanies.get(companyId);
@@ -352,7 +353,7 @@ public final class CompanyRestController {
      * @return a JSON bodyban, ha sikeres volt az osztalypeldanyt kapjuk visza, ha mar letezett, akkor a FOUND() uzenetet<br>
      */        
     @PostMapping("/v2/createSingle/")
-    public CompanyDto createV2Company( @RequestBody CompanyDto companyDto ){
+    public CompanyDto createV2Company( @RequestBody @Valid CompanyDto companyDto ){
 
         long id = noFindByIdOrThrow( companyDto.getIdCompany() , false );
         if ( id > -1 ){
@@ -376,7 +377,7 @@ public final class CompanyRestController {
      * @return a JSON bodyban, ha sikeres volt az osztalypeldanyt kapjuk visza, ha mar letezett, akkor a FOUND() uzenetet<br>
      */        
     @PostMapping("/v2/createMultiple/")
-    public List<CompanyDto> createV2Companies( @RequestBody List<CompanyDto> companyList ){
+    public List<CompanyDto> createV2Companies( @RequestBody @Valid List<CompanyDto> companyList ){
 
         for( CompanyDto iterator : companyList ){
         
@@ -416,7 +417,7 @@ public final class CompanyRestController {
      */
     @PutMapping("/v2/{companyId}")
     public CompanyDto modifyV2Company(  @PathVariable long companyId, 
-                                        @RequestBody CompanyDto companyDto ){
+                                        @RequestBody @Valid CompanyDto companyDto ){
         
         CompanyDto cmDto = findByIdOrThrow(companyId);
         cmDto.setIdCompany(companyId);
@@ -447,7 +448,7 @@ public final class CompanyRestController {
      */
     @PostMapping("/v2/{companyId}/employees/")
     public CompanyDto addNewV2Employee( @PathVariable long companyId, 
-                                        @RequestBody EmployeeDto employeeDto ){
+                                        @RequestBody @Valid EmployeeDto employeeDto ){
         
         CompanyDto companyDto = findByIdOrThrow(companyId); 
         chechkUniqueIdEmployee( companyDto.getEmployees() ,employeeDto.getIdEmployee() );
@@ -469,7 +470,7 @@ public final class CompanyRestController {
     @PutMapping("/v2/{companyId}/employees/{employeeId}")
     public CompanyDto modifyV2Employee( @PathVariable long companyId, 
                                         @PathVariable long employeeId, 
-                                        @RequestBody EmployeeDto employeeDto){
+                                        @RequestBody @Valid EmployeeDto employeeDto){
         
         CompanyDto companyDto = findByIdOrThrow(companyId);              
         EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> Objects.equals(e.getIdEmployee(), employeeDto.getIdEmployee()) ).findFirst().get();
@@ -524,7 +525,7 @@ public final class CompanyRestController {
      */
     @PutMapping("/v2/{companyId}/employees/")
     public CompanyDto replaceAllV2Employee( @PathVariable long companyId,                                         
-                                            @RequestBody List<EmployeeDto> newEmployeesDto){    
+                                            @RequestBody @Valid List<EmployeeDto> newEmployeesDto){    
         
         CompanyDto companyDto = findByIdOrThrow(companyId); 
         

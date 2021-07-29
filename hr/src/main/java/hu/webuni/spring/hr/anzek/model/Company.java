@@ -3,11 +3,9 @@
  */
 package hu.webuni.spring.hr.anzek.model;
 
-
 import hu.webuni.spring.hr.anzek.dto.EmployeeDto;
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  *
