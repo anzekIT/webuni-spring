@@ -6,11 +6,13 @@ package hu.webuni.spring.hr.anzek.webcontrol;
 
 import hu.webuni.spring.hr.anzek.dto.CompanyDto;
 import hu.webuni.spring.hr.anzek.dto.EmployeeDto;
+import hu.webuni.spring.hr.anzek.service.NonUniqueIdEmployeeException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -178,23 +180,18 @@ public final class CompanyRestController1 {
         CompanyDto companyDto = this.allCompanies.get(companyId);
         
         if( companyDto != null ){
-             
-//            EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> (e.getIdEmployee() != null) && (Objects.equals(e.getIdEmployee(), employeeDto.getIdEmployee()) ) ).findAny().get();
-//            if ( empdto == null ){
             
-                // Uj bevitel:
-                // Ha nem letezik meg, akkor hozzaadjuk a dolgozot:
-                companyDto.getEmployees().add(employeeDto);
-                
-                entity = ResponseEntity.ok( companyDto );
-//            }else{
-//            
-//                // Mar van ilyen dolgozo
-//                entity = ResponseEntity.status(HttpStatus.ALREADY_REPORTED).build();
-//            }
-//        }else{
-//            // Nincs ilyen ceg
-//            entity = ResponseEntity.notFound().build();
+            chechkUniqueIdEmployee( companyDto.getEmployees() ,employeeDto.getIdEmployee() );
+      
+            // Uj bevitel:
+            // Ha nem letezik meg, akkor hozzaadjuk a dolgozot:
+            companyDto.getEmployees().add(employeeDto);
+
+            entity = ResponseEntity.ok( companyDto );
+
+        }else{
+            // Nincs ilyen ceg 404-es hiba
+            entity = ResponseEntity.notFound().build();
         }
         
         return entity;        
@@ -453,17 +450,11 @@ public final class CompanyRestController1 {
                                         @RequestBody EmployeeDto employeeDto ){
         
         CompanyDto companyDto = findByIdOrThrow(companyId); 
-//        EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> (e.getIdEmployee() != null) && (Objects.equals(e.getIdEmployee(), employeeDto.getIdEmployee()) ) ).findAny().get();
-//        if ( empdto == null ){
+        chechkUniqueIdEmployee( companyDto.getEmployees() ,employeeDto.getIdEmployee() );
 
-            // Uj bevitel:
-            // Ha nem letezik meg, akkor hozzaadjuk a dolgozot:
-            companyDto.getEmployees().add(employeeDto);
-//        }else{
-//        
-//            // Letezik mar:
-//            throw new ResponseStatusException(HttpStatus.ALREADY_REPORTED);
-//        }
+        // Uj bevitel:
+        // Ha nem letezik meg, akkor hozzaadjuk a dolgozot:
+        companyDto.getEmployees().add(employeeDto);
         
         return companyDto;        
     }
@@ -543,6 +534,33 @@ public final class CompanyRestController1 {
         // hozzaadjuk az uj munkavallalokat:
         companyDto.setEmployees(newEmployeesDto);
         return companyDto;
+    }
+
+    /**
+     * Sajat hibaosztalyt prezentalo metodus, hbakezelesi pelda<br>
+     * @param empList egy adott ceg dolgpzoinak a listaja<br>
+     * @param value az az ID (employee) munkavalllaoi kod, amely egyezosegere hibat dobunk!<br>
+     */
+    private void chechkUniqueIdEmployee( List<EmployeeDto> empList , Long value ) {
+    
+        Optional<EmployeeDto> empdto = empList.stream()
+                                              .filter( e -> (e.getIdEmployee().equals( value )))
+                                              .findAny();
+
+        if( empdto.isPresent() ){
+        
+            throw new NonUniqueIdEmployeeException( value.toString() );
+        }
+        //if ( ( empList != null ) && ( empList.size() > 0 ) ){
+        //
+        //    for( EmployeeDto empListIterator : empList ){
+        //
+        //        if ( (empListIterator.getIdEmployee() != null) && (Objects.equals(empListIterator.getIdEmployee(), value ) ) ){
+        //
+        //            throw new NonUniqueIdEmployeeException();
+        //        }
+        //    }
+        //}    
     }
 }
 
