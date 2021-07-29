@@ -27,7 +27,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/companies")
-public final class CompanyRestController1 {
+public final class CompanyRestController {
 
     int weboldalFrissitesekSzama = 0;
     
@@ -551,16 +551,6 @@ public final class CompanyRestController1 {
         
             throw new NonUniqueIdEmployeeException( value.toString() );
         }
-        //if ( ( empList != null ) && ( empList.size() > 0 ) ){
-        //
-        //    for( EmployeeDto empListIterator : empList ){
-        //
-        //        if ( (empListIterator.getIdEmployee() != null) && (Objects.equals(empListIterator.getIdEmployee(), value ) ) ){
-        //
-        //            throw new NonUniqueIdEmployeeException();
-        //        }
-        //    }
-        //}    
     }
 }
 

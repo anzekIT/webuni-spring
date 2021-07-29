@@ -66,6 +66,12 @@
 	  <artifactId>spring-beans</artifactId>
 	  <type>jar</type>
 	 </dependency>
+	 <dependency>
+	  <groupId>org.slf4j</groupId>
+	  <artifactId>slf4j-api</artifactId>
+	  <version>1.7.31</version>
+	  <type>jar</type>
+	 </dependency>
 	</dependencies>
 
 	<build>
