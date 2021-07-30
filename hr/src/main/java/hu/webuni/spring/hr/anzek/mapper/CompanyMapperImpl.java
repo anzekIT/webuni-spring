@@ -13,7 +13,8 @@ import java.util.List;
 
 
 /**
- *
+ * Kezzel irt (hogy haladjon)<br>
+ * Nem automatikusan generalt MapStuct-Mapper implementacio<br>
  * @author User
  */
 public class CompanyMapperImpl implements CompanyMapper{
