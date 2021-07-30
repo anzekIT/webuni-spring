@@ -6,11 +6,13 @@
 package hu.webuni.spring.hr.anzek.webcontrol;
 
 import hu.webuni.spring.hr.anzek.dto.EmployeeDto;
+import hu.webuni.spring.hr.anzek.service.EmployeeDataService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,8 +36,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
-public class EmployeeRestFulApiController {
+public class EmployeeRestController {
 
+    @Autowired
+    EmployeeDataService dataService;
+    
     /**
      * lesz olyan funkcio, hogy adott ID-ju tetelt adjunk vissza, hogy modositsuk, hogy toroljuk, stb.   
      * Itt nem LISTA-ban taroljuk (arrayList-ben), mert az csak linearis szekvenciaval jarhato be

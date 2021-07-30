@@ -6,10 +6,20 @@
 package hu.webuni.spring.hr.anzek.mapper;
 
 
+import hu.webuni.spring.hr.anzek.dto.CompanyDto;
+import hu.webuni.spring.hr.anzek.model.Company;
+import java.util.List;
+import org.mapstruct.Mapper;
+
+
 /**
  *
  * @author User
  */
-public class CompanyMapper {
+@Mapper( componentModel = "spring" )
+public interface CompanyMapper {
     
+    List<CompanyDto> companyToDtos(List<Company> companys );
+    
+    Company dtoToCompany( CompanyDto companyDto );
 }

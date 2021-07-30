@@ -6,10 +6,20 @@
 package hu.webuni.spring.hr.anzek.mapper;
 
 
+import hu.webuni.spring.hr.anzek.dto.EmployeeDto;
+import hu.webuni.spring.hr.anzek.model.Employee;
+import java.util.List;
+import org.mapstruct.Mapper;
+
+
 /**
  *
  * @author User
  */
-public class EmployeeMapper {
+@Mapper( componentModel = "spring" )
+public interface EmployeeMapper {
     
+    List<EmployeeDto> employeesToDtos(List<Employee> employees);
+    
+    Employee dtoToEmployee( EmployeeDto employeeDto );
 }

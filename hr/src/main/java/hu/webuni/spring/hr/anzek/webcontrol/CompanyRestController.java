@@ -6,6 +6,10 @@ package hu.webuni.spring.hr.anzek.webcontrol;
 
 import hu.webuni.spring.hr.anzek.dto.CompanyDto;
 import hu.webuni.spring.hr.anzek.dto.EmployeeDto;
+import hu.webuni.spring.hr.anzek.mapper.CompanyMapper;
+import hu.webuni.spring.hr.anzek.mapper.EmployeeMapper;
+import hu.webuni.spring.hr.anzek.service.CompanyDataService;
+import hu.webuni.spring.hr.anzek.service.EmployeeDataService;
 import hu.webuni.spring.hr.anzek.service.NonUniqueIdEmployeeException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,20 +35,38 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/api/companies")
 public final class CompanyRestController {
 
+    @Autowired
+    CompanyDataService dataCompanyService;
+
+    @Autowired
+    EmployeeDataService dataEmployeeService;
+    
+    @Autowired(required=true)
+    CompanyMapper companyMapper;
+    
+    @Autowired(required=true)
+    EmployeeMapper employeeMapper;        
+            
     int weboldalFrissitesekSzama = 0;
     
     private final Map< Long, CompanyDto> allCompanies = new HashMap<>();
 
-    /**
-     * Az osszes vallalt lekerdezses<br>
-     * @param model a MAP-modell, amiben beleteszi<br>
-     * @return a Lista, amit a modellbol kiemelunk<br>
-     */
     @GetMapping
-    public List<CompanyDto> companies( Map<String, Object> model ){
+    public List<CompanyDto> getAll(){
         
-        return new ArrayList<>( this.allCompanies.values() );
+        return this.companyMapper.companyToDtos( this.dataCompanyService.findAll() );    
     }
+    
+//    /**
+//     * Az osszes vallalt lekerdezses<br>
+//     * @param model a MAP-modell, amiben beleteszi<br>
+//     * @return a Lista, amit a modellbol kiemelunk<br>
+//     */
+//    @GetMapping
+//    public List<CompanyDto> companies( Map<String, Object> model ){
+//        
+//        return new ArrayList<>( this.allCompanies.values() );
+//    }
         
     /**
      * POST (/v1-re) - Egy ceg-komlex osztalypeldanyt rogzit be egy JSON entitasbol<br>
