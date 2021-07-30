@@ -18,17 +18,32 @@ import org.springframework.web.context.request.WebRequest;
 
 
 /**
- *
+ * Hibakezelo sajat osztaly<br>
  * @author User
  */
 @RestControllerAdvice
 public class CustomExceptionHandler {
     
+    /**
+     * logger<br>
+     */
     private static final Logger log = LoggerFactory.getLogger( CustomExceptionHandler.class );
     
+    /**
+     * konstruktor<br>
+     */
     public CustomExceptionHandler() {
     }
     
+    /**
+     * Nem egyedi kulcs (azonosito) lekezelesenek pelda metodusa<br>
+     * az "@ExceptionHandler(NonUniqueIdEmployeeException.class)" annotacioban szereplo osztaly sajat kivetelt dobo osztaly!<br>
+     * szinten sajat osztaly pl itt a MyError() osztaly,<br> 
+     * amely lenyegileg a kivetelre visszaadott JSON BODY-t fogja prezentalni (pesrze enelkul is "by default" body!<br>
+     * @param e NonUniqueIdEmployeeException.class altal visszaadott komplett hiba osztalypeldany<br>
+     * @param request a keres, amiben a hiba szerepel<br>
+     * @return egy JSON body-t ad vissza a komplett hibaval, es minden informacioval<br>
+     */
     @ExceptionHandler(NonUniqueIdEmployeeException.class)
     public ResponseEntity<MyError> 
         handleNonUniqueId( NonUniqueIdEmployeeException e, WebRequest request){
@@ -39,12 +54,11 @@ public class CustomExceptionHandler {
                 .body( new MyError( e.getMessage(), 1002 ) );    
     }
       
-    // --> 
-    //      hat ez is jó, de nekem valami miatt
-    //      enelkul reszletesebb es pontosabb hibavisszagazolas jon!
-    //      ezt en addig nem hasznalnam, ameddig enelkul is jo!
-    // -->
-    //    
+    /**
+     * hat ez is jo, de nekem valami miatt<br>
+     * enelkul reszletesebb es pontosabb hibavisszagazolas jon!<br>
+     * ezt en addig nem hasznalnam, ameddig enelkul is jo!<br>
+     */         
     //@ExceptionHandler(MethodArgumentNotValidException.class)
     //public ResponseEntity<MyError> 
     //    handleValidationError( MethodArgumentNotValidException e, WebRequest request){
