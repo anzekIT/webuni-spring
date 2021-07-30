@@ -17,6 +17,7 @@
 		<java.version>11</java.version>
                 <argLine>-Dfile.encoding=UTF-8</argLine>
                 <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+                <m2e.apt.activation>jdt_apt</m2e.apt.activation>
 	</properties>
 	<dependencies>
                 <dependency>

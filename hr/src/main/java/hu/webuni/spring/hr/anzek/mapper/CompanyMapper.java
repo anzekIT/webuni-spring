@@ -20,8 +20,6 @@ import org.mapstruct.Mapper;
 public interface CompanyMapper {
     
     List<CompanyDto> companiesToDtos(List<Company> companies );
-    
     CompanyDto companyToDto(Company company );
-    
     Company dtoToCompany( CompanyDto companyDto );
 }
