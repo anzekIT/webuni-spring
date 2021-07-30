@@ -19,7 +19,9 @@ import org.mapstruct.Mapper;
 @Mapper( componentModel = "spring" )
 public interface CompanyMapper {
     
-    List<CompanyDto> companyToDtos(List<Company> companys );
+    List<CompanyDto> companyToDtos(List<Company> companies );
+    
+    CompanyDto companyToDto(Company company );
     
     Company dtoToCompany( CompanyDto companyDto );
 }
