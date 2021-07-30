@@ -6,6 +6,10 @@
 package hu.webuni.spring.hr.anzek.webcontrol;
 
 
+import java.util.List;
+import org.springframework.validation.FieldError;
+
+
 /**
  *
  * @author User
@@ -15,6 +19,16 @@ class MyError {
     private String message;
     private int errorCode;
 
+    private List<FieldError> fieldErrors;
+
+    public List<FieldError> getFieldErrors() {
+        return fieldErrors;
+    }
+
+    public void setFieldErrors(List<FieldError> fieldErrors) {
+        this.fieldErrors = fieldErrors;
+    }
+    
     public MyError(String message,
                    int errorCode) {
         this.message = message;
