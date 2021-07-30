@@ -19,7 +19,7 @@ import org.mapstruct.Mapper;
 @Mapper( componentModel = "spring" )
 public interface CompanyMapper {
     
-    List<CompanyDto> companyToDtos(List<Company> companies );
+    List<CompanyDto> companiesToDtos(List<Company> companies );
     
     CompanyDto companyToDto(Company company );
     
