@@ -11,7 +11,6 @@ import hu.webuni.spring.hr.anzek.model.Company;
 import java.util.List;
 import org.mapstruct.Mapper;
 
-
 /**
  *
  * @author User

@@ -10,6 +10,7 @@ import hu.webuni.spring.hr.anzek.dto.CompanyDto;
 import hu.webuni.spring.hr.anzek.model.Company;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 
 /**
@@ -17,6 +18,7 @@ import java.util.List;
  * Nem automatikusan generalt MapStuct-Mapper implementacio<br>
  * @author User
  */
+@Service
 public class CompanyMapperImpl implements CompanyMapper{
 
     @Override

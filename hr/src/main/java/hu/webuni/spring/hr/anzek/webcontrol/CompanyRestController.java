@@ -41,10 +41,10 @@ public final class CompanyRestController {
     @Autowired
     EmployeeDataService dataEmployeeService;
     
-    @Autowired(required=true)
+    @Autowired
     CompanyMapper companyMapper;
     
-    @Autowired(required=true)
+    @Autowired
     EmployeeMapper employeeMapper;        
             
     int weboldalFrissitesekSzama = 0;
