@@ -28,9 +28,8 @@ public class CompanyMapperImpl implements CompanyMapper{
         
         List<CompanyDto> cds = null;
         if( companies != null ){
-            
-            // ... new ArrayList<>( companies.size() )
-            cds = new ArrayList<>();
+        
+            cds = new ArrayList<>( companies.size() );
             for( int i=0; i < companies.size(); i++ ){
             
                 Company company = companies.get(i);
@@ -48,6 +47,7 @@ public class CompanyMapperImpl implements CompanyMapper{
         CompanyDto cds = null;
         if( company != null ){
         
+            cds = new CompanyDto();
             cds.setIdCompany( company.getIdCompany() );
             cds.setName( company.getName() );
             cds.setAddress( company.getAddress() );
@@ -64,6 +64,7 @@ public class CompanyMapperImpl implements CompanyMapper{
         Company cds = null;
         if( companyDto != null ){
                     
+            cds = new Company();
             cds.setIdCompany( companyDto.getIdCompany() );
             cds.setName( companyDto.getName() );
             cds.setAddress( companyDto.getAddress() );
@@ -78,16 +79,16 @@ public class CompanyMapperImpl implements CompanyMapper{
     public Map<Long, Company> dtosToCompanies(Map<Long, CompanyDto> companyDto) {
 
         Map<Long, Company> map = new HashMap<>();
-        List<CompanyDto> listEnt = new ArrayList<>();
+       
         if( companyDto != null ){
-            
+ 
             companyDto.forEach( (k,v)  -> {
-            
-                Company company = null;
+  
+                Company company = new Company();
                 company = this.dtoToCompany( v );
                 
                 if( company != null ){
-                
+
                     map.put( company.getIdCompany() , company );
                 }
             });        

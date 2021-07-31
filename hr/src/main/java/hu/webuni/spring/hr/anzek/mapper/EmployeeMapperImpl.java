@@ -44,6 +44,7 @@ public class EmployeeMapperImpl implements EmployeeMapper {
         EmployeeDto cds = null;
         if( employee != null ){
         
+            cds = new EmployeeDto();
             cds.setIdEmployee( employee.getIdEmployee() );
             cds.setWorkerName( employee.getWorkerName() );
             cds.setJobPosition( employee.getJobPosition() );
@@ -62,6 +63,7 @@ public class EmployeeMapperImpl implements EmployeeMapper {
         Employee cds = null;
         if( employeeDto != null ){
                     
+            cds = new Employee();
             cds.setIdEmployee( employeeDto.getIdEmployee() );
             cds.setWorkerName( employeeDto.getWorkerName() );
             cds.setJobPosition( employeeDto.getJobPosition() );
