@@ -6,11 +6,14 @@
 package hu.webuni.spring.hr.anzek.service;
 
 
+import hu.webuni.spring.hr.anzek.dto.CompanyDto;
+import hu.webuni.spring.hr.anzek.mapper.CompanyMapper;
 import hu.webuni.spring.hr.anzek.model.Company;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -20,6 +23,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CompanyDataService {
+    
+    @Autowired
+    CompanyMapper companyMapper;
     
     Map< Long, Company> companys = new HashMap<>();
 
@@ -37,6 +43,11 @@ public class CompanyDataService {
         this.companys = company;
     }
 
+    public void setCompanyFromDto(Map<Long, CompanyDto> companyDto) {
+        
+        this.companys = this.companyMapper.dtosToCompanies( companyDto );
+    }
+    
     public Company save( Company company){
     
         this.companys.put( company.getIdCompany() , company );

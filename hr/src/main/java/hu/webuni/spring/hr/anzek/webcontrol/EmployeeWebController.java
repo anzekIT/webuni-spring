@@ -68,6 +68,7 @@ public final class EmployeeWebController {
         
         model.put( "ServerTime", LocalDateTime.now() );
         model.put( "SystemSize", System.getProperties().size() );
+        
         return "anzekcloud.xhtml";
     }
         
@@ -164,7 +165,7 @@ public final class EmployeeWebController {
         //         break;
         //     }
         // }
-        // vagy ugyan az (a fenti for() ciklusos megholdas Lambda valtozata :
+        // vagy ugyan az (a fenti for() ciklusos megoldas Lambda valtozata :
         this.allEmployees.removeIf( e -> e.getIdEmployee() == id );
         
         // FONTOS!
@@ -202,6 +203,7 @@ public final class EmployeeWebController {
                                                       .get() );
         return "editEmployee";
     }    
+    
     @PostMapping("/updateEmployee")    
     public String updateEmployees( Employee employee ){
         

@@ -8,6 +8,7 @@ import hu.webuni.spring.hr.anzek.dto.CompanyDto;
 import hu.webuni.spring.hr.anzek.dto.EmployeeDto;
 import hu.webuni.spring.hr.anzek.mapper.CompanyMapper;
 import hu.webuni.spring.hr.anzek.mapper.EmployeeMapper;
+import hu.webuni.spring.hr.anzek.model.Company;
 import hu.webuni.spring.hr.anzek.service.CompanyDataService;
 import hu.webuni.spring.hr.anzek.service.EmployeeDataService;
 import hu.webuni.spring.hr.anzek.service.NonUniqueIdEmployeeException;
@@ -53,7 +54,8 @@ public final class CompanyRestController {
 
     @GetMapping
     public List<CompanyDto> getAll(){
-        
+       
+        List<Company> c = this.dataCompanyService.findAll();
         return this.companyMapper.companiesToDtos( this.dataCompanyService.findAll() );    
     }
     

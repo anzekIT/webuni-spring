@@ -160,7 +160,7 @@ public class EmployeeRestController {
     
     /**
      * POST-METHOD<br>
-     * Egy j elem letrehozasa<br>
+     * Egy uj elem letrehozasa<br>
      * @param employeeDto az uj objektum elem berogzitendo adatai<br>
      * @return viszaadja a parameterben szereplo uj peldanyt<br> 
      */

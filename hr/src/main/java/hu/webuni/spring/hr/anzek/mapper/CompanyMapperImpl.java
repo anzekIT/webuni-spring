@@ -9,7 +9,9 @@ package hu.webuni.spring.hr.anzek.mapper;
 import hu.webuni.spring.hr.anzek.dto.CompanyDto;
 import hu.webuni.spring.hr.anzek.model.Company;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Service;
 
 
@@ -23,15 +25,17 @@ public class CompanyMapperImpl implements CompanyMapper{
 
     @Override
     public List<CompanyDto> companiesToDtos(List<Company> companies) {
-
+        
         List<CompanyDto> cds = null;
         if( companies != null ){
             
-            cds = new ArrayList<>( companies.size() );
-            for( Company company : companies ){
+            // ... new ArrayList<>( companies.size() )
+            cds = new ArrayList<>();
+            for( int i=0; i < companies.size(); i++ ){
             
+                Company company = companies.get(i);
                 cds.add( this.companyToDto(company) );
-            }
+            }        
         }   
         
         return cds;
@@ -67,6 +71,29 @@ public class CompanyMapperImpl implements CompanyMapper{
         }
         
         return cds;
+    }
+
+    @Override
+    @SuppressWarnings("null")
+    public Map<Long, Company> dtosToCompanies(Map<Long, CompanyDto> companyDto) {
+
+        Map<Long, Company> map = new HashMap<>();
+        List<CompanyDto> listEnt = new ArrayList<>();
+        if( companyDto != null ){
+            
+            companyDto.forEach( (k,v)  -> {
+            
+                Company company = null;
+                company = this.dtoToCompany( v );
+                
+                if( company != null ){
+                
+                    map.put( company.getIdCompany() , company );
+                }
+            });        
+        }
+        
+        return map;
     }
     
 }

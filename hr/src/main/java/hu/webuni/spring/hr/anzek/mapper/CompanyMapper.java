@@ -9,6 +9,7 @@ package hu.webuni.spring.hr.anzek.mapper;
 import hu.webuni.spring.hr.anzek.dto.CompanyDto;
 import hu.webuni.spring.hr.anzek.model.Company;
 import java.util.List;
+import java.util.Map;
 import org.mapstruct.Mapper;
 
 /**
@@ -19,6 +20,10 @@ import org.mapstruct.Mapper;
 public interface CompanyMapper {
     
     List<CompanyDto> companiesToDtos(List<Company> companies );
+    
     CompanyDto companyToDto(Company company );
+    
     Company dtoToCompany( CompanyDto companyDto );
+
+    public Map<Long, Company> dtosToCompanies(Map<Long, CompanyDto> companyDto);
 }
