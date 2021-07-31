@@ -32,12 +32,12 @@ public class CompanyMapperImpl implements CompanyMapper{
             cds = new ArrayList<>( companies.size() );
             for( int i=0; i < companies.size(); i++ ){
             
-                Company company = new Company();
-              
+                Company company = new Company();               
                 company = companies.get(i);
+              
                 cds.add( this.companyToDto(company) );
-            }              
-        }   
+            }        
+        }  
         
         return cds;
     }

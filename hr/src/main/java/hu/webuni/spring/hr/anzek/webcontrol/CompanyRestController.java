@@ -55,6 +55,7 @@ public final class CompanyRestController {
     @GetMapping
     public List<CompanyDto> getAll(){
     
+        this.dataCompanyService.setCompanyFromDto( this.allCompanies );
         return this.companyMapper.companiesToDtos( this.dataCompanyService.findAll() );    
     }
     
