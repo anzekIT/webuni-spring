@@ -26,6 +26,9 @@ public class DefaultEmployeeService implements Serializable,EmployeeService {
 
     @Autowired
     HrConfigProperties cfgProp;
+
+    public DefaultEmployeeService() {
+    }
         
     /**
      * Fix novekmenyt visszaado metodus<br>

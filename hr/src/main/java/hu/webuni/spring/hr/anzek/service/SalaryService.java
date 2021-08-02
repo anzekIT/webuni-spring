@@ -27,8 +27,12 @@ public class SalaryService {
      * Az injektor injektalja a deklaracio neve helyere : <br> 
      * - az aktualisan ervenyes profile beallitasban a "prod" vagy "!prod" -nak megfelelo<br>
      * implementaciot...<br>
-     * Igy vegulis ez maga az injektor lenyege.Vagyis :<br>
-     * Nyugodtan hivatkozhatunk a deklaraciora (de csak injektalasanal)<br> 
+     * injektalja az "EmployeeService" Interfeszt<br>
+     *  ...de itt nem dontheto el, hogy az Interfesz melyik implementaciojaval dolgozik majd!<br>
+     * Ezt a dontest az "application.properties.spring.profiles.active=valami"...<b>
+     * (itt epp "smart" hozza meg!<br> 
+     * Igy vegulis ez maga az injektor lenyege.<br>
+     * Vagyis: Nyugodtan hivatkozhatunk a deklaraciora (de csak injektalasanal)<br> 
      * es nem kell magara az implementaciora hivatkozni (ami lehetseges, hogy meg nem is letezik...)<br>
      * Igy azt sem kell tudnunk, hogy ki, hol, mit irt meg mogeje, csak azt, hogy ezt, meg azt kell tudnia...<br>
      * ..es az ahhoz itt nekunk mar elegseges ismeret!<br>
@@ -45,8 +49,7 @@ public class SalaryService {
     /**
      * A jovedelem beallito metodus<br>
      * Az aktualis fizetest megemeli a "jarandosagi" szazalekkal a munkviszony hosszanak fuggvenyenben<br>
-     * injektalja az "EmployeeService" Interfeszt<br>
-     * ...de itt nem dontheto el, hogy az Interfesz melyik implementaciojaval dolgozik majd!<br>
+     * A metodus parametreben ez a metodus pedig injektalja az "Employee" osztalyt<br> 
      * @param employee a kiertekelendo munkavallalo adatai<br>
      * @return a modositott Munkavallaloi (objektum) adatok<br>
      */
@@ -72,4 +75,38 @@ public class SalaryService {
                 
         return this.employee;
     }
+
+    public EmployeeService getEmployeeService() {
+        return employeeService;
+    }
+
+    public void setEmployeeService(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    public int getFizetesEmeles() {
+        return fizetesEmeles;
+    }
+
+    public void setFizetesEmeles(int fizetesEmeles) {
+        this.fizetesEmeles = fizetesEmeles;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public String getTorzsGarda() {
+        return torzsGarda;
+    }
+
+    public void setTorzsGarda(String torzsGarda) {
+        this.torzsGarda = torzsGarda;
+    }
+    
+    
 }

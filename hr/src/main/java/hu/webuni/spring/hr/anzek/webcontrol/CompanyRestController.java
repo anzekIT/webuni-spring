@@ -52,27 +52,54 @@ public final class CompanyRestController {
     
     private final Map< Long, CompanyDto> allCompanies = new HashMap<>();
 
+    /**
+     * Az osszes vallalt lekerdezses<br>
+     * @return a Lista, amit a modellbol kiemelunk<br>
+     */    
     @GetMapping
     public List<CompanyDto> getAll(){
     
+        // egyeb adat-output hijan innen toltjuk fel!
+        // adatbazis kapcsoltnal ez majd valtozik!        
         this.dataCompanyService.setCompanyFromDto( this.allCompanies );
+        
         return this.companyMapper.companiesToDtos( this.dataCompanyService.findAll() );    
     }
     
-//    /**
-//     * Az osszes vallalt lekerdezses<br>
-//     * @param model a MAP-modell, amiben beleteszi<br>
-//     * @return a Lista, amit a modellbol kiemelunk<br>
-//     */
-//    @GetMapping
-//    public List<CompanyDto> companies( Map<String, Object> model ){
-//        
-//        return new ArrayList<>( this.allCompanies.values() );
-//    }
-        
+    //    /**
+    //     * A legelso valtozatban: Az osszes vallalt lekerdezses<br>
+    //     * @return a Lista, amit a modellbol kiemelunk<br>
+    //     */
+    //    @GetMapping
+    //    public List<CompanyDto> companies(){
+    //        
+    //        return new ArrayList<>( this.allCompanies.values() );
+    //    }
+     
     /**
      * POST (/v1-re) - Egy ceg-komlex osztalypeldanyt rogzit be egy JSON entitasbol<br>
-     * Csak azert van ketto belole, hogy barmelyik vegpontra erkezik keres, ugyan azt hajtsa vegre!<br>
+     * Mapper es service reteg hasznalatval !<br>
+     * A JSON uzenetben utazo AZONOSITOT vizsgaljuk meg, nem az egyeb tartalmat! <br>
+     * Ez tehat nem modosit, csak letrehoz!<br>
+     * @param companyDto a request keresben utazo JSON formatumu osztalypeldany<br>
+     * @return a JSON bodyban, ha sikeres volt az osztalypeldanyt kapjuk visza, ha mar letezett, akkor a FOUND() uzenetet<br>
+     */        
+    @PostMapping("/v0/createSingle/")
+    public CompanyDto createV0Company( @RequestBody @Valid CompanyDto companyDto ){
+        
+        Company company = null;
+        long id = this.dataCompanyService.noFindByIdOrThrow( companyDto.getIdCompany() );
+        if ( id > -1 ){
+            
+            company = this.dataCompanyService.save( this.companyMapper.dtoToCompany(companyDto) );
+        }
+
+        return this.companyMapper.companyToDto(company);
+    }  
+    
+    /**
+     * POST (/v1-re) - Egy ceg-komlex osztalypeldanyt rogzit be egy JSON entitasbol<br>
+     * Nelkulozi a mapper es a szerviz retegeket<br>
      * A JSON uzenetben utazo AZONOSITOT vizsgaljuk meg, nem az egyeb tartalmat! <br>
      * Ez tehat nem modosit, csak letrehoz!<br>
      * @param companyDto a request keresben utazo JSON formatumu osztalypeldany<br>
@@ -95,10 +122,57 @@ public final class CompanyRestController {
         
         return companyDto;
     }  
+
+    /**
+     * POST (/v2-re) - Egy ceg-komlex osztalypeldanyt rogzit be egy JSON entitasbol<br>
+     * Csak a szerviz reteg hasznalataval<br>
+     * A JSON uzenetben utazo AZONOSITOT vizsgaljuk meg, nem az egyeb tartalmat! <br>
+     * Ez tehat nem modosit, csak letrehoz!<br>
+     * @param companyDto a request keresben utazo JSON formatumu osztalypeldany<br>
+     * @return a JSON bodyban, ha sikeres volt az osztalypeldanyt kapjuk visza, ha mar letezett, akkor a FOUND() uzenetet<br>
+     */        
+    @PostMapping("/v2/createSingle/")
+    public CompanyDto createV2Company( @RequestBody @Valid CompanyDto companyDto ){
+
+        long id = this.dataCompanyService.noFindByIdOrThrow( companyDto.getIdCompany() );
+        if ( id > -1 ){
+
+            // Nincs ilyen rogzitjuk:
+            this.allCompanies.put( companyDto.getIdCompany(), companyDto ) ;                              
+        }
         
+        return companyDto;
+    }  
+    
+    /**
+     * POST (/v0-ra) - Egy JSON Listabol rogzit be uj cegeket<br>
+     * A szerviz es mapper reteg hasznalatval!<br>
+     * A JSON uzenetben utazo AZONOSITOKAT vizsgaljuk meg, nem az egyeb tartalmat! <br>
+     * Ez tehat nem modosit, csak letrehoz!<br>
+     * @param companyList a request keresben utazo JSON formatumu osztalypeldany<br>
+     * @return a JSON bodyban, ha sikeres volt az osztalypeldanyt kapjuk visza, ha mar letezett, akkor a FOUND() uzenetet<br>
+     */        
+    @PostMapping("/v0/createMultiple/")
+    public List<CompanyDto> createV0Companies( @RequestBody @Valid List<CompanyDto> companyList ){
+
+        // egyeb adat-output hijan innen toltjuk fel!
+        // adatbazis kapcsoltnal ez majd valtozik!        
+        this.dataCompanyService.setCompanyFromDto(this.allCompanies);
+        
+        for( CompanyDto iterator : companyList ){
+            
+            this.dataCompanyService.save( this.companyMapper.dtoToCompany( iterator ));
+
+            // Nincs ilyen rogzitjuk:
+            this.allCompanies.put( iterator.getIdCompany(), iterator ) ;
+            
+        }
+        return new ArrayList<>( this.allCompanies.values() );
+    }     
+    
     /**
      * POST (/v1-re) - Egy JSON Listabol rogzit be uj cegeket<br>
-     * Csak azert van ketto belole, hogy barmelyik vegpontra erkezik keres, ugyan azt hajtsa vegre!<br>
+     * Nelkulozi a szerviz es a mapper retegeket!<br>
      * A JSON uzenetben utazo AZONOSITOKAT vizsgaljuk meg, nem az egyeb tartalmat! <br>
      * Ez tehat nem modosit, csak letrehoz!<br>
      * @param companyList a request keresben utazo JSON formatumu osztalypeldany<br>
@@ -117,18 +191,58 @@ public final class CompanyRestController {
         }
         return new ArrayList<>( this.allCompanies.values() );
     }      
+            
+    /**
+     * POST (/v2-re) - Ceg-peldanykat rogzit be egy JSON -ban erkezo tombbol<br>
+     * Csak a szerviz reteg hasznalataval!<br>
+     * A JSON uzenetben utazo AZONOSITOT vizsgaljuk meg, nem az egyeb tartalmat! <br>
+     * Ez tehat nem modosit, csak letrehoz!<br>
+     * @param companyList a request keresben utazo JSON formatumu osztalypeldanyok tombje<br>
+     * @return a JSON bodyban, ha sikeres volt az osztalypeldanyt kapjuk visza, ha mar letezett, akkor a FOUND() uzenetet<br>
+     */        
+    @PostMapping("/v2/createMultiple/")
+    public List<CompanyDto> createV2Companies( @RequestBody @Valid List<CompanyDto> companyList ){
+
+        for( CompanyDto iterator : companyList ){
+        
+            long id = this.dataCompanyService.noFindByIdOrThrow( iterator.getIdCompany() );
+            if ( id > -1 ){
+         
+                // Nincs ilyen rogzitjuk:
+                this.allCompanies.put( iterator.getIdCompany(), iterator ) ;                
+            }
+        }
+
+        return new ArrayList<>( this.allCompanies.values() );
+    }  
     
-    //////////// --- Innen elvalsztodik, mert ketto fajta VALASZ OPCIO letezik, ez az egyik blokk
-    //////////// --- (A) verzio a "ResponseEntity<>" -vel --- //////////////////////
+    /**
+     * /v0/ - 1, GET - Egy ceg-komlex osztalypeldanyt ad vissza egy JSON entitasban, vagy<br>
+     * ugyancsak egy JSON BODY-ban egy NOT-FOUND()-ot!<br>
+     * Mapper es a szerviz reteg hasznalataval<br>
+     * @param companyId amit keresunk<br>
+     * @return a JSON body, amelben vagy a lekerdezett peldany adatai, vagy NOT-FOUND() talalhato<br>
+     */
+    @GetMapping("/v0/{companyId}")
+    public CompanyDto getV0ById( @PathVariable long companyId ){
+    
+        // egyeb adat-output hijan innen toltjuk fel!
+        // adatbazis kapcsoltnal ez majd valtozik!
+        this.dataCompanyService.setCompanyFromDto( this.allCompanies );
+ 
+        return this.companyMapper.companyToDto( this.dataCompanyService.findById(companyId)); 
+       
+    } 
     
     /**
      * /v1/ - 1, GET - Egy ceg-komlex osztalypeldanyt ad vissza egy JSON entitasban, vagy<br>
      * ugyancsak egy JSON BODY-ban egy NOT-FOUND()-ot!<br>
+     * Nelkulozi a szerviz es a mapper retegeket, responseEntityvel dolgozik<br>
      * @param companyId amit keresunk<br>
      * @return a JSON body, amelben vagy a lekerdezett peldany adatai, vagy NOT-FOUND() talalhato<br>
      */
     @GetMapping("/v1/{companyId}")
-    public ResponseEntity<CompanyDto> getById( @PathVariable long companyId ){
+    public ResponseEntity<CompanyDto> getV1ById( @PathVariable long companyId ){
     
         ResponseEntity entity;
         CompanyDto companyDto = this.allCompanies.get(companyId);
@@ -143,7 +257,39 @@ public final class CompanyRestController {
         
         return entity;
     }
-
+        
+    /**
+     * /v2/ - 1, GET - Egy ceg-komlex osztalypeldanyt ad vissza egy JSON entitasban, vagy<br>
+     * ugyancsak egy JSON BODY-ban egy NOT-FOUND()-ot!<br>
+     * Csak a szerviz reteg hasznalataval<br>
+     * @param companyId amit keresunk<br>
+     * @return a JSON body, amelben vagy a lekerdezett peldany adatai, vagy NOT-FOUND() talalhato<br>
+     */
+    @GetMapping("/v2/{companyId}")
+    public CompanyDto getV2ById( @PathVariable long companyId ){
+    
+        CompanyDto companyDto = null;
+        companyDto = this.dataCompanyService.findByIdOrThrow(companyId);        
+        return companyDto;
+    }
+    
+     /**
+     * /v0/ - 2, PUT - modosito metodus<br>
+     * @param companyId Azonosito, amit keresunk es amely ceg adataibol valamit modositani szeretnenk<br>
+     * @param companyDto a request keresben utazo JSON formatumu modosito osztalypeldany- mezo adatok (nem kell a komplett peldany)<br>
+     * @return  a JSON body, amelben vagy a lekerdezett peldany adatai, vagy NOT-FOUND() talalhato<br>
+     */
+    @PutMapping("/v0/{companyId}")
+    public CompanyDto modifyV0Company(  @PathVariable long companyId, 
+                                        @RequestBody @Valid CompanyDto companyDto ){
+        
+   
+        return this.companyMapper
+                   .companyToDto( this.dataCompanyService
+                                      .update( this.companyMapper.dtoToCompany(companyDto)) 
+                                );
+    } 
+    
     /**
      * /v1/ - 2, PUT - modosito metodus<br>
      * @param companyId Azonosito, amit keresunk es amely ceg adataibol valamit modositani szeretnenk<br>
@@ -151,8 +297,8 @@ public final class CompanyRestController {
      * @return  a JSON body, amelben vagy a lekerdezett peldany adatai, vagy NOT-FOUND() talalhato<br>
      */
     @PutMapping("/v1/{companyId}")
-    public ResponseEntity<CompanyDto> modifyCompany( @PathVariable long companyId, 
-                                                     @RequestBody @Valid CompanyDto companyDto ){
+    public ResponseEntity<CompanyDto> modifyV1Company(  @PathVariable long companyId, 
+                                                        @RequestBody @Valid CompanyDto companyDto ){
         
         ResponseEntity entity;
         if( ! this.allCompanies.containsKey(companyId)){
@@ -170,12 +316,22 @@ public final class CompanyRestController {
     } 
     
     /**
+     * /v0/ - 3, DELETE - torles<br>
+     * @param companyId amit torolni szeretnenk<br>
+     */
+    @DeleteMapping("/v0/{companyId}")
+    public void deleteV0Company( @PathVariable long companyId ){
+    
+        this.dataCompanyService.delete( companyId );            
+    }
+    
+    /**
      * /v1/ - 3, DELETE - torles<br>
      * @param companyId amit torolni szeretnenk<br>
      * @return  a JSON body, amelyben vagy a torles sikeres volta OK(), vagy NOT-FOUND() talalhato<br>  
      */
     @DeleteMapping("/v1/{companyId}")
-    public ResponseEntity<CompanyDto> deleteCompany(@PathVariable long companyId){
+    public ResponseEntity<CompanyDto> deleteV1Company( @PathVariable long companyId ){
     
         ResponseEntity entity;
         CompanyDto companyDto = this.allCompanies.get(companyId);
@@ -322,118 +478,7 @@ public final class CompanyRestController {
         }
         return entity;
     }
-    
-    ////////////////////////  --- Innen egy masfajta megoldassal ugyan ezek, egymasik szolgaltatasi vegponton --- //////////////////
-    
-    //////////////////////// ---- (B) THRO -al vagy objektumpeldannyal --- ///////////////////////////
-    
-    /**
-     * VIZSGALAT LETEZESRE! <br>
-     * Ez egy izgalmas valasz leheteseg, mert a throw rengeteg pontos infot vissza tud adni...<br>
-     * De igazan nem tul szep OO alapelveket serto megoldas...<br> 
-     * ...hiszen ket fajta, kulonbozo tipusu kimenete van a metodusnak!<br>
-     * @param companyId amit keresunk<br>
-     * @return es ket fajta kimenet, vagy az osztalypeldany, vagy hibauzenet<br>
-     */
-    private CompanyDto findByIdOrThrow( long companyId ){
-    
-        CompanyDto companyDto = this.allCompanies.get(companyId);        
-        if( companyDto == null ){
-            
-            throw new ResponseStatusException( HttpStatus.NOT_FOUND );
-        }
-        return companyDto;
-    }
-    
-    /**
-     * VIZSGALAT NEN LETEZESRE <br>
-     * Ez egy izgalmas valasz leheteseg, mert a throw rengeteg pontos infot vissza tud adni...<br>
-     * De igazan nem tul szep OO alapelveket serto megoldas...<br> 
-     * ...hiszen ket fajta, kulonbozo tipusu kimenete van a metodusnak!<br>
-     * @param companyId amit keresunk<br>
-     * @return visszaadja ugyan azt az companyId -t amit bekuldtunk vizsgalatra, vagy -1L -t<br>
-     */
-    private long noFindByIdOrThrow( long companyId , boolean HttpStatusUzenet){
-    
-        if( ! this.allCompanies.containsKey( companyId ) ){
-            
-            if ( HttpStatusUzenet ){
-                    
-                throw new ResponseStatusException( HttpStatus.ALREADY_REPORTED );
-            }
-        }else{
-        
-            // nincs meg ilyen
-            companyId = -1L;
-        }
-        return companyId;
-    }
-            
-    /**
-     * POST (/v2-re) - Egy ceg-komlex osztalypeldanyt rogzit be egy JSON entitasbol<br>
-     * Csak azert van ketto belole, hogy barmelyik vegpontra erkezik keres, ugyan azt hajtsa vegre!<br>
-     * A JSON uzenetben utazo AZONOSITOT vizsgaljuk meg, nem az egyeb tartalmat! <br>
-     * Ez tehat nem modosit, csak letrehoz!<br>
-     * @param companyDto a request keresben utazo JSON formatumu osztalypeldany<br>
-     * @return a JSON bodyban, ha sikeres volt az osztalypeldanyt kapjuk visza, ha mar letezett, akkor a FOUND() uzenetet<br>
-     */        
-    @PostMapping("/v2/createSingle/")
-    public CompanyDto createV2Company( @RequestBody @Valid CompanyDto companyDto ){
 
-        long id = noFindByIdOrThrow( companyDto.getIdCompany() , false );
-        if ( id > -1 ){
-
-            // Nincs ilyen rogzitjuk:
-            this.allCompanies.put( companyDto.getIdCompany(), companyDto ) ;
-                System.out.println("- single-rögzitve : " + companyDto.getIdCompany() );                
-        }else{
-
-            System.out.println("- single-kihagyva : " + companyDto.getIdCompany() ); 
-        }
-        return companyDto;
-    }  
-            
-    /**
-     * POST (/v2-re) - Ceg-peldanykat rogzit be egy JSON -ban erkezo tombbol<br>
-     * Csak azert van ketto belole, hogy barmelyik vegpontra erkezik keres, ugyan azt hajtsa vegre!<br>
-     * A JSON uzenetben utazo AZONOSITOT vizsgaljuk meg, nem az egyeb tartalmat! <br>
-     * Ez tehat nem modosit, csak letrehoz!<br>
-     * @param companyList a request keresben utazo JSON formatumu osztalypeldanyok tombje<br>
-     * @return a JSON bodyban, ha sikeres volt az osztalypeldanyt kapjuk visza, ha mar letezett, akkor a FOUND() uzenetet<br>
-     */        
-    @PostMapping("/v2/createMultiple/")
-    public List<CompanyDto> createV2Companies( @RequestBody @Valid List<CompanyDto> companyList ){
-
-        for( CompanyDto iterator : companyList ){
-        
-            long id = noFindByIdOrThrow( iterator.getIdCompany() , false );
-            if ( id > -1 ){
-         
-                // Nincs ilyen rogzitjuk:
-                this.allCompanies.put( iterator.getIdCompany(), iterator ) ; 
-                System.out.println("- multiple-rögzitve : " + iterator.getIdCompany() );                
-            }else{
-            
-                System.out.println("- multiple-kihagyva : " + iterator.getIdCompany() ); 
-            }
-        }
-
-        return new ArrayList<>( this.allCompanies.values() );
-    }  
-    
-    /**
-     * /v2/ - 1, GET - Egy ceg-komlex osztalypeldanyt ad vissza egy JSON entitasban, vagy<br>
-     * ugyancsak egy JSON BODY-ban egy NOT-FOUND()-ot!<br>
-     * @param companyId amit keresunk<br>
-     * @return a JSON body, amelben vagy a lekerdezett peldany adatai, vagy NOT-FOUND() talalhato<br>
-     */
-    @GetMapping("/v2/{companyId}")
-    public CompanyDto getV2ById( @PathVariable long companyId ){
-    
-        CompanyDto companyDto = findByIdOrThrow(companyId);        
-        return companyDto;
-    }
-    
     /**
      * /v2/ - 2, PUT - modosito metodus<br>
      * @param companyId Azonosito, amit keresunk es amely ceg adataibol valamit modositani szeretnenk<br>
@@ -444,7 +489,7 @@ public final class CompanyRestController {
     public CompanyDto modifyV2Company(  @PathVariable long companyId, 
                                         @RequestBody @Valid CompanyDto companyDto ){
         
-        CompanyDto cmDto = findByIdOrThrow(companyId);
+        CompanyDto cmDto = this.dataCompanyService.findByIdOrThrow(companyId);
         cmDto.setIdCompany(companyId);
         this.allCompanies.put(companyId, companyDto);
      
@@ -459,7 +504,7 @@ public final class CompanyRestController {
     @DeleteMapping("/v2/{companyId}")
     public CompanyDto deleteV2Company(@PathVariable long companyId){
     
-        CompanyDto companyDto = findByIdOrThrow(companyId);
+        CompanyDto companyDto = this.dataCompanyService.findByIdOrThrow(companyId);
         this.allCompanies.remove(companyId);
     
         return companyDto;             
@@ -475,7 +520,7 @@ public final class CompanyRestController {
     public CompanyDto addNewV2Employee( @PathVariable long companyId, 
                                         @RequestBody @Valid EmployeeDto employeeDto ){
         
-        CompanyDto companyDto = findByIdOrThrow(companyId); 
+        CompanyDto companyDto = this.dataCompanyService.findByIdOrThrow(companyId); 
         chechkUniqueIdEmployee( companyDto.getEmployees() ,employeeDto.getIdEmployee() );
 
         // Uj bevitel:
@@ -497,7 +542,7 @@ public final class CompanyRestController {
                                         @PathVariable long employeeId, 
                                         @RequestBody @Valid EmployeeDto employeeDto){
         
-        CompanyDto companyDto = findByIdOrThrow(companyId);              
+        CompanyDto companyDto = this.dataCompanyService.findByIdOrThrow(companyId);              
         EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> Objects.equals(e.getIdEmployee(), employeeDto.getIdEmployee()) ).findFirst().get();
         
         if ( empdto == null ){
@@ -527,7 +572,7 @@ public final class CompanyRestController {
     public CompanyDto deleteV2EmployeeFromCompany(  @PathVariable long companyId, 
                                                     @PathVariable long employeeId ){
         
-        CompanyDto companyDto = findByIdOrThrow(companyId); 
+        CompanyDto companyDto = this.dataCompanyService.findByIdOrThrow(companyId); 
         EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> e.getIdEmployee() == employeeId ).findFirst().get();
         if ( empdto != null ){  
 
@@ -552,7 +597,7 @@ public final class CompanyRestController {
     public CompanyDto replaceAllV2Employee( @PathVariable long companyId,                                         
                                             @RequestBody @Valid List<EmployeeDto> newEmployeesDto){    
         
-        CompanyDto companyDto = findByIdOrThrow(companyId); 
+        CompanyDto companyDto = this.dataCompanyService.findByIdOrThrow(companyId); 
         
         // Kitoroljuk az osszes dolgozot:
         companyDto.getEmployees().clear();

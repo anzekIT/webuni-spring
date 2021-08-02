@@ -97,6 +97,5 @@ public class CompanyMapperImpl implements CompanyMapper{
         }
         
         return map;
-    }
-    
+    }    
 }

@@ -26,4 +26,5 @@ public interface CompanyMapper {
     Company dtoToCompany( CompanyDto companyDto );
 
     public Map<Long, Company> dtosToCompanies(Map<Long, CompanyDto> companyDto);
+
 }
