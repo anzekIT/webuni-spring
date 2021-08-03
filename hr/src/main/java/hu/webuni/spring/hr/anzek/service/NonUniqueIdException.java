@@ -8,37 +8,36 @@ package hu.webuni.spring.hr.anzek.service;
 
 /**
  * Sajat, kivetelt dobo osztaly<br>
- * A munlvalllaoi kod egyediseget ellenorzo osztaly<br>
+ * Azonositokod egyediseget ellenorzo osztaly<br>
  * A konstruktorokat az "ALT-INS" -re az "exetends RuntimeException" hozza magaval !<br>
  * @author User
  */
-public class NonUniqueIdEmployeeException extends RuntimeException {
+public class NonUniqueIdException extends RuntimeException {
 
 
-    public NonUniqueIdEmployeeException() {
+    public NonUniqueIdException() {
     }
 
     /**
      * Leginkabb ezt a konstruktort hasunaljuk<br>
-     * Ha numerikus adat a hibas ertek, ide akkor is "String" -kent jon be!<br>
+     * Ha numerikus adat a hibas ertek, ide akkor is "String" -kent jojjon be!<br>
      * @param errorValue visszaadja az ososztaly a messaget<br>
      * Ha megadjuk neki, akkor azt, amit mi megadtunk neki!<br>
      */
-    public NonUniqueIdEmployeeException( String errorValue ) {
+    public NonUniqueIdException( String errorValue ) {
         
-        super("Létező Munkavallalói azonositót (id-Employee = '" + errorValue + "' adott meg!" );
+        super("Létező azonositót ('" + errorValue + "') adott meg!" );
     }
 
-    public NonUniqueIdEmployeeException(String message,
-                                        Throwable cause) {
+    public NonUniqueIdException(String message,  Throwable cause) {
         super(message, cause);
     }
 
-    public NonUniqueIdEmployeeException(Throwable cause) {
+    public NonUniqueIdException(Throwable cause) {
         super(cause);
     }
 
-    public NonUniqueIdEmployeeException(String message,
+    public NonUniqueIdException(String message,
                                         Throwable cause,
                                         boolean enableSuppression,
                                         boolean writableStackTrace) {

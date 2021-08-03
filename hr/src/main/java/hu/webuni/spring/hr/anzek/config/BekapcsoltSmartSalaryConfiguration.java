@@ -5,11 +5,11 @@
  */
 package hu.webuni.spring.hr.anzek.config;
 
-import hu.webuni.spring.hr.anzek.service.EmployeeService;
-import hu.webuni.spring.hr.anzek.service.SmartEmployeeService;
+import hu.webuni.spring.hr.anzek.service.SmartEmployeeSalaryServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import hu.webuni.spring.hr.anzek.service.EmployeeSalaryService;
 
 /**
  * Eles uzemi Munkavallaloi konfiguracios bean<br>
@@ -21,9 +21,9 @@ import org.springframework.context.annotation.Profile;
 public class BekapcsoltSmartSalaryConfiguration {
 
     @Bean
-    public EmployeeService employeeService(){
+    public EmployeeSalaryService employeeService(){
         
         System.out.println("SMART******");
-        return new SmartEmployeeService();
+        return new SmartEmployeeSalaryServiceImpl();
     }     
 }

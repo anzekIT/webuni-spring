@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * "int getPayRaisePercent( Employee employe )"<br>
  * @author User
  */
-public interface EmployeeService {
+public interface EmployeeSalaryService {
     
     /**
      * Megadaja, hany szazalekos fizetesemeles jar az adott (parameterben szereplo) munkavallalo szamara<br>

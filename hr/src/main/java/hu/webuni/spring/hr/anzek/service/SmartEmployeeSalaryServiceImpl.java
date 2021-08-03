@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
  * @author User
  */
 @Service
-public class SmartEmployeeService implements Serializable,EmployeeService {
+public class SmartEmployeeSalaryServiceImpl implements Serializable,EmployeeSalaryService {
 
     @Autowired
     HrConfigProperties cfgProp;

@@ -3,7 +3,7 @@ package hu.webuni.spring.hr.anzek;
 import hu.webuni.spring.hr.anzek.config.HrConfigProperties;
 import hu.webuni.spring.hr.anzek.dto.EmployeeDto;
 import hu.webuni.spring.hr.anzek.model.Employee;
-import hu.webuni.spring.hr.anzek.service.SalaryService;
+import hu.webuni.spring.hr.anzek.service.SalariesService;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HrApplication implements CommandLineRunner {
 
     @Autowired
-    public SalaryService salaryService;
+    public SalariesService salaryService;
     
     @Autowired
     HrConfigProperties configProperties;

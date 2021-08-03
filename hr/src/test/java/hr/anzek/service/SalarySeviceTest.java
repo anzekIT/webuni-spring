@@ -8,7 +8,7 @@ package hr.anzek.service;
 
 import hu.webuni.spring.hr.anzek.config.HrConfigProperties;
 import hu.webuni.spring.hr.anzek.model.Employee;
-import hu.webuni.spring.hr.anzek.service.DefaultEmployeeService;
+import hu.webuni.spring.hr.anzek.service.DefaultEmployeeSalaryServiceImpl;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,7 +26,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class SalarySeviceTest {
     
     @InjectMocks
-    DefaultEmployeeService defaultEmployeeService; 
+    DefaultEmployeeSalaryServiceImpl defaultEmployeeService; 
 
     @Mock
     HrConfigProperties figProperties;

@@ -4,20 +4,33 @@
 package hu.webuni.spring.hr.anzek.model;
 
 import hu.webuni.spring.hr.anzek.dto.EmployeeDto;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 /**
  *
  * @author User
  */
-public class Company {
+@Entity
+@EntityScan
+@NamedQuery(name="CompanyIdCount", query="select count(c.idCompany) from Company c where c.idCompany = :id")
+public class Company implements Serializable {
     
+    @Id
+    // peldaul ilyen is lehet (az az AUTOINC egyik valtozata - 3 is van -):
+    // @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue
     private long idCompany;
     private int registrationNumber;
     private String name;
     private String address;
-    
+        
     private List<EmployeeDto> employees = new ArrayList<>();
     
     public Company(){

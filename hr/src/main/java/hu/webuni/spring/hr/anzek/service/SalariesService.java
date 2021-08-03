@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
  * @author User
  */
 @Service
-public class SalaryService {
+public class SalariesService {
     
     /**
      * AZ INJEKTOR MAGYARAZATA : <br>
@@ -40,7 +40,7 @@ public class SalaryService {
      * @param employeeService az Injektalt service Interface<br>
      */  
     @Autowired
-    private EmployeeService employeeService ;    
+    private EmployeeSalaryService employeeService ;    
     
     private int fizetesEmeles = 0;
     private Employee employee = null ;
@@ -76,11 +76,11 @@ public class SalaryService {
         return this.employee;
     }
 
-    public EmployeeService getEmployeeService() {
+    public EmployeeSalaryService getEmployeeService() {
         return employeeService;
     }
 
-    public void setEmployeeService(EmployeeService employeeService) {
+    public void setEmployeeService(EmployeeSalaryService employeeService) {
         this.employeeService = employeeService;
     }
 

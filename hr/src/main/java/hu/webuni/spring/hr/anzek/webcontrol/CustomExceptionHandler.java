@@ -6,7 +6,7 @@
 package hu.webuni.spring.hr.anzek.webcontrol;
 
 
-import hu.webuni.spring.hr.anzek.service.NonUniqueIdEmployeeException;
+import hu.webuni.spring.hr.anzek.service.NonUniqueIdException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -44,9 +44,9 @@ public class CustomExceptionHandler {
      * @param request a keres, amiben a hiba szerepel<br>
      * @return egy JSON body-t ad vissza a komplett hibaval, es minden informacioval<br>
      */
-    @ExceptionHandler(NonUniqueIdEmployeeException.class)
+    @ExceptionHandler(NonUniqueIdException.class)
     public ResponseEntity<MyError> 
-        handleNonUniqueId( NonUniqueIdEmployeeException e, WebRequest request){
+        handleNonUniqueId( NonUniqueIdException e, WebRequest request){
     
         log.warn( e.getMessage() , e );
         return ResponseEntity

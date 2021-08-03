@@ -52,4 +52,20 @@ public interface EmployeeMapper {
      * @return teljes DTO MAP<br>
      */
     public Map<Long, EmployeeDto> employeesDtos( Map<Long, Employee> employeeMap );
+
+    /**
+     * LIST - CONVERTER<br>
+     * EmployeList to EmployeeDtoList<br>
+     * @param employeeList a bejovo lista<br>
+     * @return dtoList<br>
+     */
+    public List<EmployeeDto> employeeListToDtoList(List<Employee> employeeList);
+    
+    /**
+     * LIST - CONVERTER<br>
+     * EmployeDtoList to EmployeeList<br>
+     * @param employeeDtoList a bejovo Dto lista<br>
+     * @return EmployeeList<br>
+     */
+    public List<Employee> employeeDtoListToEmployeeList( List<EmployeeDto> employeeDtoList );
 }

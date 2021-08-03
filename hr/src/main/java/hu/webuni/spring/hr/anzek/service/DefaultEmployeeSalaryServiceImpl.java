@@ -21,13 +21,13 @@ import org.springframework.stereotype.Service;
  * @author User
  */
 @Service
-public class DefaultEmployeeService implements Serializable,EmployeeService {
+public class DefaultEmployeeSalaryServiceImpl implements Serializable,EmployeeSalaryService {
     
 
     @Autowired
     HrConfigProperties cfgProp;
 
-    public DefaultEmployeeService() {
+    public DefaultEmployeeSalaryServiceImpl() {
     }
         
     /**

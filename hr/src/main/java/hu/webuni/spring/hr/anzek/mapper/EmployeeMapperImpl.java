@@ -117,5 +117,44 @@ public class EmployeeMapperImpl implements EmployeeMapper {
                     );
         return employeesDto;
     }
+
+    @Override
+    public List<EmployeeDto> employeeListToDtoList(List<Employee> employeeList) {
         
+        List<EmployeeDto> dtoList = new ArrayList<>();
+        
+        employeeList.forEach( e -> {
+                            EmployeeDto emp = new EmployeeDto();
+                            emp.setIdEmployee( e.getIdEmployee() );
+                            emp.setJobPosition( e.getJobPosition() );
+                            emp.setMonthlySalary( e.getMonthlySalary() );
+                            emp.setStartOfEmployment( e.getStartOfEmployment() );
+                            emp.setTorzsGarda( e.getTorzsGarda() );
+                            emp.setWorkerName( e.getWorkerName() );
+
+                            dtoList.add(emp);
+                            }
+                    );
+        return dtoList;
+    }
+    
+    @Override
+    public List<Employee> employeeDtoListToEmployeeList( List<EmployeeDto> employeeDtoList ) {
+        
+        List<Employee> list = new ArrayList<>();
+        
+        employeeDtoList.forEach( e -> {
+                                Employee emp = new Employee();
+                                emp.setIdEmployee( e.getIdEmployee() );
+                                emp.setJobPosition( e.getJobPosition() );
+                                emp.setMonthlySalary( e.getMonthlySalary() );
+                                emp.setStartOfEmployment( e.getStartOfEmployment() );
+                                emp.setTorzsGarda( e.getTorzsGarda() );
+                                emp.setWorkerName( e.getWorkerName() );
+
+                                list.add(emp);
+                                }
+                            );
+        return list;
+    }     
 }

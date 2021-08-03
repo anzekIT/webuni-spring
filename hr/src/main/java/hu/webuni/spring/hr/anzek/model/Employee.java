@@ -5,7 +5,13 @@
  */
 package hu.webuni.spring.hr.anzek.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 
 /**
@@ -17,11 +23,18 @@ import java.time.LocalDateTime;
  * A havi jovedelme "monthlySalary"<br>
  * @author User
  */
-public class Employee {
+@Entity
+@EntityScan
+@NamedQuery(name="EmployeeIdCount", query="select count(e.idEmployee) from Employee e where e.idEmployee = :id")
+public class Employee implements Serializable {
     
     /**
      * A munkavalallo azonositoja <br>
      */
+    @Id
+    // peldaul ilyen is lehet (az az AUTOINC egyik valtozata - 3 is van -):
+    // @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue    
     private Long idEmployee;
     /**
      * A dolgozo neve <br>
