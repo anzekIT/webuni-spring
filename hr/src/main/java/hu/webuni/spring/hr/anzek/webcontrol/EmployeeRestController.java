@@ -6,6 +6,7 @@
 package hu.webuni.spring.hr.anzek.webcontrol;
 
 import hu.webuni.spring.hr.anzek.dto.EmployeeDto;
+import hu.webuni.spring.hr.anzek.mapper.EmployeeMapper;
 import hu.webuni.spring.hr.anzek.service.EmployeeDataService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -41,26 +42,25 @@ public class EmployeeRestController {
     @Autowired
     EmployeeDataService dataService;
     
+    @Autowired
+    EmployeeMapper employeeMapper;
+    
     /**
      * lesz olyan funkcio, hogy adott ID-ju tetelt adjunk vissza, hogy modositsuk, hogy toroljuk, stb.   
      * Itt nem LISTA-ban taroljuk (arrayList-ben), mert az csak linearis szekvenciaval jarhato be
      * Ezert most a MAP<K,V> -ben taroljuk le az Employee peldanyokat es az ID-juket hasznaljuk KULCS-kent : 
      */
     private final Map< Long, EmployeeDto > employees = new HashMap<>();
-    
-    /**
-     * INIT BLOKK:<br>
-     * Az adatokat most meg csak egy MAP<K,V>-ben taroljuk (nem adatbazisban)<br>
-     * nem konstruktor, nem metodus hanem egy szimpla inicializalo blokk: <br>      
-     */   
-    {
-       
-        this.employees.put( 1L, new EmployeeDto ( 1L, "Kovács Patkó", "Fo_fo_Mufti", 500000, LocalDateTime.of( 2015, 1, 1, 0, 0, 0 ) ) );
-        this.employees.put( 2L, new EmployeeDto ( 2L, "Siker Kulcsa", "Fo_al_Vezír", 400000, LocalDateTime.of( 2010, 1, 1, 0, 0, 0 ) ) );
-        this.employees.put( 3L, new EmployeeDto ( 3L, "Mocsalyi Muhi", "Al_fo_Manager", 300000, LocalDateTime.of( 2010, 1, 1, 0, 0, 0 ) ) );
-        this.employees.put( 4L, new EmployeeDto ( 4L, "Roggyant Henger", "Al_al_Főnök", 200000, LocalDateTime.of( 2010, 1, 1, 0, 0, 0 ) ) );
-        this.employees.put( 5L, new EmployeeDto ( 5L, "Alsó Gatya", "Munkás", 100000, LocalDateTime.of( 2010, 1, 1, 0, 0, 0 ) ) );
-    }  
+            
+    ///**
+    // * INIT BLOKK:<br>
+    // * Az adatokat most meg csak egy MAP<K,V>-ben taroljuk (nem adatbazisban)<br>
+    // * nem konstruktor, nem metodus hanem egy szimpla inicializalo blokk: <br>      
+    // */   
+    //{
+    //    List<EmployeeDto> dtos = this.employeeMapper.employeesToDtos( this.dataService.findAll());        
+    //    dtos.forEach( e -> this.employees.put( e.getIdEmployee(), e ) );
+    //}  
 
     /**
      * GET-METHOD<br>
@@ -76,8 +76,11 @@ public class EmployeeRestController {
         // minden objektum value() erteke egy kollekcio-lista:
         // igy pedig lenyegeben egy tomblista lesz belole:
         // Alapvetoen egy JSON objectum jon letre:
-        System.out.println("Ez fut -> EmployeeRestFulController.getAll()");
-        return new ArrayList<>( this.employees.values() );
+        // System.out.println("Ez fut -> EmployeeRestFulController.getAll()");
+        // return new ArrayList<>( this.employees.values() );
+        this.dataService.setEmployee( this.employeeMapper.dtosToEmployees( this.employees ) );
+        
+        return this.employeeMapper.employeesToDtos( this.dataService.findAll());                       
     }
     
     /**

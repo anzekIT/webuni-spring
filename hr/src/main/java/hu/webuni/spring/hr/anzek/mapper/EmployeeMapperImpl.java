@@ -9,7 +9,9 @@ package hu.webuni.spring.hr.anzek.mapper;
 import hu.webuni.spring.hr.anzek.dto.EmployeeDto;
 import hu.webuni.spring.hr.anzek.model.Employee;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Service;
 
 
@@ -73,6 +75,47 @@ public class EmployeeMapperImpl implements EmployeeMapper {
         }
         
         return cds;
+    }
+
+    @Override
+    public Map<Long, Employee> dtosToEmployees(Map<Long, EmployeeDto> employeesDto) {
+    
+        Map<Long, Employee> employees = new HashMap<>();        
+        List<EmployeeDto> list = (List<EmployeeDto>) employeesDto.values();
+        
+        list.forEach( e -> {
+                            Employee emp = new Employee();
+                            emp.setIdEmployee( e.getIdEmployee() );
+                            emp.setJobPosition( e.getJobPosition() );
+                            emp.setMonthlySalary( e.getMonthlySalary() );
+                            emp.setStartOfEmployment( e.getStartOfEmployment() );
+                            emp.setTorzsGarda( e.getTorzsGarda() );
+                            emp.setWorkerName( e.getWorkerName() );
+
+                            employees.put( e.getIdEmployee(), emp );
+                            }
+                    );
+        return employees;
+    }
+
+    @Override
+    public Map<Long, EmployeeDto> employeesDtos(Map<Long, Employee> employeeMap) {
+        Map<Long, EmployeeDto> employeesDto = new HashMap<>();        
+        List<Employee> list = (List<Employee>) employeeMap.values();
+        
+        list.forEach( e -> {
+                            EmployeeDto emp = new EmployeeDto();
+                            emp.setIdEmployee( e.getIdEmployee() );
+                            emp.setJobPosition( e.getJobPosition() );
+                            emp.setMonthlySalary( e.getMonthlySalary() );
+                            emp.setStartOfEmployment( e.getStartOfEmployment() );
+                            emp.setTorzsGarda( e.getTorzsGarda() );
+                            emp.setWorkerName( e.getWorkerName() );
+
+                            employeesDto.put( e.getIdEmployee(), emp );
+                            }
+                    );
+        return employeesDto;
     }
         
 }

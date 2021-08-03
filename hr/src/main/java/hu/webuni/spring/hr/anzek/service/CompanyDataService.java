@@ -11,6 +11,7 @@ import hu.webuni.spring.hr.anzek.dto.EmployeeDto;
 import hu.webuni.spring.hr.anzek.mapper.CompanyMapper;
 import hu.webuni.spring.hr.anzek.model.Company;
 import hu.webuni.spring.hr.anzek.model.Employee;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +33,13 @@ public class CompanyDataService {
     CompanyMapper companyMapper;
     
     private Map< Long, Company> companies = new HashMap<>();
-
+    private Map< Long, Employee> employees = new HashMap<>();
+     
+    /**
+     * INIT BLOKK:<br>
+     * Az adatokat most meg csak egy MAP<K,V>-ben taroljuk (nem adatbazisban)<br>
+     * nem konstruktor, nem metodus hanem egy szimpla inicializalo blokk: <br>      
+     */     
     {
         // az Integralt - teszt (a "CompanyControllerIT") miatt kell legyen benne valami:
         List<EmployeeDto> e = new ArrayList<>();
@@ -41,7 +48,13 @@ public class CompanyDataService {
         company.put( 99L , new Company( 99L, 999, "name99", "address99", e ) );
        
         this.setCompany( company );
-    }
+         
+        this.employees.put( 1L, new Employee( 1L, "Kovács Patkó", "Fo_fo_Mufti", 500000, LocalDateTime.of( 2015, 1, 1, 0, 0, 0 ) ) );
+        this.employees.put( 2L, new Employee( 2L, "Siker Kulcsa", "Fo_al_Vezír", 400000, LocalDateTime.of( 2010, 1, 1, 0, 0, 0 ) ) );
+        this.employees.put( 3L, new Employee( 3L, "Mocsalyi Muhi", "Al_fo_Manager", 300000, LocalDateTime.of( 2010, 1, 1, 0, 0, 0 ) ) );
+        this.employees.put( 4L, new Employee( 4L, "Roggyant Henger", "Al_al_Főnök", 200000, LocalDateTime.of( 2010, 1, 1, 0, 0, 0 ) ) );
+        this.employees.put( 5L, new Employee( 5L, "Alsó Gatya", "Munkás", 100000, LocalDateTime.of( 2010, 1, 1, 0, 0, 0 ) ) );
+    }     
     
     /**
      *  Ceg-adatok Objektum - DTO - Entitas szerviz osztalya<br>
