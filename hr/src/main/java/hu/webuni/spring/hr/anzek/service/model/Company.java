@@ -1,7 +1,7 @@
 /*
  *29. 17:09-nel 
  */
-package hu.webuni.spring.hr.anzek.service.dataconvert.model;
+package hu.webuni.spring.hr.anzek.service.model;
 
 import hu.webuni.spring.hr.anzek.service.dataconvert.dto.EmployeeDto;
 import java.io.Serializable;

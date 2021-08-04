@@ -6,6 +6,9 @@
 package hu.webuni.spring.hr.anzek.service.dataconvert.dto;
 
 import java.time.LocalDateTime;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Positive;
 
 
 /**
@@ -21,6 +24,7 @@ public class EmployeeDto{
     /**
      * A dolgozo neve <br>
      */
+    @NotEmpty
     private String workerName;
     /**
      * Munkakori beosztasa <br>
@@ -29,11 +33,13 @@ public class EmployeeDto{
     /**
      * A havi jovedelme <br>
      */
+    @Positive
     private Integer monthlySalary;
 
     /**
      * A munkaviszony kezdete <br>
      */
+    @Past
     private LocalDateTime startOfEmployment;
 
     /**

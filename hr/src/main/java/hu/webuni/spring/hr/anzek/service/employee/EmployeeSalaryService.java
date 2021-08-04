@@ -5,7 +5,7 @@
  */
 package hu.webuni.spring.hr.anzek.service.employee;
 
-import hu.webuni.spring.hr.anzek.service.dataconvert.model.Employee;
+import hu.webuni.spring.hr.anzek.service.model.Employee;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -2,7 +2,7 @@ package hu.webuni.spring.hr.anzek;
         
 import hu.webuni.spring.hr.anzek.config.HrConfigProperties;
 import hu.webuni.spring.hr.anzek.service.dataconvert.dto.EmployeeDto;
-import hu.webuni.spring.hr.anzek.service.dataconvert.model.Employee;
+import hu.webuni.spring.hr.anzek.service.model.Employee;
 import hu.webuni.spring.hr.anzek.service.employee.SalariesService;
 import java.time.LocalDateTime;
 import java.util.HashMap;

@@ -7,7 +7,7 @@ package hu.webuni.spring.hr.anzek.service.dataconvert.mapper;
 
 
 import hu.webuni.spring.hr.anzek.service.dataconvert.dto.CompanyDto;
-import hu.webuni.spring.hr.anzek.service.dataconvert.model.Company;
+import hu.webuni.spring.hr.anzek.service.model.Company;
 import java.util.List;
 import java.util.Map;
 import org.mapstruct.Mapper;

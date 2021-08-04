@@ -6,13 +6,16 @@
 package hu.webuni.spring.hr.anzek.service.employee;
 
 
-import hu.webuni.spring.hr.anzek.service.dataconvert.model.Employee;
+import hu.webuni.spring.hr.anzek.service.model.Employee;
 import hu.webuni.spring.hr.anzek.service.dataconvert.repository.EmployeeRepository;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 
 /**
@@ -23,7 +26,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmployeeJPADataService {
     
-    // mas -egy szintel lejjebbi - megoldas (repository nelkuli) :
+    // mas -egy szintel lejjebbi - megoldas (repository nelkuli) 
+    // de bennehagytam a lenti metodus mukodese miatt:
+    // public List<Employee> findByFieldvalue( String fieldName, String relation, String value )
     @PersistenceContext
     EntityManager em;
 
@@ -35,7 +40,8 @@ public class EmployeeJPADataService {
      */
     public EmployeeJPADataService() {
     }
-        
+    
+    @Transactional
     public Employee save( Employee employee){
     
         Employee e = null;
@@ -50,6 +56,7 @@ public class EmployeeJPADataService {
         // return this.em.save(employee);
     }    
     
+    @Transactional
     public Employee update( Employee employee ){
     
         Employee e = null;
@@ -74,9 +81,12 @@ public class EmployeeJPADataService {
         
         // mas -egy szintel lejjebbi - megoldas (repository nelkuli) :
         // return em.find( Employee.class, id );
-        return this.employeeRepository.findById(id).get();
+        
+        Employee employee = this.employeeRepository.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return employee;
     }
     
+    @Transactional
     public void delete( long id ){
     
         // mas -egy szintel lejjebbi - megoldas (repository nelkuli) :

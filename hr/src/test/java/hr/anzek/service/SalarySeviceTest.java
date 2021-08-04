@@ -7,7 +7,7 @@ package hr.anzek.service;
 
 
 import hu.webuni.spring.hr.anzek.config.HrConfigProperties;
-import hu.webuni.spring.hr.anzek.service.dataconvert.model.Employee;
+import hu.webuni.spring.hr.anzek.service.model.Employee;
 import hu.webuni.spring.hr.anzek.service.employee.DefaultEmployeeSalaryServiceImpl;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;

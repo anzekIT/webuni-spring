@@ -6,10 +6,11 @@
 package hu.webuni.spring.hr.anzek.service.dataconvert.mapper;
 
 import hu.webuni.spring.hr.anzek.service.dataconvert.dto.EmployeeDto;
-import hu.webuni.spring.hr.anzek.service.dataconvert.model.Employee;
+import hu.webuni.spring.hr.anzek.service.model.Employee;
 import java.util.List;
 import java.util.Map;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * EMPLOYEE / DTO MAPPER -SPRING<br>
@@ -23,6 +24,17 @@ public interface EmployeeMapper {
      * @param employees list os Employee()<br>
      * @return DTO list<br>
      */
+    // FONTOS:
+    // ---------
+    // Van itt ez a @MApping( x -> y ) annotacio!
+    // Persze ennek a mapping annotacionak ugyan sok ertelme nincs
+    // de ha elternenek a mezeonevek, igy lehetne oket azonossa tenni!
+    // HA MUKODNE az AUTOMATIKUS MapperImplementacio...
+    // Ha mukodne, a generalt fajlt ide tenne, ebbe a package-be :
+    // "hr.target.classes.generated-sources.annotations"
+    // Meg kell csinalni az masik iranyu konverzio eseteben is!
+    // es persze minden metoduson!
+    @Mapping( target="workerName", source="workerName")
     List<EmployeeDto> employeesToDtos( List<Employee> employees );
     
     /**

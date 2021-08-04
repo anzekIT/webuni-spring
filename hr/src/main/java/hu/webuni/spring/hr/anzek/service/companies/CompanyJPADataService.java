@@ -6,11 +6,13 @@
 package hu.webuni.spring.hr.anzek.service.companies;
 
 import hu.webuni.spring.hr.anzek.service.dataconvert.mapper.CompanyMapper;
-import hu.webuni.spring.hr.anzek.service.dataconvert.model.Company;
+import hu.webuni.spring.hr.anzek.service.dataconvert.repository.CompanyRepository;
+import hu.webuni.spring.hr.anzek.service.model.Company;
 import hu.webuni.spring.hr.anzek.service.exceptions.NonUniqueIdException;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+// oldverzio:
+// import javax.persistence.EntityManager;
+// import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +27,11 @@ public class CompanyJPADataService {
     @Autowired
     CompanyMapper companyMapper;
     
-    @PersistenceContext
-    EntityManager em;
+    //@PersistenceContext
+    //EntityManager em;
+    
+    @Autowired
+    CompanyRepository companyRepository;
     
     /**
      * Uj tetel mentese ! (Kizarolag csak "UJ" es nem itt van a modosiitas!)<br>
@@ -47,10 +52,17 @@ public class CompanyJPADataService {
         //     company = null;
         // }
         
-        checkUniqueComanyId( company.getIdCompany() );
-        em.persist( company );
+        // mas -egy szintel lejjebbi - megoldas (repository nelkuli) :
+        // checkUniqueEmployeeId( employee.getIdEmployee() );
+        // checkUniqueComanyId( company.getIdCompany() );
+        // em.persist( company );
+        // return company;
+        Company comp = null;
+        if ( ! this.companyRepository.existsById( company.getIdCompany() )){
         
-        return company;
+            comp = this.companyRepository.save( company );
+        }
+        return comp;        
     }
 
     /**
@@ -60,13 +72,18 @@ public class CompanyJPADataService {
      */
     private void checkUniqueComanyId( Long id ){
     
-        Long elofordulas = em.createNamedQuery( "Company.CompanyIdCount" , Long.class )
-                                                .setParameter("id", id)
-                                                .getSingleResult();
-        if( elofordulas > 0 ){
-    
-            throw new NonUniqueIdException( "Cegazonosito : " + id.toString() );
-        }
+        //Long elofordulas = em.createNamedQuery( "Company.CompanyIdCount" , Long.class )
+        //                                        .setParameter("id", id)
+        //                                        .getSingleResult();
+        //if( elofordulas > 0 ){
+        //
+        //    throw new NonUniqueIdException( "Cegazonosito : " + id.toString() );
+        //}
+        if ( ! this.companyRepository.existsById( id ) ){
+            
+            @SuppressWarnings({"ThrowableInstanceNotThrown", "ThrowableInstanceNeverThrown"})
+            NonUniqueIdException nthrow = new NonUniqueIdException( "Cegazonosito : " + id );
+        }   
     }
     
     /**
@@ -91,8 +108,15 @@ public class CompanyJPADataService {
         // }
         // return company;
         
-        return em.merge( company );
-    
+        // egy kicsit elozo verzio ( a PersistenceContext EntityManager valtozata) :
+        // return em.merge( company );
+        
+        Company comp = null;
+        if ( this.companyRepository.existsById( company.getIdCompany() )){
+        
+            comp = this.companyRepository.save( company );
+        }
+        return comp; 
     }
     
     /**
@@ -103,8 +127,11 @@ public class CompanyJPADataService {
     
         // old-verzio - memoriabol szedett adatokhoz:
         // return new ArrayList<>(this.companies.values());
-        // ez pl egy sql (nativ) keres kodja :
-        return em.createNativeQuery( "select * from Company" , Company.class ).getResultList();
+        
+        // ezis oldverzio a PersistenceContext EntityManager valtozata) :
+        // ez egy sql (nativ) keresesi koddal :
+        // return em.createNativeQuery( "select * from Company" , Company.class ).getResultList();
+        return this.companyRepository.findAll();
     }
     
     /**
@@ -116,8 +143,16 @@ public class CompanyJPADataService {
 
         // old-verzio - memoriabol szedett adatokhoz:
         // return this.companies.get(id);
+        
         // ez pl egy sql (nativ) keres kodja :
-        return em.find( Company.class, id );
+        // old verzio egy szintel lejjebb:
+        // return em.find( Company.class, id );
+        
+        // ezis oldverzio a PersistenceContext EntityManager valtozata) :
+        // Company compny = this.companyRepository.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        // return compny;     
+        
+        return this.companyRepository.findById( id ).get();
     }
     
     /**
@@ -132,7 +167,11 @@ public class CompanyJPADataService {
         // es a tobbi refres( Object o ) > nem jol mutatja, 
         // nem egyszerűen csak egy barmilyen tipust kell, hanem ENTITAS -t kell atadi!
         // es az azzal valo egyezoseg eseten torol
-        em.remove( this.findById(id) );
+        
+        // ezis oldverzio a PersistenceContext EntityManager valtozata) :
+        // em.remove( this.findById(id) );
+        
+        this.companyRepository.deleteById(id);
     }    
     
     //private Map< Long, Company> companies = new HashMap<>();

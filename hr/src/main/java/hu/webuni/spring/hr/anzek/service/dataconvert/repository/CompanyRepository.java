@@ -6,14 +6,13 @@
 package hu.webuni.spring.hr.anzek.service.dataconvert.repository;
 
 
-import hu.webuni.spring.hr.anzek.service.model.Employee;
+import hu.webuni.spring.hr.anzek.service.model.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 
 /**
  *
  * @author User
  */
-public interface EmployeeRepository extends JpaRepository<Employee, Long>{
+public interface CompanyRepository  extends JpaRepository<Company, Long>{
     
 }

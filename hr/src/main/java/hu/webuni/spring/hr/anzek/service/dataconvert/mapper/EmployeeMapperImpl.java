@@ -7,7 +7,7 @@ package hu.webuni.spring.hr.anzek.service.dataconvert.mapper;
 
 
 import hu.webuni.spring.hr.anzek.service.dataconvert.dto.EmployeeDto;
-import hu.webuni.spring.hr.anzek.service.dataconvert.model.Employee;
+import hu.webuni.spring.hr.anzek.service.model.Employee;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

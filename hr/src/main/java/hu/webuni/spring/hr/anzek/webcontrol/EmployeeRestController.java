@@ -7,15 +7,12 @@ package hu.webuni.spring.hr.anzek.webcontrol;
 
 import hu.webuni.spring.hr.anzek.service.dataconvert.dto.EmployeeDto;
 import hu.webuni.spring.hr.anzek.service.dataconvert.mapper.EmployeeMapper;
-import hu.webuni.spring.hr.anzek.service.dataconvert.model.Employee;
+import hu.webuni.spring.hr.anzek.service.model.Employee;
 import hu.webuni.spring.hr.anzek.service.dataconvert.repository.EmployeeRepository;
 import hu.webuni.spring.hr.anzek.service.employee.EmployeeJPADataService;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +21,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 
 /**
@@ -46,8 +44,10 @@ public class EmployeeRestController {
     @Autowired
     EmployeeMapper employeeMapper;
 
-    @Autowired
-    EmployeeRepository employeeRepository ;
+    private Employee findByIdOrThrow( long id ){
+    
+        return this.dataEmployeeService.findById(id);
+    }
     
     /**
      * GET-METHOD<br>
@@ -70,7 +70,7 @@ public class EmployeeRestController {
         //
         //return this.employeeMapper.employeesToDtos( this.dataService.findAll());        
         
-        return this.employeeMapper.employeesToDtos(this.dataEmployeeService.findAll() );
+        return this.employeeMapper.employeesToDtos( this.dataEmployeeService.findAll() );
     }
     
     /**
@@ -103,7 +103,8 @@ public class EmployeeRestController {
         //}
         //return entity;
         
-        return this.employeeMapper.employeeToDto(this.dataEmployeeService.findById( id ));  
+        Employee employee = this.findByIdOrThrow(id);
+        return this.employeeMapper.employeeToDto( employee );  
     }
  
     /**
