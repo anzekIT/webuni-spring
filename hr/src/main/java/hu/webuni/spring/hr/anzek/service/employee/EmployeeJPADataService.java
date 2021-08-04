@@ -9,6 +9,7 @@ package hu.webuni.spring.hr.anzek.service.employee;
 import hu.webuni.spring.hr.anzek.service.model.Employee;
 import hu.webuni.spring.hr.anzek.service.dataconvert.repository.EmployeeRepository;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -77,12 +78,18 @@ public class EmployeeJPADataService {
         return this.employeeRepository.findAll();
     }
     
-    public Employee findById( long id ){
+    public Optional<Employee> findById( long id ){
         
         // mas -egy szintel lejjebbi - megoldas (repository nelkuli) :
         // return em.find( Employee.class, id );
         
-        Employee employee = this.employeeRepository.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Optional<Employee> employee = this.employeeRepository.findById(id);
+        if ( employee == null ){
+        
+              @SuppressWarnings({"ThrowableInstanceNotThrown", "ThrowableInstanceNeverThrown"})
+              ResponseStatusException hse = new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        
         return employee;
     }
     

@@ -7,10 +7,12 @@ import hu.webuni.spring.hr.anzek.service.dataconvert.dto.EmployeeDto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+// import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 /**
@@ -30,8 +32,13 @@ public class Company implements Serializable {
     private int registrationNumber;
     private String name;
     private String address;
-        
-    private List<EmployeeDto> employees = new ArrayList<>();
+    
+    // ez ahhoz kellene, hogy az employye-k is minden esetben mentesre keruljenek
+    // amelyek be vannak lancoolva ide
+    // de nem ezt a megoldast hasznaljuk !
+    //@OneToMany( mappedBy = "company", cascade = CascadeType.MERGE )
+    @OneToMany( mappedBy = "company" )
+    private List<Employee> employees = new ArrayList<>();
     
     public Company(){
     
@@ -41,7 +48,7 @@ public class Company implements Serializable {
                     int registrationNumber,
                     String name,
                     String address,
-                    List<EmployeeDto> employees ) {
+                    List<Employee> employees ) {
         this.idCompany = idCompany;
         this.registrationNumber = registrationNumber;
         this.name = name;
@@ -53,7 +60,7 @@ public class Company implements Serializable {
         this.address = address;
     }
 
-    public void setEmployees(List<EmployeeDto> employees) {
+    public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }
 
@@ -61,7 +68,7 @@ public class Company implements Serializable {
         return address;
     }
 
-    public List<EmployeeDto> getEmployees() {
+    public List<Employee> getEmployees() {
         return employees;
     }
 
@@ -87,5 +94,10 @@ public class Company implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void addEmployee(Employee employee ) {
+    
+        this.employees.add( employee );
     }
 }

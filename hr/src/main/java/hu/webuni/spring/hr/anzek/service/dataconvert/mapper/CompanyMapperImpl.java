@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -23,6 +24,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CompanyMapperImpl implements CompanyMapper{
 
+    @Autowired
+    EmployeeMapper employeeMapper;
+    
     @Override
     public List<CompanyDto> companiesToDtos(List<Company> companies) {
         
@@ -53,7 +57,9 @@ public class CompanyMapperImpl implements CompanyMapper{
             cds.setIdCompany( company.getIdCompany() );
             cds.setName( company.getName() );
             cds.setAddress( company.getAddress() );
-            cds.setEmployees(company.getEmployees() );
+            cds.setEmployees( this.employeeMapper
+                                  .employeeListToDtoList(company.getEmployees() ) 
+                            );
         }
         
         return cds;
@@ -70,7 +76,9 @@ public class CompanyMapperImpl implements CompanyMapper{
             cds.setIdCompany( companyDto.getIdCompany() );
             cds.setName( companyDto.getName() );
             cds.setAddress( companyDto.getAddress() );
-            cds.setEmployees( companyDto.getEmployees() );            
+            cds.setEmployees( this.employeeMapper
+                                  .employeeDtoListToEmployeeList(companyDto.getEmployees()) 
+                            );            
         }
         
         return cds;

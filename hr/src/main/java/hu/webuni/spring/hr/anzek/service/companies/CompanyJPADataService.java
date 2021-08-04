@@ -6,16 +6,22 @@
 package hu.webuni.spring.hr.anzek.service.companies;
 
 import hu.webuni.spring.hr.anzek.service.dataconvert.mapper.CompanyMapper;
+import hu.webuni.spring.hr.anzek.service.dataconvert.mapper.EmployeeMapper;
 import hu.webuni.spring.hr.anzek.service.dataconvert.repository.CompanyRepository;
+import hu.webuni.spring.hr.anzek.service.dataconvert.repository.EmployeeRepository;
 import hu.webuni.spring.hr.anzek.service.model.Company;
 import hu.webuni.spring.hr.anzek.service.exceptions.NonUniqueIdException;
+import hu.webuni.spring.hr.anzek.service.model.Employee;
 import java.util.List;
+import java.util.Optional;
 // oldverzio:
 // import javax.persistence.EntityManager;
 // import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * Ceg-adatok Objektum - DTO - Entitas szerviz osztalya<br>
@@ -27,11 +33,17 @@ public class CompanyJPADataService {
     @Autowired
     CompanyMapper companyMapper;
     
+    @Autowired
+    EmployeeMapper employeeMapper;
+    
     //@PersistenceContext
     //EntityManager em;
     
     @Autowired
     CompanyRepository companyRepository;
+     
+    @Autowired
+    EmployeeRepository employeeRepository;
     
     /**
      * Uj tetel mentese ! (Kizarolag csak "UJ" es nem itt van a modosiitas!)<br>
@@ -139,7 +151,7 @@ public class CompanyJPADataService {
      * @param id a ceg KULCS-azonosutoja<br>
      * @return a kulcsnak megfelelo egy CEG-adatok<br>
      */
-    public Company findById( long id ){
+    public Optional<Company> findById( long id ){
 
         // old-verzio - memoriabol szedett adatokhoz:
         // return this.companies.get(id);
@@ -152,7 +164,14 @@ public class CompanyJPADataService {
         // Company compny = this.companyRepository.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         // return compny;     
         
-        return this.companyRepository.findById( id ).get();
+        Optional<Company> compny = this.companyRepository.findById(id);
+        if ( compny == null ){
+        
+              @SuppressWarnings({"ThrowableInstanceNotThrown", "ThrowableInstanceNeverThrown"})
+              ResponseStatusException hse = new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        
+        return compny;
     }
     
     /**
@@ -173,6 +192,43 @@ public class CompanyJPADataService {
         
         this.companyRepository.deleteById(id);
     }    
+    
+    /**
+     * Dolgozo hozzadasa a cegadatokhoz<br>
+     * @param cId a cegazonosito<br>
+     * @param employee a dolgozo azonosito<br>
+     * @return a cegadatot visszaolvassuk<br>
+     */
+    public Company addEmployee( long cId, Employee employee ){
+    
+        Company company = this.findById(cId).get();
+        company.addEmployee( employee );
+        
+        // this.companyRepository.save( company ); ->> csak cascade merge esten (?)
+        this.employeeRepository.save( employee );
+        return company;
+    }
+    
+    /**
+     * Dolgozo hozzadasa a cegadatokhoz<br>
+     * @param cId a cegazonosito<br>
+     * @param employee a dolgozo azonosito<br>
+     * @return a cegadatot visszaolvassuk<br>
+     */
+    public Company deleteEmployee( long cId, Employee employee ){
+    
+        // beolvassuka ceget:
+        Company company = this.findById(cId).get();
+        // beolvassuk a dolgozo adatokat:
+        Employee deletingEmployee = this.employeeRepository.findById( employee.getIdEmployee() ).get();
+        // eltavolitjuk a dolgozonak a ceghez kotodo kapcsolatat (azaz a forgenKey, kulso kulcsot):
+        deletingEmployee.setCompany(null);
+        // eltavolitjuk a cegfeloli kapcsolatbol is a kucsokulcsot es flush()-juk is:
+        company.getEmployees().remove( employee );
+        // mentjuk es flush()-oljuk a dolgozo adatait is:
+        this.employeeRepository.save( employee );
+        return company;
+    }
     
     //private Map< Long, Company> companies = new HashMap<>();
     //private Map< Long, Employee> employees = new HashMap<>();

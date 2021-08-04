@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
@@ -60,6 +61,28 @@ public class Employee implements Serializable {
     private String torzsGarda = "nincs adat";
     
     /**
+     * Ezzel jelezzuk a JPA-nak, hogy itt egy Company-ID<br> 
+     * (vagyis a "idCompany") <br>
+     * amott - a company -ban ide kapcsolt peldanyt csatol be<br> 
+     * -------------<br>
+     * sql-esen ezt ugy mondanank:<br>
+     * az Employee.tablaban lesz egy ForgenKey (idegen kulcs-ertek)<br> 
+     * amely igy ertelemszeruen, a "Company.idCompany" egyik peldany-erteke lesz!<br>
+     * Hiszen a Company tabla nem sorolhatja fel egyetlen ceg-rekordjaban mondjuk<br> 
+     * mind a huszezer dolgozojanak a kodjait...<br> 
+     */
+    @ManyToOne
+    private Company company;
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+    
+    /**
      * A munkavallalo osztalypeldany konstruktora <br>
      * Mezoi : <br>
      * A munkavalallo azonositoja "id" <br>
@@ -68,6 +91,7 @@ public class Employee implements Serializable {
      * A havi jovedelme "monthlySalary"<br>     
      */
     public Employee() {
+        
     }
 
     /**

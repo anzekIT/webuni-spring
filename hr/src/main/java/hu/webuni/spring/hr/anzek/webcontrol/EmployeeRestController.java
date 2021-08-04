@@ -8,11 +8,9 @@ package hu.webuni.spring.hr.anzek.webcontrol;
 import hu.webuni.spring.hr.anzek.service.dataconvert.dto.EmployeeDto;
 import hu.webuni.spring.hr.anzek.service.dataconvert.mapper.EmployeeMapper;
 import hu.webuni.spring.hr.anzek.service.model.Employee;
-import hu.webuni.spring.hr.anzek.service.dataconvert.repository.EmployeeRepository;
 import hu.webuni.spring.hr.anzek.service.employee.EmployeeJPADataService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 
 /**
@@ -46,7 +43,7 @@ public class EmployeeRestController {
 
     private Employee findByIdOrThrow( long id ){
     
-        return this.dataEmployeeService.findById(id);
+        return this.dataEmployeeService.findById(id).get();
     }
     
     /**
@@ -181,12 +178,14 @@ public class EmployeeRestController {
         //this.employees.put( employeeDto.getIdEmployee(), employeeDto );
         //return employeeDto;
         
+        // mentjuk :
         Employee employee = this.dataEmployeeService
                                 .save( this.employeeMapper.dtoToEmployee(employeeDto) );
-        
+        // visszaolvassuk :
         return this.employeeMapper
                    .employeeToDto(this.dataEmployeeService
-                                      .findById(employeeDto.getIdEmployee() )
+                                      .findById(employeeDto.getIdEmployee())
+                                      .get()
                                  );
     }
     
