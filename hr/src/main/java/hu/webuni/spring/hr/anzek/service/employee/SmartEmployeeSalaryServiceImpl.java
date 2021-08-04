@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hu.webuni.spring.hr.anzek.service;
+package hu.webuni.spring.hr.anzek.service.employee;
 
 import hu.webuni.spring.hr.anzek.config.HrConfigProperties;
-import hu.webuni.spring.hr.anzek.model.Employee;
+import hu.webuni.spring.hr.anzek.service.dataconvert.model.Employee;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

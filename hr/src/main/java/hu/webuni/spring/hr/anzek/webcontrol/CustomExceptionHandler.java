@@ -6,7 +6,7 @@
 package hu.webuni.spring.hr.anzek.webcontrol;
 
 
-import hu.webuni.spring.hr.anzek.service.NonUniqueIdException;
+import hu.webuni.spring.hr.anzek.service.exceptions.NonUniqueIdException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

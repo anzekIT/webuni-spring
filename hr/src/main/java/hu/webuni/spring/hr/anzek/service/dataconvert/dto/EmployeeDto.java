@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hu.webuni.spring.hr.anzek.dto;
+package hu.webuni.spring.hr.anzek.service.dataconvert.dto;
 
 import java.time.LocalDateTime;
 

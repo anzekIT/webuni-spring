@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hu.webuni.spring.hr.anzek.service;
+package hu.webuni.spring.hr.anzek.service.companies;
 
-import hu.webuni.spring.hr.anzek.mapper.CompanyMapper;
-import hu.webuni.spring.hr.anzek.model.Company;
+import hu.webuni.spring.hr.anzek.service.dataconvert.mapper.CompanyMapper;
+import hu.webuni.spring.hr.anzek.service.dataconvert.model.Company;
+import hu.webuni.spring.hr.anzek.service.exceptions.NonUniqueIdException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

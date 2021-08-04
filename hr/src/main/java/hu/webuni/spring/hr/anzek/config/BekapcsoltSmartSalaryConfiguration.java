@@ -5,11 +5,11 @@
  */
 package hu.webuni.spring.hr.anzek.config;
 
-import hu.webuni.spring.hr.anzek.service.SmartEmployeeSalaryServiceImpl;
+import hu.webuni.spring.hr.anzek.service.employee.SmartEmployeeSalaryServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import hu.webuni.spring.hr.anzek.service.EmployeeSalaryService;
+import hu.webuni.spring.hr.anzek.service.employee.EmployeeSalaryService;
 
 /**
  * Eles uzemi Munkavallaloi konfiguracios bean<br>

@@ -5,11 +5,11 @@
  */
 package hu.webuni.spring.hr.anzek.config;
 
-import hu.webuni.spring.hr.anzek.service.DefaultEmployeeSalaryServiceImpl;
+import hu.webuni.spring.hr.anzek.service.employee.DefaultEmployeeSalaryServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import hu.webuni.spring.hr.anzek.service.EmployeeSalaryService;
+import hu.webuni.spring.hr.anzek.service.employee.EmployeeSalaryService;
 
 /**
  * Tesztkornyezeti Munkavallaloi konfiguracios bean<br>

@@ -5,7 +5,7 @@
  */
 package hr.anzek.webcontrol;
 
-import hu.webuni.spring.hr.anzek.dto.CompanyDto;
+import hu.webuni.spring.hr.anzek.service.dataconvert.dto.CompanyDto;
 import java.util.Collections;
 import java.util.List;
 import org.assertj.core.api.Assertions;

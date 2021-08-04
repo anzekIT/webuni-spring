@@ -52,7 +52,13 @@
                 <dependency>
                         <groupId>org.postgresql</groupId>
                         <artifactId>postgresql</artifactId>
-                        <scope>runtime</scope>
+                        <!--                        
+                            Az alabbi <scope> hatasa :
+                            nem irhato a forráskódba semmilyen 
+                            Postgre-SQL-specifikus kod, mert nem forditja le!
+                            de futasidoben persze ertelmezi a a JPA-CP altal képezett kódot!
+                        -->
+                        <!--<scope>runtime</scope>-->
                 </dependency>
                 <dependency>
                         <groupId>org.springframework.boot</groupId>

@@ -6,7 +6,7 @@
 
 package hu.webuni.spring.hr.anzek.webcontrol;
 
-import hu.webuni.spring.hr.anzek.model.Employee;
+import hu.webuni.spring.hr.anzek.service.dataconvert.model.Employee;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

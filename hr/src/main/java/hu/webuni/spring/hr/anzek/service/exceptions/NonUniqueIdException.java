@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hu.webuni.spring.hr.anzek.service;
+package hu.webuni.spring.hr.anzek.service.exceptions;
 
 
 /**

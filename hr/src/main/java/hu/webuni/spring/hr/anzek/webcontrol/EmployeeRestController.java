@@ -5,10 +5,11 @@
  */
 package hu.webuni.spring.hr.anzek.webcontrol;
 
-import hu.webuni.spring.hr.anzek.dto.EmployeeDto;
-import hu.webuni.spring.hr.anzek.mapper.EmployeeMapper;
-import hu.webuni.spring.hr.anzek.model.Employee;
-import hu.webuni.spring.hr.anzek.service.EmployeeJPADataService;
+import hu.webuni.spring.hr.anzek.service.dataconvert.dto.EmployeeDto;
+import hu.webuni.spring.hr.anzek.service.dataconvert.mapper.EmployeeMapper;
+import hu.webuni.spring.hr.anzek.service.dataconvert.model.Employee;
+import hu.webuni.spring.hr.anzek.service.dataconvert.repository.EmployeeRepository;
+import hu.webuni.spring.hr.anzek.service.employee.EmployeeJPADataService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +46,9 @@ public class EmployeeRestController {
     @Autowired
     EmployeeMapper employeeMapper;
 
+    @Autowired
+    EmployeeRepository employeeRepository ;
+    
     /**
      * GET-METHOD<br>
      * Az elso vegpont<br> 
@@ -148,14 +152,19 @@ public class EmployeeRestController {
         //}
         //return entity;
         
-        return this
-                .employeeMapper
-                .employeeListToDtoList(this.dataEmployeeService
-                                        .findByFieldvalue( "monthlySalary" , 
-                                                           ">=" ,
-                                                           limit.toString() 
-                                                         )
-                                      );
+        // meg egy szinttel lejjebbi, a repository nelkuli szint:
+        //return this
+        //        .employeeMapper
+        //        .employeeListToDtoList(this.dataEmployeeService
+        //                                .findByFieldvalue( "monthlySalary" , 
+        //                                                   ">=" ,
+        //                                                   limit.toString() 
+        //                                                 )
+        //                              );
+        
+        // repositoryval:
+       
+        return null;
     }
     
     /**
