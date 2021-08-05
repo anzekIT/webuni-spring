@@ -7,7 +7,6 @@ package hu.webuni.spring.hr.anzek.service.employee;
 
 import hu.webuni.spring.hr.anzek.service.model.Employee;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * A munkavallaloi szerviz Interace<br>
@@ -24,7 +23,6 @@ public interface EmployeeSalaryService {
      * @param employee a munkavallalo peldany<br>
      * @return visszaad egy INT erteket<br>
      */
-    @Autowired
     int getPayRaisePercent( Employee employee );
     
     /**
@@ -32,7 +30,6 @@ public interface EmployeeSalaryService {
      * @param employee a munkavallalo peldany<br>
      * @return a torzsgardatagsag merteke<br>
      */
-    @Autowired
     String getTorzsGarda( Employee employee );
     
     /**

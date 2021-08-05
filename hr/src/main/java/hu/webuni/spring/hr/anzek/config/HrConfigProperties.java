@@ -7,8 +7,8 @@ package hu.webuni.spring.hr.anzek.config;
 
 
 import java.util.TreeMap;
-//import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
  * @author User
  */
 @Component
+//@EnableConfigurationProperties
 @ConfigurationProperties( prefix="hr" )
 public class HrConfigProperties {
 
@@ -75,6 +76,7 @@ public class HrConfigProperties {
     
     public static class Smart {
 
+        // @Value("hr.salary.statikus_dinamikus")
         private int statikus_dinamikus;
         
         // Ezek itt a statikus adatok:

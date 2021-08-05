@@ -1,8 +1,7 @@
 package hu.webuni.spring.hr.anzek;
         
 import hu.webuni.spring.hr.anzek.config.HrConfigProperties;
-import hu.webuni.spring.hr.anzek.service.dataconvert.dto.EmployeeDto;
-import hu.webuni.spring.hr.anzek.service.model.Employee;
+import hu.webuni.spring.hr.anzek.service.dataconversion.dto.EmployeeDto;
 import hu.webuni.spring.hr.anzek.service.employee.SalariesService;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -11,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
+//@EnableConfigurationProperties(HrConfigProperties.class)
 public class HrApplication implements CommandLineRunner {
 
     @Autowired
@@ -64,11 +65,11 @@ public class HrApplication implements CommandLineRunner {
         System.out.println( "kiolvasott fix-ev/szazalek adatok? " + this.configProperties.getSalary().getDeflt().getFixszazalek() );
         System.out.println( "Statikus vagy a dinamikus adatok futnak? (0/1) = " + this.configProperties.getSalary().getSmart().getStatikus_dinamikus());
         // egy MAP - iteracio peladak:        
-//        
-//        this.employees.entrySet()
-//                .stream()
-//                .forEach( e -> this.employees.put( e.getKey(), (EmployeeDto) this.salaryService.incomeService( e.getValue() )) );
-//        
+        //        
+        //        this.employees.entrySet()
+        //                .stream()
+        //                .forEach( e -> this.employees.put( e.getKey(), (EmployeeDto) this.salaryService.incomeService( e.getValue() )) );
+        //        
         //  Normal for ciklussal a fenti megoldas :
         //for (int i=1; i<8; i++){
         //

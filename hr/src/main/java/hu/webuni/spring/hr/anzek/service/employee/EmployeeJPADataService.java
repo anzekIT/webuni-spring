@@ -7,7 +7,7 @@ package hu.webuni.spring.hr.anzek.service.employee;
 
 
 import hu.webuni.spring.hr.anzek.service.model.Employee;
-import hu.webuni.spring.hr.anzek.service.dataconvert.repository.EmployeeRepository;
+import hu.webuni.spring.hr.anzek.service.dataconversion.repository.EmployeeRepository;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
@@ -31,10 +31,10 @@ public class EmployeeJPADataService {
     // de bennehagytam a lenti metodus mukodese miatt:
     // public List<Employee> findByFieldvalue( String fieldName, String relation, String value )
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepository;
     
     /**
      * Munkavallaoi-adatok Objektum - DTO - Entitas szerviz osztalya<br>

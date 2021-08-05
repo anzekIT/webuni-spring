@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.2</version>
+		<version>2.5.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>hu.webuni.spring.anzek</groupId>
@@ -25,23 +25,34 @@
                         <artifactId>spring-boot-starter-web</artifactId>
                 </dependency>
                 <dependency>
+                        <groupId>com.auth0</groupId>
+                        <artifactId>java-jwt</artifactId>
+                        <version>3.18.1</version>
+                </dependency>                 
+                <dependency>
                         <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-starter-validation</artifactId>
-                        <!--<version>2.5.2</version>-->
+                        <artifactId>spring-boot-starter-validation</artifactId>                        
                 </dependency> 
+                <dependency>
+                        <groupId>org.mapstruct</groupId>
+                        <artifactId>mapstruct</artifactId>
+                        <version>${org.mapstruct.version}</version>
+                </dependency>                                  
+                <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-security</artifactId>                   
+                </dependency>                 
                <dependency>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-starter-data-jpa</artifactId>                  
                 </dependency>                                          
                 <dependency>
                         <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-starter-web-services</artifactId>
-                        <!--<version>2.5.2</version>-->
+                        <artifactId>spring-boot-starter-web-services</artifactId>                       
                 </dependency>
                 <dependency>
                         <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-starter-thymeleaf</artifactId>
-                        <!--<version>2.5.2</version>-->
+                        <artifactId>spring-boot-starter-thymeleaf</artifactId>                  
                 </dependency>
                 <dependency>
                         <groupId>org.springframework.boot</groupId>
@@ -67,31 +78,34 @@
                 </dependency>
                 <dependency>
                         <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-starter-test</artifactId>
-                        <!--<version>2.5.2</version>-->
+                        <artifactId>spring-boot-starter-test</artifactId>                    
                         <scope>test</scope>
                 </dependency>
+                <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <scope>test</scope>
+                </dependency>                 
                 <dependency>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-starter-webflux</artifactId>
                         <scope>test</scope>
                 </dependency>                
-                <dependency>
+<!--                <dependency>
                         <groupId>org.mapstruct</groupId>
                         <artifactId>mapstruct</artifactId>
                         <version>${org.mapstruct.version}</version>
-                </dependency>                
+                </dependency>                -->
                 <dependency>
                         <groupId>org.springframework</groupId>
-                        <artifactId>spring-beans</artifactId>
-                        <!--<version>2.5.6</version>-->
+                        <artifactId>spring-beans</artifactId>                
                         <type>jar</type>
                 </dependency>
                 <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
                 <dependency>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
-                        <version>3.8.1</version>
+                        <version>3.8.1</version>                        
                 </dependency>
                 <dependency>
                         <groupId>org.springdoc</groupId>
@@ -125,6 +139,11 @@
                                                         <artifactId>mapstruct-processor</artifactId>
                                                         <version>${org.mapstruct.version}</version>
                                                 </path>
+                                                <path>
+                                                        <groupId>org.hibernate</groupId>
+                                                        <artifactId>hibernate-jpamodelgen</artifactId>
+                                                        <version>5.4.30.Final</version>
+                                                </path>                                                
                                         </annotationProcessorPaths>
                                 </configuration>                                                           
 			</plugin>                        

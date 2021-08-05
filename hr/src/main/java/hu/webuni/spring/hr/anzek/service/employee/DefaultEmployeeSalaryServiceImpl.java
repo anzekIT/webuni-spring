@@ -11,6 +11,7 @@ import hu.webuni.spring.hr.anzek.service.model.Employee;
 import java.io.Serializable;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 
@@ -21,11 +22,12 @@ import org.springframework.stereotype.Service;
  * @author User
  */
 @Service
+//@EnableConfigurationProperties(HrConfigProperties.class)
 public class DefaultEmployeeSalaryServiceImpl implements Serializable,EmployeeSalaryService {
     
 
     @Autowired
-    HrConfigProperties cfgProp;
+    private HrConfigProperties cfgProp;
 
     public DefaultEmployeeSalaryServiceImpl() {
     }
@@ -39,13 +41,16 @@ public class DefaultEmployeeSalaryServiceImpl implements Serializable,EmployeeSa
     @Override
     public int getPayRaisePercent( Employee employee ) {
         
-        return cfgProp.getSalary().getDeflt().getFixszazalek().intValue() ;
+        System.out.print("Bejöttem fixen : ");
+        System.out.println( this.cfgProp.getSalary().getDeflt().getFixszazalek() + " %" );
+        
+        return (Integer) this.cfgProp.getSalary().getDeflt().getFixszazalek().intValue() ;
     }    
 
     @Override
     public String getTorzsGarda(Employee employee) {
         
-        return "By Deault - " + cfgProp.getSalary().getDeflt().getFixszazalek() + " %";
+        return "By Deault (fix) - " + this.cfgProp.getSalary().getDeflt().getFixszazalek() + " %";
     }
 
     @Override

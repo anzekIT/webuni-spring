@@ -1,36 +1,76 @@
-#spring:
-#    profiles:
-#        active:
-#        - smart
-#    
-#    thymeleaf:
-#        cache: false
-#    
-#    mvc:
-#        format:
-#            date-time: yyyy-MM-dd HH:mm:ss
-#            
-#hr:
-#    propertfile: 
-#            yamlproperties
-#            
-#    salary:
-#
-#        deflt:           
-#            fixszazalek: 5            
-#        smart:            
-#            limit1: 2.5
-#            limit2: 5
-#            limit3: 10
-#            szazalek0: 0
-#            szazalek1: 2
-#            szazalek2: 5
-#            szazalek3: 10      
-#            limits:
-#                2.5: 0
-#                25: 15
-#                5: 2
-#                30: 20 
-#                20: 10
-#                10: 5
-#                 
+#####################################
+# Anzek Informatika KFT 2021-08-05
+# Hajduszoboszló
+#####################################
+
+
+# Spring default :                
+spring:
+    profiles:
+         active: smart
+            
+    thymeleaf:
+            cache: false
+    mvc:
+        format:
+            date-time: yyyy-MM-dd HH:mm:ss
+            
+    datasource:
+        url: jdbc:postgresql://localhost:5432/webuni
+        username: postgres
+        password: 051Lafi49802
+    
+    # megmutatja milyen adatbázisokat fogunk (akarunk) használni: 
+    jpa:
+        show-sql: true
+        
+        # hibarnate => maga a "prezistencia provider"
+        # ddl => data definitions language (adatdefinicios leiro nyelv)
+        # a program futásaának inditásakor az adatbázist érintő változásokat frissíteni próbálja: 
+        # ez pl azt is jelenti, hogy megpróbálja a táblákat létrehozni vagy a struktúrákat módosítani:
+        hibernate:
+            ddl-auto: update
+            ignoreInvalidFields: false 
+            ignoreUnknownFields: true
+
+
+# hibakezeles megrositese:
+server:
+    error:
+        include-message: always
+
+
+
+# Loggolasi szintek beallitasa:
+loggin:     
+    level: hu.webuni.spring.hr.anzek.webcontrol.CustomExceptionHandler=ERROR
+
+# a HR alkalmazás beálllításai:
+hr:
+    propertfile: 
+            yaml-properties
+            
+    salary:
+
+        deflt:           
+            fixszazalek: 8.50
+            
+        smart:    
+            
+            # statikus verzio
+            limit1: 2.50
+            limit2: 5.00
+            limit3: 10.00
+            szazalek0: 0.00
+            szazalek1: 2.00
+            szazalek2: 5.00
+            szazalek3: 10.00  
+            
+            # dinamikus vezio
+            limits:
+                2.50: 0
+                25.0: 15
+                5.00: 2
+                30.0: 20 
+                20.0: 10
+                10.5: 5

@@ -5,8 +5,8 @@
  */
 package hu.webuni.spring.hr.anzek.webcontrol;
 
-import hu.webuni.spring.hr.anzek.service.dataconvert.dto.EmployeeDto;
-import hu.webuni.spring.hr.anzek.service.dataconvert.mapper.EmployeeMapper;
+import hu.webuni.spring.hr.anzek.service.dataconversion.dto.EmployeeDto;
+import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.EmployeeMapper;
 import hu.webuni.spring.hr.anzek.service.model.Employee;
 import hu.webuni.spring.hr.anzek.service.employee.EmployeeJPADataService;
 import java.util.List;

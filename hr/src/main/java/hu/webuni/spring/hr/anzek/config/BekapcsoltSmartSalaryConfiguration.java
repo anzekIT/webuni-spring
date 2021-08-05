@@ -18,9 +18,11 @@ import hu.webuni.spring.hr.anzek.service.employee.EmployeeSalaryService;
  */
 @Configuration
 @Profile("smart")
+//@Primary
 public class BekapcsoltSmartSalaryConfiguration {
 
     @Bean
+    //@Primary
     public EmployeeSalaryService employeeService(){
         
         System.out.println("SMART******");

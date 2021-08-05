@@ -1,7 +1,7 @@
 /*
  *29. 17:09-nel 
  */
-package hu.webuni.spring.hr.anzek.service.dataconvert.dto;
+package hu.webuni.spring.hr.anzek.service.dataconversion.dto;
 
 import java.util.ArrayList;
 import java.util.List;

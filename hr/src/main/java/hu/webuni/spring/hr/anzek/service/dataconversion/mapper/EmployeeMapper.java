@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hu.webuni.spring.hr.anzek.service.dataconvert.mapper;
+package hu.webuni.spring.hr.anzek.service.dataconversion.mapper;
 
-import hu.webuni.spring.hr.anzek.service.dataconvert.dto.EmployeeDto;
+import hu.webuni.spring.hr.anzek.service.dataconversion.dto.EmployeeDto;
 import hu.webuni.spring.hr.anzek.service.model.Employee;
 import java.util.List;
 import java.util.Map;

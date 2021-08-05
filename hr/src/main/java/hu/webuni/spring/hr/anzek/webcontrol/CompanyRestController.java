@@ -4,9 +4,9 @@
 
 package hu.webuni.spring.hr.anzek.webcontrol;
 
-import hu.webuni.spring.hr.anzek.service.dataconvert.dto.CompanyDto;
-import hu.webuni.spring.hr.anzek.service.dataconvert.mapper.CompanyMapper;
-import hu.webuni.spring.hr.anzek.service.dataconvert.mapper.EmployeeMapper;
+import hu.webuni.spring.hr.anzek.service.dataconversion.dto.CompanyDto;
+import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.CompanyMapper;
+import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.EmployeeMapper;
 import hu.webuni.spring.hr.anzek.service.model.Company;
 import hu.webuni.spring.hr.anzek.service.companies.CompanyJPADataService;
 import hu.webuni.spring.hr.anzek.service.employee.EmployeeJPADataService;

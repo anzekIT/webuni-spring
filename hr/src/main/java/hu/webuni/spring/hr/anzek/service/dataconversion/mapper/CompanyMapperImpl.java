@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hu.webuni.spring.hr.anzek.service.dataconvert.mapper;
+package hu.webuni.spring.hr.anzek.service.dataconversion.mapper;
 
 
-import hu.webuni.spring.hr.anzek.service.dataconvert.dto.CompanyDto;
+import hu.webuni.spring.hr.anzek.service.dataconversion.dto.CompanyDto;
 import hu.webuni.spring.hr.anzek.service.model.Company;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 public class CompanyMapperImpl implements CompanyMapper{
 
     @Autowired
-    EmployeeMapper employeeMapper;
+    private EmployeeMapper employeeMapper;
     
     @Override
     public List<CompanyDto> companiesToDtos(List<Company> companies) {

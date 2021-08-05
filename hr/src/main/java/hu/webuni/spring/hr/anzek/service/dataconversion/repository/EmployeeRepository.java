@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hu.webuni.spring.hr.anzek.service.dataconvert.repository;
+package hu.webuni.spring.hr.anzek.service.dataconversion.repository;
 
 
-import hu.webuni.spring.hr.anzek.service.model.Company;
+import hu.webuni.spring.hr.anzek.service.model.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 
 /**
  *
  * @author User
  */
-public interface CompanyRepository  extends JpaRepository<Company, Long>{
+public interface EmployeeRepository extends JpaRepository<Employee, Long>{
     
 }

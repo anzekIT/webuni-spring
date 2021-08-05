@@ -5,10 +5,10 @@
  */
 package hu.webuni.spring.hr.anzek.service.companies;
 
-import hu.webuni.spring.hr.anzek.service.dataconvert.mapper.CompanyMapper;
-import hu.webuni.spring.hr.anzek.service.dataconvert.mapper.EmployeeMapper;
-import hu.webuni.spring.hr.anzek.service.dataconvert.repository.CompanyRepository;
-import hu.webuni.spring.hr.anzek.service.dataconvert.repository.EmployeeRepository;
+import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.CompanyMapper;
+import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.EmployeeMapper;
+import hu.webuni.spring.hr.anzek.service.dataconversion.repository.CompanyRepository;
+import hu.webuni.spring.hr.anzek.service.dataconversion.repository.EmployeeRepository;
 import hu.webuni.spring.hr.anzek.service.model.Company;
 import hu.webuni.spring.hr.anzek.service.exceptions.NonUniqueIdException;
 import hu.webuni.spring.hr.anzek.service.model.Employee;
@@ -31,19 +31,19 @@ import org.springframework.web.server.ResponseStatusException;
 public class CompanyJPADataService {
     
     @Autowired
-    CompanyMapper companyMapper;
+    private CompanyMapper companyMapper;
     
     @Autowired
-    EmployeeMapper employeeMapper;
+    private EmployeeMapper employeeMapper;
     
     //@PersistenceContext
     //EntityManager em;
     
     @Autowired
-    CompanyRepository companyRepository;
+    private CompanyRepository companyRepository;
      
     @Autowired
-    EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepository;
     
     /**
      * Uj tetel mentese ! (Kizarolag csak "UJ" es nem itt van a modosiitas!)<br>

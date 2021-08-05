@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hu.webuni.spring.hr.anzek.service.dataconvert.mapper;
+package hu.webuni.spring.hr.anzek.service.dataconversion.mapper;
 
 
-import hu.webuni.spring.hr.anzek.service.dataconvert.dto.EmployeeDto;
+import hu.webuni.spring.hr.anzek.service.dataconversion.dto.EmployeeDto;
 import hu.webuni.spring.hr.anzek.service.model.Employee;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 /**
  * Kezzel irt (hogy haladjon)<br>
@@ -23,6 +23,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmployeeMapperImpl implements EmployeeMapper {
 
+    @Autowired
+    private CompanyMapper CompanyMapper;
+            
     @Override
     public List<EmployeeDto> employeesToDtos(List<Employee> companies) {
 

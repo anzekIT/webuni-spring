@@ -5,14 +5,13 @@
  */
 package hr.anzek.webcontrol;
 
-import hu.webuni.spring.hr.anzek.service.dataconvert.dto.CompanyDto;
+import hu.webuni.spring.hr.anzek.service.dataconversion.dto.CompanyDto;
 import java.util.Collections;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 /**
@@ -24,7 +23,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 public class CompanyControllerIT {
     
     private static final String BASE_URI="/api/companies/v0/";
-    
+
     /**
      * ennek feltetele a POM-ban:<br>
      *   dependency<br>
@@ -34,7 +33,7 @@ public class CompanyControllerIT {
      *   /dependency<br>      
      */
     @Autowired
-    WebTestClient webTestClient;
+    private WebTestClient webTestClient;
     
     @Test
     public void testThatCreatedCompanyIsListed() throws Exception{

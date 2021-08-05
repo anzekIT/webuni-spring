@@ -3,7 +3,7 @@
  */
 package hu.webuni.spring.hr.anzek.service.model;
 
-import hu.webuni.spring.hr.anzek.service.dataconvert.dto.EmployeeDto;
+import hu.webuni.spring.hr.anzek.service.dataconversion.dto.EmployeeDto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
