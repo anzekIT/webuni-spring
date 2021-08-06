@@ -51,21 +51,33 @@ hr:
             yaml-properties
             
     salary:
-
-        deflt:           
+        deflt:
+            
+            # statikus verzio
             fixszazalek: 8.50
             
         smart:    
             
             # statikus verzio
-            limit1: 2.50
-            limit2: 5.00
-            limit3: 10.00
-            szazalek0: 0.00
-            szazalek1: 2.00
-            szazalek2: 5.00
-            szazalek3: 10.00  
-            
+            limitObj1: 
+                limit: 2.50
+        
+ 
+            limitObj2: 
+                limit: 5.20
+   
+            limitObj3: 
+                limit: 12.01
+       
+            szazalekObj0:
+                szazalek: 0.00
+            szazalekObj1:    
+                szazalek: 2.00
+            szazalekObj2:    
+                szazalek: 5.00
+            szazalekObj3:    
+                szazalek: 10.00  
+   
             # dinamikus vezio
             limits:
                 2.50: 0
@@ -74,3 +86,6 @@ hr:
                 30.0: 20 
                 20.0: 10
                 10.5: 5
+                
+        ## statikus vagy dinamikus adatokkal dolgozunk?        
+        statikus_dinamikus: 3.24        

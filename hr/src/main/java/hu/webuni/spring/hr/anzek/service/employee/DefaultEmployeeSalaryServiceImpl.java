@@ -11,7 +11,6 @@ import hu.webuni.spring.hr.anzek.service.model.Employee;
 import java.io.Serializable;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
  * @author User
  */
 @Service
-//@EnableConfigurationProperties(HrConfigProperties.class)
 public class DefaultEmployeeSalaryServiceImpl implements Serializable,EmployeeSalaryService {
     
 

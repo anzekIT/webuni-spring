@@ -17,25 +17,21 @@ import org.springframework.stereotype.Component;
  * @author User
  */
 @Component
-//@EnableConfigurationProperties
+@EnableConfigurationProperties
 @ConfigurationProperties( prefix="hr" )
 public class HrConfigProperties {
 
-    // hr.salary.smart.limit1=2.5
+    private static PropertFiles propertfiles = new PropertFiles();
+    private static Salary salary = new Salary();
     
-    // @Value("${hr.propertfile}")
-    private String propertfile;    
-            
-    private Salary salary = new Salary();
-   
-    public String getPropertfile(){
-
-        return this.propertfile;     
+    public PropertFiles getPropertfiles(){
+        
+        return this.propertfiles;     
     }  
 
-    public void setPropertfile(String propertfile) {
+    public void setPropertfiles( PropertFiles propertfile) {
         
-        this.propertfile = propertfile;
+        this.propertfiles = propertfile;
     }
 
     public Salary getSalary() {
@@ -50,20 +46,23 @@ public class HrConfigProperties {
 
     public static class Salary {
 
-        private Smart smart = new Smart();         
-        private Deflt deflt = new Deflt();
+        // @Value("hr.salary.statikus_dinamikus")
+        private static Double statikus_dinamikus;
+        
+        private static Smart smart = new Smart();         
+        private static Deflt deflt = new Deflt();
 
         public Smart getSmart() {
             
             return smart;
         }
 
-        public void setSmart( Smart smart ){
+        public void setSmart( Smart smart ) {
         
             this.smart = smart;
         }
 
-        public void setDeflt(Deflt deflt) {
+        public void setDeflt( Deflt deflt ) {
             
             this.deflt = deflt;
         }
@@ -72,117 +71,96 @@ public class HrConfigProperties {
             
             return deflt;
         }
+
+        public double getStatikus_dinamikus() {
+            
+            return this.statikus_dinamikus;
+        }
+
+        public void setStatikus_dinamikus( double statikus_dinamikus) {
+            
+            this.statikus_dinamikus = statikus_dinamikus;
+        }        
     }
     
     public static class Smart {
-
-        // @Value("hr.salary.statikus_dinamikus")
-        private int statikus_dinamikus;
-        
-        // Ezek itt a statikus adatok:
-        // ennyi ev munkaviszony utan: 
-        // @Value("hr.salary.smart.limit1")
-        private Double limit1;
-        // @Value("hr.salary.smart.limit2")
-        private Double limit2;
-        // @Value("hr.salary.smart.limit3")
-        private Double limit3;
-
-        // ennyi szazalek beremeles jar:
-        // @Value("hr.salary.smart.szazlek0")
-        private Double szazlek0;
-        // @Value("hr.salary.smart.szazlek1")
-        private Double szazlek1;
-        // @Value("hr.salary.smart.szazlek2")
-        private Double szazlek2;
-        // @Value("hr.salary.smart.szazlek3")
-        private Double szazlek3;
 
         // Ezek itt a dinamikus adatok:
         // egy TreeMap<K,V> -t alkalmazunk a dinamikus adatokhoz:
         // a TreeMap egy kulcsok szerint rendezett, indexelt, MAP -lista
         // minden ledolgozott evhez tartozik egy fix szazalekos ertek  
         // @Value("hr.salary.smart.limits")
-        public TreeMap<Double, Integer> limits;
+        public TreeMap<Double, Integer> limits; 
 
-        public int getStatikus_dinamikus() {
-            
-            return this.statikus_dinamikus;
+        // munkaviszony evek szama utan jaro valamennyi emeles:
+        private static LimitObj1 limitObj1 = new LimitObj1();   
+        private static LimitObj2 limitObj2 = new LimitObj2();  
+        private static LimitObj3 limitObj3 = new LimitObj3();
+        private static SzazalekObj0 szazalekObj0 = new SzazalekObj0();
+        private static SzazalekObj1 szazalekObj1 = new SzazalekObj1();
+        private static SzazalekObj2 szazalekObj2 = new SzazalekObj2();
+        private static SzazalekObj3 szazalekObj3 = new SzazalekObj3();
+
+        public SzazalekObj0 getSzazalekObj0() {
+            return this.szazalekObj0;
         }
 
-        public void setStatikus_dinamikus(int statikus_dinamikus) {
-            
-            this.statikus_dinamikus = statikus_dinamikus;
+        public void setSzazalekObj0(SzazalekObj0 szazalekObj0) {
+            this.szazalekObj0 = szazalekObj0;
         }
 
-        public Double getLimit1() {
-            
-            return this.limit1;
+        public SzazalekObj1 getSzazalekObj1() {
+            return this.szazalekObj1;
+        }
+                
+        public void setSzazalekObj1(SzazalekObj1 szazalekObj1) {
+            this.szazalekObj1 = szazalekObj1;
         }
 
-        public void setLimit1(Double limit1) {
-            
-            this.limit1 = limit1;
+        public SzazalekObj2 getSzazalekObj2() {
+            return this.szazalekObj2;
         }
 
-        public Double getLimit2() {
-            
-            return limit2;
+        public void setSzazalekObj2(SzazalekObj2 szazalekObj2) {
+            this.szazalekObj2 = szazalekObj2;
         }
 
-        public void setLimit2(Double limit2) {
-            
-            this.limit2 = limit2;
+        public SzazalekObj3 getSzazalekObj3() {
+            return this.szazalekObj3;
         }
 
-        public Double getLimit3() {
-            
-            return this.limit3;
+        public void setSzazalekObj3(SzazalekObj3 szazalekObj3) {
+            this.szazalekObj3 = szazalekObj3;
         }
 
-        public void setLimit3(Double limit3) {
+        public LimitObj1 getLimitObj1() {
             
-            this.limit3 = limit3;
+            return this.limitObj1;
         }
 
-        public Double getSzazlek0() {
+        public void setLimitObj1( LimitObj1 limit1O ) {
             
-            return this.szazlek0;
+            this.limitObj1 = limit1O;
         }
 
-        public void setSzazlek0(Double szazlek0) {
+        public LimitObj2 getLimitObh2() {
             
-            this.szazlek0 = szazlek0;
+            return limitObj2;
         }
 
-        public Double getSzazlek1() {
+        public void setLimitObj2( LimitObj2 limit2O ) {
             
-            return this.szazlek1;
+            this.limitObj2 = limit2O;
         }
 
-        public void setSzazlek1(Double szazlek1) {
+        public LimitObj3 getLimitObj3() {
             
-            this.szazlek1 = szazlek1;
+            return this.limitObj3;
         }
 
-        public Double getSzazlek2() {
+        public void setLimitObj3( LimitObj3 limit3O ) {
             
-            return this.szazlek2;
-        }
-
-        public void setSzazlek2(Double szazlek2) {
-            
-            this.szazlek2 = szazlek2;
-        }
-
-        public Double getSzazlek3() {
-            
-            return this.szazlek3;
-        }
-
-        public void setSzazlek3(Double szazlek3) {
-            
-            this.szazlek3 = szazlek3;
+            this.limitObj3 = limit3O;
         }
 
         public TreeMap<Double, Integer> getLimits() {
@@ -212,4 +190,142 @@ public class HrConfigProperties {
         }
  
     }   
+
+    public static class PropertFiles {
+
+        private static String propertfile;
+        
+        public PropertFiles() {
+        }
+
+        public String getPropertfile() {
+            
+            return this.propertfile;
+        }
+
+        public void setPropertfile(String propertfile) {
+            
+            this.propertfile = propertfile;
+        }
+
+    }
+
+    public static class LimitObj1 {
+
+        // @Value("hr.salary.smart.limit")
+        private static double limit;
+        
+        public LimitObj1() {
+        }
+
+        public double getLimit() {
+            return limit;
+        }
+
+        public void setLimit(double limit) {
+            this.limit = limit;
+        }
+        
+    }
+
+    public static class LimitObj2 {
+
+        // @Value("hr.salary.smart.limit")
+        private static double limit;
+        
+        public LimitObj2() {
+        }
+
+        public double getLimit() {
+            return limit;
+        }
+
+        public void setLimit(double limit) {
+            this.limit = limit;
+        }
+        
+    }
+    
+    public static class LimitObj3{ 
+
+        // @Value("hr.salary.smart.limit")
+        private static double limit;
+        
+        public LimitObj3() {
+        }
+
+        public double getLimit() {
+            return limit;
+        }
+
+        public void setLimit(double limit) {
+            this.limit = limit;
+        }
+        
+    }
+
+    public static class SzazalekObj0 {
+    
+        private static Double szazalek;        
+  
+        public SzazalekObj0() {
+        }
+
+        public Double getSzazalek() {
+            return szazalek;
+        }
+
+        public void setSzazalek(Double szazalek) {
+            this.szazalek = szazalek;
+        }
+    }
+
+    public static class SzazalekObj1 {
+
+        private static Double szazalek; 
+        
+        public SzazalekObj1() {
+        }
+
+        public Double getSzazalek() {
+            return szazalek;
+        }
+
+        public void setSzazalek(Double szazalek) {
+            this.szazalek = szazalek;
+        }
+    }
+
+    public static class SzazalekObj2 {
+
+        private static Double szazalek;
+        
+        public SzazalekObj2() {
+        }
+
+        public Double getSzazalek() {
+            return szazalek;
+        }
+
+        public void setSzazalek(Double szazalek) {
+            this.szazalek = szazalek;
+        }
+    }
+
+    public static class SzazalekObj3 {
+
+        private static Double szazalek;
+        
+        public SzazalekObj3() {
+        }
+
+        public Double getSzazalek() {
+            return szazalek;
+        }
+
+        public void setSzazalek(Double szazalek) {
+            this.szazalek = szazalek;
+        }
+
+    }
 }

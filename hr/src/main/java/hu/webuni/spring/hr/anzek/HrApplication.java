@@ -1,7 +1,11 @@
 package hu.webuni.spring.hr.anzek;
         
 import hu.webuni.spring.hr.anzek.config.HrConfigProperties;
+import hu.webuni.spring.hr.anzek.service.companies.CompanyJPADataService;
 import hu.webuni.spring.hr.anzek.service.dataconversion.dto.EmployeeDto;
+import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.EmployeeMapper;
+import hu.webuni.spring.hr.anzek.service.dataconversion.repository.EmployeeRepository;
+import hu.webuni.spring.hr.anzek.service.employee.EmployeeJPADataService;
 import hu.webuni.spring.hr.anzek.service.employee.SalariesService;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -10,17 +14,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+// import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
-//@EnableConfigurationProperties(HrConfigProperties.class)
+// @EnableConfigurationProperties(HrConfigProperties.class) -> ide nem szabad betenni 
+// mert a tobbi osztalyon is elhelyezve duplan injektalja majd (nem tudom miert, de ez van)
+// vizont lehetseges, hogy az is elge lenne, ha csak itt jeleznem es a tobbinel nem!
 public class HrApplication implements CommandLineRunner {
-
+   
     @Autowired
-    public SalariesService salaryService;
+    private HrConfigProperties configProperties;
     
     @Autowired
-    HrConfigProperties configProperties;
+    private SalariesService salariesService;
+    
+    @Autowired
+    private EmployeeMapper employeeMapper;
+
+    @Autowired
+    private EmployeeJPADataService eDataService;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
     
     /**
      * lesz olyan funkcio, hogy adott ID-ju tetelt adjunk vissza, hogy modositsuk, hogy toroljuk, stb.   
@@ -61,15 +76,34 @@ public class HrApplication implements CommandLineRunner {
         
         // honnan jonnek az adatok?
         // .yml vagy application.properties ?
-        System.out.println( "honnan jonnek az adatok? " + this.configProperties.getPropertfile() );
+        System.out.println( "honnan jonnek az adatok? " + this.configProperties.getPropertfiles().getPropertfile() );
         System.out.println( "kiolvasott fix-ev/szazalek adatok? " + this.configProperties.getSalary().getDeflt().getFixszazalek() );
-        System.out.println( "Statikus vagy a dinamikus adatok futnak? (0/1) = " + this.configProperties.getSalary().getSmart().getStatikus_dinamikus());
+        System.out.println( "Statikus vagy a dinamikus adatok futnak? (0/1) = " + this.configProperties.getSalary().getStatikus_dinamikus());
+        System.out.println( "Törzsgarda adatok (1) = " + this.configProperties.getSalary().getSmart().getLimitObj1().getLimit() );
+        System.out.println( "Törzsgarda adatok (2) = " + this.configProperties.getSalary().getSmart().getLimitObh2().getLimit() );
+        System.out.println( "Törzsgarda adatok (3) = " + this.configProperties.getSalary().getSmart().getLimitObj3().getLimit() );
+        System.out.println( "Emelelési mérték - 0 = " + this.configProperties.getSalary().getSmart().getSzazalekObj0().getSzazalek());
+        System.out.println( "Emelelési mérték - 1 = " + this.configProperties.getSalary().getSmart().getSzazalekObj1().getSzazalek());
+        System.out.println( "Emelelési mérték - 2 = " + this.configProperties.getSalary().getSmart().getSzazalekObj2().getSzazalek());
+        System.out.println( "Emelelési mérték - 3 = " + this.configProperties.getSalary().getSmart().getSzazalekObj3().getSzazalek());
         // egy MAP - iteracio peladak:        
         //        
-        //        this.employees.entrySet()
-        //                .stream()
-        //                .forEach( e -> this.employees.put( e.getKey(), (EmployeeDto) this.salaryService.incomeService( e.getValue() )) );
-        //        
+        this.employees.entrySet()
+                .stream()
+                .forEach(  
+                e -> 
+                {
+                    this.employees
+                    .put( e.getKey(), 
+                          this.employeeMapper
+                              .employeeToDto( this.salariesService
+                                                  .incomeService( this.employeeMapper
+                                                                      .dtoToEmployee(e.getValue() ) ) )
+                         );
+                    this.eDataService.save( this.employeeMapper.dtoToEmployee( this.employees.get( e.getKey() ) ));
+                }
+                );
+
         //  Normal for ciklussal a fenti megoldas :
         //for (int i=1; i<8; i++){
         //

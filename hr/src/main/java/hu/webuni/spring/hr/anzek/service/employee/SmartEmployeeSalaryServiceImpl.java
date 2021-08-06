@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,7 +28,6 @@ import org.springframework.stereotype.Service;
  * @author User
  */
 @Service
-//@EnableConfigurationProperties(HrConfigProperties.class)
 public class SmartEmployeeSalaryServiceImpl implements Serializable,EmployeeSalaryService {
 
     @Autowired
@@ -57,28 +55,28 @@ public class SmartEmployeeSalaryServiceImpl implements Serializable,EmployeeSala
         Double szazalek = 0.00;
         Integer ledolgozottEvekSzam = 0;
         
-        if ( this.cfgProp.getSalary().getSmart().getStatikus_dinamikus() == 0.00 ){
+        if ( this.cfgProp.getSalary().getStatikus_dinamikus() == 0.00 ){
             
-            if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimit1() *2.00) * FELEV )  ){
+            if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimitObj1().getLimit() *2.00) * FELEV )  ){
 
                 // kevesebb mint 2,5 ev:
-                szazalek = this.cfgProp.getSalary().getSmart().getSzazlek0();
+                szazalek = this.cfgProp.getSalary().getSmart().getSzazalekObj0().getSzazalek();
             }else{
 
-                if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimit2() *2.00) * FELEV ) ){
+                if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimitObh2().getLimit() *2.00) * FELEV ) ){
 
                     // tobb mint 2,5, de kevesebb mint 5 ev:
-                    szazalek = this.cfgProp.getSalary().getSmart().getSzazlek1();
+                    szazalek = this.cfgProp.getSalary().getSmart().getSzazalekObj1().getSzazalek();
                 }else{
 
-                    if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimit3() *2.00) * FELEV ) ){
+                    if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimitObj3().getLimit() *2.00) * FELEV ) ){
 
                         // tobb mint 5 ev, de kevesebb mint 10 ev
-                        szazalek = this.cfgProp.getSalary().getSmart().getSzazlek2();
+                        szazalek = this.cfgProp.getSalary().getSmart().getSzazalekObj2().getSzazalek();
                     }else{
 
                         // legalabb 10 eve:
-                        szazalek = this.cfgProp.getSalary().getSmart().getSzazlek3();
+                        szazalek = this.cfgProp.getSalary().getSmart().getSzazalekObj3().getSzazalek();
                     }                
                 }
             }
@@ -98,7 +96,7 @@ public class SmartEmployeeSalaryServiceImpl implements Serializable,EmployeeSala
             }
         }
         
-        return ( this.cfgProp.getSalary().getSmart().getStatikus_dinamikus() == 0.00
+        return ( this.cfgProp.getSalary().getStatikus_dinamikus() == 0.00
                 ?
                 szazalek.intValue()
                 : 
@@ -121,42 +119,42 @@ public class SmartEmployeeSalaryServiceImpl implements Serializable,EmployeeSala
         // akkor megapom hany masodperce van munkaban:
         long torzsGardasag = jelenIdo - employee.getStartOfEmployment().toEpochSecond( ZoneOffset.UTC ) ;
        
-        if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimit1() *2.00) * FELEV )  ){
+        if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimitObj1().getLimit() *2.00) * FELEV )  ){
             
             // kevesebb mint 2,5 ev:
             
             torzsGarda = "Torzsgarda kevesebb mint " 
-                            + (this.cfgProp.getSalary().getSmart().getLimit1() *2.00) 
-                            + " ev utan = " + this.cfgProp.getSalary().getSmart().getSzazlek0() 
+                            + (this.cfgProp.getSalary().getSmart().getLimitObj1().getLimit() *2.00) 
+                            + " ev utan = " + this.cfgProp.getSalary().getSmart().getSzazalekObj0().getSzazalek() 
                             + " %" ;
         }else{
             
-            if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimit1() *2.00) * FELEV ) ){
+            if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimitObj1().getLimit() *2.00) * FELEV ) ){
                 
                 // tobb mint 2,5, de kevesebb mint 5 ev:
                 torzsGarda = "Torzsgarda tobb mint " 
-                                + (this.cfgProp.getSalary().getSmart().getLimit1() *2.00) 
+                                + (this.cfgProp.getSalary().getSmart().getLimitObj1().getLimit() *2.00) 
                                 + " ev , de kevesebb mint " 
-                                + (this.cfgProp.getSalary().getSmart().getLimit2() *2.00) 
-                                + " utan = " + this.cfgProp.getSalary().getSmart().getSzazlek1() 
+                                + (this.cfgProp.getSalary().getSmart().getLimitObh2().getLimit() *2.00) 
+                                + " utan = " + this.cfgProp.getSalary().getSmart().getSzazalekObj1().getSzazalek() 
                                 + " %";
             }else{
                 
-                if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimit3() *2.00) * FELEV ) ){
+                if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimitObj3().getLimit() *2.00) * FELEV ) ){
 
                     // tobb mint 5 ev, de kevesebb mint 10 ev
                     torzsGarda = "Torzsgarda tobb mint " 
-                                    + (this.cfgProp.getSalary().getSmart().getLimit2() *2.00) 
+                                    + (this.cfgProp.getSalary().getSmart().getLimitObh2().getLimit() *2.00) 
                                     + " ev , de kevesebb mint " 
-                                    + (this.cfgProp.getSalary().getSmart().getLimit3() *2.00) 
-                                    + " utan = " + this.cfgProp.getSalary().getSmart().getSzazlek2() 
+                                    + (this.cfgProp.getSalary().getSmart().getLimitObj3().getLimit() *2.00) 
+                                    + " utan = " + this.cfgProp.getSalary().getSmart().getSzazalekObj2().getSzazalek() 
                                     + " %";
                 }else{
                     
                     // legalabb 10 eve:
                     torzsGarda = "Torzsgarda legalabb " 
-                                    + (this.cfgProp.getSalary().getSmart().getLimit3() *2.00) 
-                                    + " utan = " + this.cfgProp.getSalary().getSmart().getSzazlek3() 
+                                    + (this.cfgProp.getSalary().getSmart().getLimitObj3().getLimit() *2.00) 
+                                    + " utan = " + this.cfgProp.getSalary().getSmart().getSzazalekObj3().getSzazalek() 
                                     + " %";
                 }                
             }
