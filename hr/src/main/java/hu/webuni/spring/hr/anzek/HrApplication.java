@@ -80,7 +80,7 @@ public class HrApplication implements CommandLineRunner {
         System.out.println( "kiolvasott fix-ev/szazalek adatok? " + this.configProperties.getSalary().getDeflt().getFixszazalek() );
         System.out.println( "Statikus vagy a dinamikus adatok futnak? (0/1) = " + this.configProperties.getSalary().getStatikus_dinamikus());
         System.out.println( "Törzsgarda adatok (1) = " + this.configProperties.getSalary().getSmart().getLimitObj1().getLimit() );
-        System.out.println( "Törzsgarda adatok (2) = " + this.configProperties.getSalary().getSmart().getLimitObh2().getLimit() );
+        System.out.println( "Törzsgarda adatok (2) = " + this.configProperties.getSalary().getSmart().getLimitObj2().getLimit() );
         System.out.println( "Törzsgarda adatok (3) = " + this.configProperties.getSalary().getSmart().getLimitObj3().getLimit() );
         System.out.println( "Emelelési mérték - 0 = " + this.configProperties.getSalary().getSmart().getSzazalekObj0().getSzazalek());
         System.out.println( "Emelelési mérték - 1 = " + this.configProperties.getSalary().getSmart().getSzazalekObj1().getSzazalek());
@@ -93,14 +93,26 @@ public class HrApplication implements CommandLineRunner {
                 .forEach(  
                 e -> 
                 {
+                    int haviFizetese = this.employees.get( e.getKey() ).getMonthlySalary();
+                    System.out.println( "--> " + this.employees.get( e.getKey() ).getWorkerName() + " régi fizetese " + haviFizetese + " HUF");
+                    
                     this.employees
                     .put( e.getKey(), 
                           this.employeeMapper
                               .employeeToDto( this.salariesService
                                                   .incomeService( this.employeeMapper
-                                                                      .dtoToEmployee(e.getValue() ) ) )
+                                                                      .dtoToEmployee( e.getValue() ) ) )
                          );
-                    this.eDataService.save( this.employeeMapper.dtoToEmployee( this.employees.get( e.getKey() ) ));
+                    
+                    haviFizetese = this.employees.get( e.getKey() ).getMonthlySalary();
+                    System.out.println( "- - - - - - - ->  új fizetése " + haviFizetese + " HUF");
+                    if ( ! this.eDataService.findById( e.getKey()).isPresent() ){
+    
+                        this.eDataService.save( this.employeeMapper.dtoToEmployee( this.employees.get( e.getKey() ) ));
+                    }else{
+                        
+                        this.eDataService.update(this.employeeMapper.dtoToEmployee( this.employees.get( e.getKey() ) ));
+                    }
                 }
                 );
 
@@ -121,7 +133,7 @@ public class HrApplication implements CommandLineRunner {
                                                     + e.getValue().getJobPosition() +" - "
                                                     + e.getValue().getStartOfEmployment() +" - "
                                                     + e.getValue().getMonthlySalary() +" - "
-                                                    + e.getValue().getJobPosition() +" - "
+                                                    + e.getValue().getJobPosition() +"\n - "
                                                     + e.getValue().getTorzsGarda() 
                                                 )
                         );

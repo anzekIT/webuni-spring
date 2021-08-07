@@ -50,9 +50,4 @@ public class DefaultEmployeeSalaryServiceImpl implements Serializable,EmployeeSa
         
         return "By Deault (fix) - " + this.cfgProp.getSalary().getDeflt().getFixszazalek() + " %";
     }
-
-    @Override
-    public List<Employee> getAllEmployees() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

@@ -6,7 +6,6 @@
 package hu.webuni.spring.hr.anzek.service.employee;
 
 import hu.webuni.spring.hr.anzek.service.model.Employee;
-import java.util.List;
 
 /**
  * A munkavallaloi szerviz Interace<br>
@@ -31,10 +30,4 @@ public interface EmployeeSalaryService {
      * @return a torzsgardatagsag merteke<br>
      */
     String getTorzsGarda( Employee employee );
-    
-    /**
-     * Visszaadja a teljes Munkavallaloi allomany listajat<br>
-     * @return minden Employee peldany egy Lista-kollekcioban<br>
-     */
-    List<Employee> getAllEmployees();
 }

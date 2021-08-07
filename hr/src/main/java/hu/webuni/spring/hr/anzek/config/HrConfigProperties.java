@@ -143,7 +143,7 @@ public class HrConfigProperties {
             this.limitObj1 = limit1O;
         }
 
-        public LimitObj2 getLimitObh2() {
+        public LimitObj2 getLimitObj2() {
             
             return limitObj2;
         }

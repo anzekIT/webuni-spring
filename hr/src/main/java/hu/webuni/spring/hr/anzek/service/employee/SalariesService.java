@@ -65,7 +65,7 @@ public class SalariesService {
             
             // miert annyi amennyi a fizetesenek emelese:
             this.torzsGarda = this.employeeService.getTorzsGarda( this.employee );
-            
+          
             // A megemelt fizetes visszairasa az objektumba:
             this.employee.setMonthlySalary( this.fizetesEmeles );
             

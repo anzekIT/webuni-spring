@@ -10,8 +10,6 @@ import hu.webuni.spring.hr.anzek.service.model.Employee;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.TreeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +32,7 @@ public class SmartEmployeeSalaryServiceImpl implements Serializable,EmployeeSala
     private HrConfigProperties cfgProp;
     
     // egy private konstans-ertek a felev masodpercben kifejezve : 15768000 sec...
-    private final long FELEV = 15768000;    
+    private final long EGY_NAP = 86400; /* secundum */  
     
     /**
      * Torzsgarda alapu progressziv jovedelem szazalekos novekmeny szamito metodus<br>
@@ -43,6 +41,7 @@ public class SmartEmployeeSalaryServiceImpl implements Serializable,EmployeeSala
      * @return a progressziv szazalekos novekmeny INT tipusban<br>
      */
     @Override
+    @SuppressWarnings("null")
     public int getPayRaisePercent( Employee employee ) {
        
         // aktualis idopont masodpercekben (1970-01-01 -tol)
@@ -50,32 +49,32 @@ public class SmartEmployeeSalaryServiceImpl implements Serializable,EmployeeSala
         
         // Ha a jelenIdo-bol kivonom a munkabaallas idopontja masodpercekben (1970-01-01 -tol), 
         // akkor megapom hany masodperce van munkaban:
-        long torzsGardasag = jelenIdo - employee.getStartOfEmployment().toEpochSecond( ZoneOffset.UTC ) ;
+        long torzsGardaNapokban = (jelenIdo - employee.getStartOfEmployment().toEpochSecond( ZoneOffset.UTC )) / EGY_NAP ;
         
         Double szazalek = 0.00;
         Integer ledolgozottEvekSzam = 0;
         
         if ( this.cfgProp.getSalary().getStatikus_dinamikus() == 0.00 ){
             
-            if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimitObj1().getLimit() *2.00) * FELEV )  ){
+            // Kisebb mint limit-1
+            if ( torzsGardaNapokban < ( this.cfgProp.getSalary().getSmart().getLimitObj1().getLimit() *365)  ){
 
-                // kevesebb mint 2,5 ev:
                 szazalek = this.cfgProp.getSalary().getSmart().getSzazalekObj0().getSzazalek();
             }else{
 
-                if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimitObh2().getLimit() *2.00) * FELEV ) ){
-
-                    // tobb mint 2,5, de kevesebb mint 5 ev:
+                // nagyobb-egyenlo mint limit-1 es kisebb mint limit-2
+                if ( torzsGardaNapokban < ( this.cfgProp.getSalary().getSmart().getLimitObj2().getLimit() *365) ){
+                    
                     szazalek = this.cfgProp.getSalary().getSmart().getSzazalekObj1().getSzazalek();
                 }else{
 
-                    if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimitObj3().getLimit() *2.00) * FELEV ) ){
-
-                        // tobb mint 5 ev, de kevesebb mint 10 ev
+                    // nagyonbb egyenlo mint limit-2 es kisebb mint limit-3
+                    if ( torzsGardaNapokban < ( this.cfgProp.getSalary().getSmart().getLimitObj3().getLimit() *365)  ){
+                      
                         szazalek = this.cfgProp.getSalary().getSmart().getSzazalekObj2().getSzazalek();
                     }else{
 
-                        // legalabb 10 eve:
+                        // negyobb egyenlo mint limit-3
                         szazalek = this.cfgProp.getSalary().getSmart().getSzazalekObj3().getSzazalek();
                     }                
                 }
@@ -83,25 +82,24 @@ public class SmartEmployeeSalaryServiceImpl implements Serializable,EmployeeSala
         }else{
             
             TreeMap<Double, Integer> limits = this.cfgProp.getSalary().getSmart().getLimits();
+                     
+            szazalek = 0.00;
+            int elozo = 0;         
             
-            for( var entry: limits.entrySet()){
+            for( var entry: limits.entrySet() ){
+                
+                if ( (torzsGardaNapokban > elozo) && (torzsGardaNapokban <= ( entry.getKey() * 365)) ){
 
-                if (  torzsGardasag < ( entry.getKey() * 2.00) ){
-
-                    ledolgozottEvekSzam = entry.getValue();
+                    szazalek = entry.getValue().doubleValue();                    
+                    break;
                 }else{
 
-                    break;
+                    elozo = (int) (entry.getKey() * 365);
                 }
             }
         }
         
-        return ( this.cfgProp.getSalary().getStatikus_dinamikus() == 0.00
-                ?
-                szazalek.intValue()
-                : 
-                ( ledolgozottEvekSzam == null ? 0 : ledolgozottEvekSzam )
-                );
+        return szazalek.intValue();
     }
     
     /**
@@ -117,63 +115,82 @@ public class SmartEmployeeSalaryServiceImpl implements Serializable,EmployeeSala
         long jelenIdo = LocalDateTime.now().toEpochSecond( ZoneOffset.UTC ) ;
         // Ha a jelenIdo-bol kivonom a munkabaallas idopontja masodpercekben (1970-01-01 -tol), 
         // akkor megapom hany masodperce van munkaban:
-        long torzsGardasag = jelenIdo - employee.getStartOfEmployment().toEpochSecond( ZoneOffset.UTC ) ;
+        long torzsGardaNapokban = (jelenIdo - employee.getStartOfEmployment().toEpochSecond( ZoneOffset.UTC )) / EGY_NAP ;
        
-        if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimitObj1().getLimit() *2.00) * FELEV )  ){
+        if ( this.cfgProp.getSalary().getStatikus_dinamikus() == 0.00 ){
             
-            // kevesebb mint 2,5 ev:
-            
-            torzsGarda = "Torzsgarda kevesebb mint " 
-                            + (this.cfgProp.getSalary().getSmart().getLimitObj1().getLimit() *2.00) 
-                            + " ev utan = " + this.cfgProp.getSalary().getSmart().getSzazalekObj0().getSzazalek() 
-                            + " %" ;
-        }else{
-            
-            if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimitObj1().getLimit() *2.00) * FELEV ) ){
-                
-                // tobb mint 2,5, de kevesebb mint 5 ev:
-                torzsGarda = "Torzsgarda tobb mint " 
-                                + (this.cfgProp.getSalary().getSmart().getLimitObj1().getLimit() *2.00) 
-                                + " ev , de kevesebb mint " 
-                                + (this.cfgProp.getSalary().getSmart().getLimitObh2().getLimit() *2.00) 
-                                + " utan = " + this.cfgProp.getSalary().getSmart().getSzazalekObj1().getSzazalek() 
-                                + " %";
-            }else{
-                
-                if ( torzsGardasag < ( (this.cfgProp.getSalary().getSmart().getLimitObj3().getLimit() *2.00) * FELEV ) ){
+            if ( torzsGardaNapokban < ( this.cfgProp.getSalary().getSmart().getLimitObj1().getLimit()  *365) ){
 
-                    // tobb mint 5 ev, de kevesebb mint 10 ev
+                torzsGarda = "Torzsgarda kevesebb mint " 
+                                + this.cfgProp.getSalary().getSmart().getLimitObj1().getLimit() 
+                                + " év ( " + this.cfgProp.getSalary().getSmart().getLimitObj1().getLimit() *365 + " nap)\n"
+                                + "A munkaviszonya ideje = " + String.format("%,.2f", torzsGardaNapokban / 365.00 ) + " év, ( " + torzsGardaNapokban +" naptári nap )"
+                                + " amely után => " + this.cfgProp.getSalary().getSmart().getSzazalekObj0().getSzazalek() 
+                                + " % ( kerekítve : "  +  this.cfgProp.getSalary().getSmart().getSzazalekObj0().getSzazalek().intValue()  + "  %) illeti meg." ;
+            }else{
+
+                if ( torzsGardaNapokban < ( this.cfgProp.getSalary().getSmart().getLimitObj2().getLimit()  *365) ){
+
                     torzsGarda = "Torzsgarda tobb mint " 
-                                    + (this.cfgProp.getSalary().getSmart().getLimitObh2().getLimit() *2.00) 
-                                    + " ev , de kevesebb mint " 
-                                    + (this.cfgProp.getSalary().getSmart().getLimitObj3().getLimit() *2.00) 
-                                    + " utan = " + this.cfgProp.getSalary().getSmart().getSzazalekObj2().getSzazalek() 
-                                    + " %";
+                                    + this.cfgProp.getSalary().getSmart().getLimitObj1().getLimit()  
+                                    + " év ( " + this.cfgProp.getSalary().getSmart().getLimitObj1().getLimit() *365 + " nap) de kevesebb mint "
+                                    + this.cfgProp.getSalary().getSmart().getLimitObj2().getLimit()
+                                    + " év ( " + this.cfgProp.getSalary().getSmart().getLimitObj2().getLimit() *365 + " nap)\n"
+                                    + "A munkaviszonya ideje = " + String.format("%,.2f", torzsGardaNapokban / 365.00 ) + " év, ( " + torzsGardaNapokban +" naptári nap )"
+                                    + " amely után => " + this.cfgProp.getSalary().getSmart().getSzazalekObj1().getSzazalek() 
+                                    + " % ( kerekítve : "  +  this.cfgProp.getSalary().getSmart().getSzazalekObj1().getSzazalek().intValue()  + " %) illeti meg." ;
                 }else{
-                    
-                    // legalabb 10 eve:
-                    torzsGarda = "Torzsgarda legalabb " 
-                                    + (this.cfgProp.getSalary().getSmart().getLimitObj3().getLimit() *2.00) 
-                                    + " utan = " + this.cfgProp.getSalary().getSmart().getSzazalekObj3().getSzazalek() 
-                                    + " %";
-                }                
+
+                    if ( torzsGardaNapokban < ( this.cfgProp.getSalary().getSmart().getLimitObj3().getLimit()  *365)){
+
+                        torzsGarda = "Torzsgarda tobb mint " 
+                                        + this.cfgProp.getSalary().getSmart().getLimitObj2().getLimit()  
+                                        + " év ( " + this.cfgProp.getSalary().getSmart().getLimitObj2().getLimit() *365 + " nap) de kevesebb mint "
+                                        + this.cfgProp.getSalary().getSmart().getLimitObj3().getLimit()
+                                        + " év ( " + this.cfgProp.getSalary().getSmart().getLimitObj3().getLimit() *365 + " nap)\n"
+                                        + "A munkaviszonya ideje = " + String.format("%,.2f", torzsGardaNapokban / 365.00 ) + " év, ( " + torzsGardaNapokban +" naptári nap )"
+                                        + " amely után => " + this.cfgProp.getSalary().getSmart().getSzazalekObj2().getSzazalek() 
+                                        + " % ( kerekítve : "  +  this.cfgProp.getSalary().getSmart().getSzazalekObj2().getSzazalek().intValue()  + " %) illeti meg." ;
+                    }else{
+
+                        // legalabb 10 eve:
+                        torzsGarda = "Torzsgarda legalabb " 
+                                            + this.cfgProp.getSalary().getSmart().getLimitObj3().getLimit()  
+                                            + " év ( " + this.cfgProp.getSalary().getSmart().getLimitObj3().getLimit() *365 + " nap)\n"     
+                                            + "A munkaviszonya ideje = " + String.format("%,.2f", torzsGardaNapokban / 365.00 ) + " év, ( " + torzsGardaNapokban +" naptári nap )"
+                                            + " amely után => " + this.cfgProp.getSalary().getSmart().getSzazalekObj3().getSzazalek() 
+                                            + " % ( kerekítve : "  +  this.cfgProp.getSalary().getSmart().getSzazalekObj3().getSzazalek().intValue()  + " %) illeti meg." ;                            
+                    }                
+                }
             }
+        }else{
+
+            TreeMap<Double, Integer> limits = this.cfgProp.getSalary().getSmart().getLimits();
+            Double szazalek = 0.00;            
+            int elozo = 0;
+            int utolso = 0;
+            
+            for( var entry: limits.entrySet() ){
+                
+                if ( (torzsGardaNapokban > elozo) && (torzsGardaNapokban <= ( entry.getKey() * 365)) ){
+
+                    szazalek = entry.getValue().doubleValue();
+                    utolso = entry.getKey().intValue();
+                    break;
+                }else{
+
+                    elozo = (int) (entry.getKey() * 365);
+                }
+            }
+                        
+            torzsGarda = "Torzsgarda több mint " + String.format("%,.2f", elozo/365.00) + " év, de kevesebb, vagy egyenő mint " 
+                          + utolso
+                          + " év ( " + utolso *365 + " nap)\n"
+                          + "A munkaviszony pontos ideje = " + String.format("%,.2f", torzsGardaNapokban / 365.00 ) + " év, ( " + torzsGardaNapokban +" naptári nap )"
+                          + " amely után => " + szazalek
+                          + " % ( kerekítve : "  +  szazalek.intValue()  + "  %) illeti meg." ;
         }
         
         return torzsGarda;
-    }
-
-    /**
-     * Ez csak egy teszt metodus<br>
-     * Nincs funkcioja<br>
-     * @return ures listat ad vissza<br>
-     */
-    @Override
-    public List<Employee> getAllEmployees() {
-        
-        Employee employee;
-        List<Employee> es = new ArrayList<>();
-        
-        return es;
     }
 }
