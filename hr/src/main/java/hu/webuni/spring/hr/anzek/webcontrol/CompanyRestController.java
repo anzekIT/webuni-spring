@@ -40,7 +40,7 @@ public final class CompanyRestController {
     EmployeeMapper employeeMapper;        
 
     /**
-     * Az osszes vallalt lekerdezses<br>
+     * Az osszes vallalt lekerdezese<br>
      * @return a Lista, amit a modellbol kiemelunk<br>
      */    
     @GetMapping
@@ -48,7 +48,30 @@ public final class CompanyRestController {
     
         return this.companyMapper.companiesToDtos( this.dataCompanyService.findAll() );    
     }
-     
+
+    /**
+     * Az osszes vallalt lekerdezese<br>
+     * @param full a full barmit tartalmazhat (vagy korlatozhato "full" tartalomra is
+     * @return a Lista, amit a modellbol kiemelunk<br>
+     */    
+    @GetMapping(value = { "/v0/withemployees", "/v0/withemployees/{full}" })
+    public List<CompanyDto> getAllCompaniesWithOptionalEmployees( @PathVariable(required = false) String full) {
+        
+        boolean withEmployees;
+        if ( full != null ) {
+            
+            withEmployees = true;
+        } else {
+            
+            withEmployees = false;
+        }
+        return withEmployees 
+                ?
+                this.companyMapper.companiesToDtos( this.dataCompanyService.findAll() )
+                : 
+                this.companyMapper.companiesToDtos( this.dataCompanyService.findAllWithEmployees() ) ;    
+    }
+    
     /**
      * POST (/v1-re) - Egy ceg-komlex osztalypeldanyt rogzit be egy JSON entitasbol<br>
      * Mapper es service reteg hasznalatval !<br>

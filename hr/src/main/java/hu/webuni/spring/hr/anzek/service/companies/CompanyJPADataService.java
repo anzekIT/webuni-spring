@@ -14,6 +14,8 @@ import hu.webuni.spring.hr.anzek.service.exceptions.NonUniqueIdException;
 import hu.webuni.spring.hr.anzek.service.model.Employee;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 // oldverzio:
 // import javax.persistence.EntityManager;
 // import javax.persistence.PersistenceContext;
@@ -36,8 +38,8 @@ public class CompanyJPADataService {
     @Autowired
     private EmployeeMapper employeeMapper;
     
-    //@PersistenceContext
-    //EntityManager em;
+    @PersistenceContext
+    EntityManager em;
     
     @Autowired
     private CompanyRepository companyRepository;
@@ -144,6 +146,18 @@ public class CompanyJPADataService {
         // ez egy sql (nativ) keresesi koddal :
         // return em.createNativeQuery( "select * from Company" , Company.class ).getResultList();
         return this.companyRepository.findAll();
+    }
+
+    /**
+     * Visszaadja az osszes CEG-adatlistat, kiegeszitve a dolgozok listajaval<br>
+     * @return a CEG-litsa a dolozokkal<br>
+     */
+    public List<Company> findAllWithEmployees() {
+        
+        String jpaNativeStr =
+               "SELECT distinct c.*, e.* as worker FROM public.company left join public.employee e on e.company_id_company = c.id_company";
+        
+        return em.createNativeQuery( jpaNativeStr , Company.class ).getResultList();
     }
     
     /**
@@ -339,6 +353,5 @@ public class CompanyJPADataService {
     //    }
     //
     //    return this.companyMapper.companyToDto(company);
-    //}
-     
+    //}     
 }
