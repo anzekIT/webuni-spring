@@ -51,10 +51,10 @@ public final class CompanyRestController {
 
     /**
      * Az osszes vallalt lekerdezese<br>
-     * @param full a full barmit tartalmazhat (vagy korlatozhato "full" tartalomra is
+     * @param full a full barmit tartalmazhat (vagy korlatozhato lenne a "full" tartalomra is)
      * @return a Lista, amit a modellbol kiemelunk<br>
      */    
-    @GetMapping(value = { "/v0/withemployees", "/v0/withemployees/{full}" })
+    @GetMapping(value = { "/v0/withemployees/", "/v0/withemployees/{full}" })
     public List<CompanyDto> getAllCompaniesWithOptionalEmployees( @PathVariable(required = false) String full) {
         
         boolean withEmployees;
