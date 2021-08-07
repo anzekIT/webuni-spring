@@ -13,6 +13,7 @@ import hu.webuni.spring.hr.anzek.service.employee.EmployeeJPADataService;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -100,7 +101,8 @@ public final class CompanyRestController {
      * Ez tehat nem modosit, csak letrehoz!<br>
      * @param companyList a request keresben utazo JSON formatumu osztalypeldany<br>
      * @return a JSON bodyban, ha sikeres volt az osztalypeldanyt kapjuk visza, ha mar letezett, akkor a FOUND() uzenetet<br>
-     */        
+     */       
+    @Transactional
     @PostMapping("/v0/createMultiple/")
     public List<CompanyDto> createV0Companies( @RequestBody @Valid List<CompanyDto> companyList ){
 
@@ -131,6 +133,7 @@ public final class CompanyRestController {
      * @param companyDto a request keresben utazo JSON formatumu modosito osztalypeldany- mezo adatok (nem kell a komplett peldany)<br>
      * @return  a JSON body, amelben vagy a lekerdezett peldany adatai, vagy NOT-FOUND() talalhato<br>
      */
+    @Transactional
     @PutMapping("/v0/{companyId}")
     public CompanyDto modifyV0Company(  @PathVariable long companyId, 
                                         @RequestBody @Valid CompanyDto companyDto ){
@@ -145,6 +148,7 @@ public final class CompanyRestController {
      * /v0/ - 3, DELETE - torles<br>
      * @param companyId amit torolni szeretnenk<br>
      */
+    @Transactional
     @DeleteMapping("/v0/{companyId}")
     public void deleteV0Company( @PathVariable long companyId ){
     

@@ -9,8 +9,10 @@ import hu.webuni.spring.hr.anzek.service.dataconversion.dto.EmployeeDto;
 import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.EmployeeMapper;
 import hu.webuni.spring.hr.anzek.service.model.Employee;
 import hu.webuni.spring.hr.anzek.service.employee.EmployeeJPADataService;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -114,11 +116,12 @@ public class EmployeeRestController {
     @GetMapping("/employee/salarylimit/{limit}")
     public List<EmployeeDto> getBySalaryLimit( @PathVariable Integer limit ){
         
+        List< Employee> empl = new ArrayList<>();
         // old (memori-) verzio:
         //public ResponseEntity< List<EmployeeDto> > getBySalaryLimit( @PathVariable Integer limit ){
         //
         //// a MAP kollekciobol kiolvassa az "id" -ben levő kulcserteknek megfelelo entitast
-        //List< EmployeeDto > dto = new ArrayList<>();
+        
         //if ( limit != null ){
         //
         //    for( int i=0; i<this.employees.size(); i++){
@@ -161,8 +164,8 @@ public class EmployeeRestController {
         //                              );
         
         // repositoryval:
-       
-        return null;
+        empl = this.dataEmployeeService.findByFieldvalue( "montly_salary", ">", limit.toString() );
+        return this.employeeMapper.employeeListToDtoList( empl );
     }
     
     /**
@@ -171,6 +174,7 @@ public class EmployeeRestController {
      * @param employeeDto az uj objektum elem berogzitendo adatai<br>
      * @return viszaadja a parameterben szereplo uj peldanyt<br> 
      */
+    @Transactional
     @PostMapping
     public EmployeeDto createEmployee( @RequestBody EmployeeDto employeeDto ){
         
@@ -179,8 +183,7 @@ public class EmployeeRestController {
         //return employeeDto;
         
         // mentjuk :
-        Employee employee = this.dataEmployeeService
-                                .save( this.employeeMapper.dtoToEmployee(employeeDto) );
+        this.dataEmployeeService.save( this.employeeMapper.dtoToEmployee(employeeDto) );
         // visszaolvassuk :
         return this.employeeMapper
                    .employeeToDto(this.dataEmployeeService
@@ -196,6 +199,7 @@ public class EmployeeRestController {
      * @param employeeDto a modositando entitas<br>
      * @return visszaadja: sikeres volt -e a modositas: letezett-e egyaltalan ezt megelozoen, vagy sem<br> 
      */
+    @Transactional
     @PutMapping("/employee/{id}")
     public EmployeeDto modifyEmployee( @PathVariable long id, 
                                        @RequestBody EmployeeDto employeeDto ){
@@ -232,6 +236,7 @@ public class EmployeeRestController {
      * DELETE METHOD<br>
      * @param id a torlesre jelolt tetel ID azonositoja<br>
      */
+    @Transactional
     @DeleteMapping("/employee/{id}")
     // old verzio
     // public ResponseEntity<String> deleteEmployeeDto( @PathVariable long id ){
