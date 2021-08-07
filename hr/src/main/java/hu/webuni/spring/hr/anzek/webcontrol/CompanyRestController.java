@@ -7,7 +7,6 @@ package hu.webuni.spring.hr.anzek.webcontrol;
 import hu.webuni.spring.hr.anzek.service.dataconversion.dto.CompanyDto;
 import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.CompanyMapper;
 import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.EmployeeMapper;
-import hu.webuni.spring.hr.anzek.service.model.Company;
 import hu.webuni.spring.hr.anzek.service.companies.CompanyJPADataService;
 import hu.webuni.spring.hr.anzek.service.employee.EmployeeJPADataService;
 import java.util.List;
@@ -66,11 +65,13 @@ public final class CompanyRestController {
             
             withEmployees = false;
         }
-        return withEmployees 
+        
+        return (withEmployees 
                 ?
                 this.companyMapper.companiesToDtos( this.dataCompanyService.findAll() )
                 : 
-                this.companyMapper.companiesToDtos( this.dataCompanyService.findAllWithEmployees() ) ;    
+                this.companyMapper.companiesToDtos( this.dataCompanyService.findAllWithEmployees() )
+                ); 
     }
     
     /**
@@ -81,12 +82,13 @@ public final class CompanyRestController {
      * @param companyDto a request keresben utazo JSON formatumu osztalypeldany<br>
      * @return a JSON bodyban, ha sikeres volt az osztalypeldanyt kapjuk visza, ha mar letezett, akkor a FOUND() uzenetet<br>
      */        
+    // @Transactional
     @PostMapping("/v0/createSingle/")
     public CompanyDto createV0Company( @RequestBody @Valid CompanyDto companyDto ){
         
         // mentjuk :
-        Company company = this.dataCompanyService
-                              .save( this.companyMapper.dtoToCompany(companyDto) );
+        this.dataCompanyService.save( this.companyMapper.dtoToCompany(companyDto) );
+        
         // visszaolvassuk :        
         return this.companyMapper.companyToDto( this.dataCompanyService
                                                     .findById(companyDto.getIdCompany() )
@@ -102,7 +104,7 @@ public final class CompanyRestController {
      * @param companyList a request keresben utazo JSON formatumu osztalypeldany<br>
      * @return a JSON bodyban, ha sikeres volt az osztalypeldanyt kapjuk visza, ha mar letezett, akkor a FOUND() uzenetet<br>
      */       
-    @Transactional
+    // @Transactional
     @PostMapping("/v0/createMultiple/")
     public List<CompanyDto> createV0Companies( @RequestBody @Valid List<CompanyDto> companyList ){
 
@@ -133,7 +135,7 @@ public final class CompanyRestController {
      * @param companyDto a request keresben utazo JSON formatumu modosito osztalypeldany- mezo adatok (nem kell a komplett peldany)<br>
      * @return  a JSON body, amelben vagy a lekerdezett peldany adatai, vagy NOT-FOUND() talalhato<br>
      */
-    @Transactional
+    // @Transactional
     @PutMapping("/v0/{companyId}")
     public CompanyDto modifyV0Company(  @PathVariable long companyId, 
                                         @RequestBody @Valid CompanyDto companyDto ){
@@ -148,7 +150,7 @@ public final class CompanyRestController {
      * /v0/ - 3, DELETE - torles<br>
      * @param companyId amit torolni szeretnenk<br>
      */
-    @Transactional
+    // @Transactional
     @DeleteMapping("/v0/{companyId}")
     public void deleteV0Company( @PathVariable long companyId ){
     
