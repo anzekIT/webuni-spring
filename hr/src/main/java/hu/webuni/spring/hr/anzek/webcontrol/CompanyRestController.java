@@ -4,15 +4,17 @@
 
 package hu.webuni.spring.hr.anzek.webcontrol;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import hu.webuni.spring.hr.anzek.service.dataconversion.dto.CompanyDto;
 import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.CompanyMapper;
 import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.EmployeeMapper;
 import hu.webuni.spring.hr.anzek.service.companies.CompanyJPADataService;
+import hu.webuni.spring.hr.anzek.service.dataconversion.repository.CompanyRepository;
 import hu.webuni.spring.hr.anzek.service.employee.EmployeeJPADataService;
+import hu.webuni.spring.hr.anzek.service.model.Company;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -38,6 +41,9 @@ public final class CompanyRestController {
     
     @Autowired
     EmployeeMapper employeeMapper;        
+    
+    @Autowired
+    CompanyRepository companyRepository;     
 
     /**
      * Az osszes vallalt lekerdezese<br>
@@ -49,18 +55,40 @@ public final class CompanyRestController {
         return this.companyMapper.companiesToDtos( this.dataCompanyService.findAll() );    
     }
 
+    //@GetMapping
+    //@JsonView( Views.BaseData.class)
+    //@SuppressWarnings("null")
+    //public List<CompanyDto> getAllCompaniesWithBaseData( @PathVariable(required = false) Boolean full){
+    //
+    //boolean withEmployees;
+    //if ( ( full == null ) || ( ! full )){
+    //
+    //    withEmployees = false; 
+    //}else{
+    //    withEmployees = true; 
+    //}
+    //
+    //    return this.getAllCompaniesWithOptionalEmployees( full.toString() );    
+    //}
+    
     /**
      * Az osszes vallalt lekerdezese<br>
      * @param full a full barmit tartalmazhat (vagy korlatozhato lenne a "full" tartalomra is)
      * @return a Lista, amit a modellbol kiemelunk<br>
-     */    
+     */ 
     @GetMapping(value = { "/v0/withemployees/", "/v0/withemployees/{full}" })
     public List<CompanyDto> getAllCompaniesWithOptionalEmployees( @PathVariable(required = false) String full) {
         
         boolean withEmployees;
         if ( full != null ) {
             
-            withEmployees = true;
+            if ( full.equalsIgnoreCase("true") ) {
+                            
+                withEmployees = true;
+            }else{
+            
+                withEmployees = false;
+            }  
         } else {
             
             withEmployees = false;
@@ -73,6 +101,39 @@ public final class CompanyRestController {
                 this.companyMapper.companiesToDtos( this.dataCompanyService.findAllWithEmployees() )
                 ); 
     }
+    
+ 
+    /**
+     * GET METODUS, amely lekeri az osszes ceget az osszes dolgozojaval<br>
+     * Viszont!<br>
+     * Nem feltetlen csak ha a GET keresben ../?full=true szerepel<br>
+     * Es ha az applicaton.propertises -ben a "spring.jpa.open-in-view=false" opcio van beallitva<br>
+     * @param full stringket ...?full=true/false a GET keres soraban<br>
+     * @return a cegek listaja<br>
+     */
+    @GetMapping
+    public List<CompanyDto> getFullCompaniesWithEmployeesForParamesNotOpenView( @RequestParam(required = false) Boolean full){
+        
+        List<CompanyDto> companyDtos = null;
+        List<Company> companies = null;
+      
+        boolean withEmployees = false;
+       
+        if ( ( full != null )  &&  full ){
+        
+            withEmployees = true;
+        }
+        
+        if ( withEmployees ){
+            
+            companyDtos = this.companyMapper.companiesToDtos( this.dataCompanyService.findAll() );
+        }else{
+            
+            companyDtos = this.companyMapper.companiesToDtos( this.companyRepository.findAllWithEmployees() );
+        }
+        return companyDtos;
+    }
+    
     
     /**
      * POST (/v1-re) - Egy ceg-komlex osztalypeldanyt rogzit be egy JSON entitasbol<br>
