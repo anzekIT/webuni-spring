@@ -5,6 +5,7 @@
  */
 package hu.webuni.spring.hr.anzek.service.model;
 
+import hu.webuni.spring.hr.anzek.service.companies.CompanyJPADataService;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
@@ -13,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-
 
 /**
  * "A munkavallo" osztaly <br>
@@ -27,6 +27,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @Entity
 @EntityScan
 @NamedQuery(name="EmployeeIdCount", query="select count(e.idEmployee) from Employee e where e.idEmployee = :id")
+@SuppressWarnings({"ValidAttributes", "PersistenceUnitPresent"})
 public class Employee implements Serializable {
     
     /**
@@ -81,7 +82,7 @@ public class Employee implements Serializable {
     public void setCompany(Company company) {
         this.company = company;
     }
-    
+  
     /**
      * A munkavallalo osztalypeldany konstruktora <br>
      * Mezoi : <br>
@@ -95,7 +96,7 @@ public class Employee implements Serializable {
     }
 
     /**
-     * Teljes feltolto konstruktor<br>
+     * Entitas alapfeltolto konstruktor<br>
      * @param idEmployee A munkavalallo azonositoja <br>
      * @param workerName A dolgozo neve <br> 
      * @param jobPosition Munkakori beosztasa <br>

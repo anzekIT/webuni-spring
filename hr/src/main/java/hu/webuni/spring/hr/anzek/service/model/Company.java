@@ -3,7 +3,6 @@
  */
 package hu.webuni.spring.hr.anzek.service.model;
 
-import hu.webuni.spring.hr.anzek.service.dataconversion.dto.EmployeeDto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +32,13 @@ public class Company implements Serializable {
     private String name;
     private String address;
     
-    // ez ahhoz kellene, hogy az employye-k is minden esetben mentesre keruljenek
-    // amelyek be vannak lancoolva ide
-    // de nem ezt a megoldast hasznaljuk !
-    //@OneToMany( mappedBy = "company", cascade = CascadeType.MERGE )
+    // ez ahhoz kellene, hogy az Employee-ok is minden esetben 
+    // a Company-kkal egyutt mentesre keruljenek.
+    // Azok persze, amelyek be vannak lancoolva az adott Comapy-hoz...
+    // ...de altalaban nem ezt a megoldast hasznaljuk !
+    // @OneToMany( mappedBy = "company", cascade = CascadeType.MERGE )
     @OneToMany( mappedBy = "company" )
-    private List<Employee> employees = new ArrayList<>();
+    private List<Employee> employeeok = new ArrayList<>();
     
     public Company(){
     
@@ -53,7 +53,7 @@ public class Company implements Serializable {
         this.registrationNumber = registrationNumber;
         this.name = name;
         this.address = address;
-        this.employees = employees;
+        this.employeeok = employees;
     }
 
     public void setAddress(String address) {
@@ -61,7 +61,7 @@ public class Company implements Serializable {
     }
 
     public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
+        this.employeeok = employees;
     }
 
     public String getAddress() {
@@ -69,7 +69,7 @@ public class Company implements Serializable {
     }
 
     public List<Employee> getEmployees() {
-        return employees;
+        return employeeok;
     }
 
     public long getIdCompany() {
@@ -98,6 +98,6 @@ public class Company implements Serializable {
 
     public void addEmployee(Employee employee ) {
     
-        this.employees.add( employee );
+        this.employeeok.add( employee );
     }
 }

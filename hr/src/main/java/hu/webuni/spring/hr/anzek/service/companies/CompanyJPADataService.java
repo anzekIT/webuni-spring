@@ -154,10 +154,9 @@ public class CompanyJPADataService {
      */
     public List<Company> findAllWithEmployees() {
         
-        String jpaNativeStr =
-               "SELECT distinct c.*, e.* as worker FROM public.company left join public.employee e on e.company_id_company = c.id_company";
+        String jpaStr = "Select Distinct c From Company c Left Join Fetch c.employeeok Order By id_company,id_employee";
         
-        return em.createNativeQuery( jpaNativeStr , Company.class ).getResultList();
+        return em.createQuery( jpaStr , Company.class ).getResultList();
     }
     
     /**

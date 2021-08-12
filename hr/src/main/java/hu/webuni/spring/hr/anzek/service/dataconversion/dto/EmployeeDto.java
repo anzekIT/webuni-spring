@@ -5,10 +5,17 @@
  */
 package hu.webuni.spring.hr.anzek.service.dataconversion.dto;
 
+import hu.webuni.spring.hr.anzek.service.companies.CompanyJPADataService;
+import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.CompanyMapper;
+import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.EmployeeMapper;
+import hu.webuni.spring.hr.anzek.service.model.Company;
+import hu.webuni.spring.hr.anzek.service.model.Employee;
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Positive;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -46,7 +53,21 @@ public class EmployeeDto{
      * A munnkaviszony utan jaro beremeles szazalekos merteke szoveges megjeleniteshez<br>
      */
     private String torzsGarda = "nincs adat";
-
+    
+    @Autowired
+    CompanyJPADataService aDataService;    
+          
+    @Autowired
+    EmployeeMapper employeeMapper;
+    
+    /**
+     * Entitas alapfeltolto konstruktor<br>
+     * @param idEmployee A munkavalallo azonositoja <br>
+     * @param workerName A dolgozo neve <br> 
+     * @param jobPosition Munkakori beosztasa <br>
+     * @param monthlySalary A havi jovedelme <br>
+     * @param startOfEmployment A munkaviszony kezdete <br> 
+     */
     public EmployeeDto(Long idEmployee,
                        String workerName,
                        String jobPosition,
@@ -59,6 +80,33 @@ public class EmployeeDto{
         this.startOfEmployment = startOfEmployment;
     }
 
+    /**
+     * Entitas teljes, azaz a forgenKey - cegId-jevel is feltolto konstruktor<br>
+     * @param idEmployee A munkavalallo azonositoja <br>
+     * @param workerName A dolgozo neve <br> 
+     * @param jobPosition Munkakori beosztasa <br>
+     * @param monthlySalary A havi jovedelme <br>
+     * @param startOfEmployment A munkaviszony kezdete <br> 
+     * @param companyId a munkvallalo munkahelye cegId -je<br>
+     */
+    @SuppressWarnings("LeakingThisInConstructor")
+    public EmployeeDto(Long idEmployee,
+                    String workerName,
+                    String jobPosition,
+                    Integer monthlySalary,
+                    LocalDateTime startOfEmployment,
+                    Long companyId ) {
+        this.idEmployee = idEmployee;
+        this.workerName = workerName;
+        this.jobPosition = jobPosition;
+        this.monthlySalary = monthlySalary;
+        this.startOfEmployment = startOfEmployment;
+        
+//        Company company = this.aDataService.findById( companyId ).get();
+//        company.addEmployee( this.employeeMapper.dtoToEmployee( this ) );
+//        this.aDataService.save(company);
+    }
+    
     public Long getIdEmployee() {
         return idEmployee;
     }

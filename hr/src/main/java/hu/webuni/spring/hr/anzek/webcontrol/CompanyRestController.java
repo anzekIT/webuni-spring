@@ -4,15 +4,17 @@
 
 package hu.webuni.spring.hr.anzek.webcontrol;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import hu.webuni.spring.hr.anzek.service.dataconversion.dto.CompanyDto;
 import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.CompanyMapper;
 import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.EmployeeMapper;
 import hu.webuni.spring.hr.anzek.service.companies.CompanyJPADataService;
+import hu.webuni.spring.hr.anzek.service.dataconversion.dto.EmployeeDto;
 import hu.webuni.spring.hr.anzek.service.dataconversion.repository.CompanyRepository;
 import hu.webuni.spring.hr.anzek.service.employee.EmployeeJPADataService;
+import hu.webuni.spring.hr.anzek.service.exceptions.NonUniqueIdException;
 import hu.webuni.spring.hr.anzek.service.model.Company;
 import java.util.List;
+import java.util.Objects;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,15 +47,15 @@ public final class CompanyRestController {
     @Autowired
     CompanyRepository companyRepository;     
 
-    /**
-     * Az osszes vallalt lekerdezese<br>
-     * @return a Lista, amit a modellbol kiemelunk<br>
-     */    
-    @GetMapping
-    public List<CompanyDto> getAll(){
-    
-        return this.companyMapper.companiesToDtos( this.dataCompanyService.findAll() );    
-    }
+//    /**
+//     * Az osszes vallalt lekerdezese<br>
+//     * @return a Lista, amit a modellbol kiemelunk<br>
+//     */    
+//    @GetMapping
+//    public List<CompanyDto> getAll(){
+//    
+//        return this.companyMapper.companiesToDtos( this.dataCompanyService.findAll() );    
+//    }
 
     //@GetMapping
     //@JsonView( Views.BaseData.class)
@@ -216,6 +218,129 @@ public final class CompanyRestController {
     public void deleteV0Company( @PathVariable long companyId ){
     
         this.dataCompanyService.delete( companyId );            
+    }
+   
+    /**
+     * /v0/ - 4, POST - metodus, egy Munkavallalo felvitele egy meglevo ceg dolgozoi koze<br>
+     * @param companyId a ceg azonositoja<br>
+     * @param employeeDto a dolgozo azonositoja<br>
+     * @return ha letezik a ceg es nincs ilyen melos, felviszi az uj melost<br>
+     */
+    @PostMapping("/v0/{companyId}/employee/")
+    public CompanyDto addNewEmployeeWithinTheCompany( @PathVariable long companyId, 
+                                                      @RequestBody 
+                                                      @Valid EmployeeDto employeeDto ){
+   
+        CompanyDto companyDto = this.companyMapper.companyToDto( 
+                                this.dataCompanyService.findById(companyId).get() 
+                                                                );
+    
+        if( companyDto != null ){
+    
+            // chechkUniqueIdEmployee( companyDto.getEmployees() ,employeeDto.getIdEmployee() );
+    
+            // Uj bevitel:
+            // Ha nem letezik meg, akkor hozzaadjuk a dolgozot:
+            companyDto.getEmployees().add(employeeDto);
+        }
+        
+        return this.companyMapper
+                   .companyToDto( this.dataCompanyService
+                                      .update( this.companyMapper.dtoToCompany(companyDto)) 
+                                );        
+    }
+
+    /**
+     * /v1/ - 5, PUT - metodus, egy Munkavallalo modositasa egy meglevo ceg dolgozoi kozott<br>
+     * @param companyId a ceg azonositoja<br>
+     * @param employeeId a modositando dolgozo azonositoja<br>
+     * @param employeeDto a dolgozo azonositoja<br>
+     * @return ha letezik a ceg es nincs ilyen melos, felviszi, ha van ilyen melos, modositja<br>
+     */
+    @PutMapping("/v0/{companyId}/employee/{employeeId}")
+    public CompanyDto modifyTheEmployeeWithinTheCompany( @PathVariable long companyId, 
+                                                         @PathVariable long employeeId, 
+                                                         @RequestBody 
+                                                         @Valid EmployeeDto employeeDto){
+    
+        CompanyDto companyDto = this.companyMapper.companyToDto( 
+                                this.dataCompanyService.findById(companyId).get() 
+                                                                );
+        if( companyDto != null ){
+    
+            EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> Objects.equals(e.getIdEmployee(), employeeDto.getIdEmployee()) ).findFirst().get();
+            if ( empdto != null ){
+
+                // Ez a modositas egy lehetseges modja:
+                // Ha letezik kitoroljuk es ujrairjuk:
+                companyDto.getEmployees().removeIf( e -> Objects.equals(e.getIdEmployee(), empdto.getIdEmployee()) );
+                companyDto.getEmployees().add(employeeDto);
+            }
+        }
+        
+        return this.companyMapper
+                   .companyToDto( this.dataCompanyService
+                                      .update( this.companyMapper.dtoToCompany(companyDto)) 
+                                );        
+    }
+    
+    /**
+     * /v1/ - 6, DELETE - metods, egy Munkavallalot torol a meglevo ceg, meglevo dolgozoi kozul<br> 
+     * Megjegyzes: NOT-FOUND() mindket hibas azonosito eseten, vagyis a valaszbol nem dontheto el, melyik nem letezett!<br>
+     * @param companyId a ceg azonositoja<br>
+     * @param employeeId a dolgozo azonositoja<br>
+     * @return  a JSON body, amelyben vagy a torlest kovetoen a ceg adatai, vagy NOT-FOUND() talalhato<br> 
+     */
+    @DeleteMapping("/v0/{companyId}/deleteEmployee/{employeeId}")
+    public CompanyDto deleteEmployeeWithinTheCompany( @PathVariable long companyId, 
+                                                      @PathVariable long employeeId ){
+    
+        CompanyDto companyDto = this.companyMapper.companyToDto( 
+                                this.dataCompanyService.findById(companyId).get() 
+                                                                );
+        if( companyDto != null ){
+    
+            EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> e.getIdEmployee() == employeeId ).findFirst().get();
+            if ( empdto != null ){  
+    
+                // Mivel letezik, igy kitoroljuk es ujrairjuk:
+                companyDto.getEmployees().removeIf( e -> Objects.equals(e.getIdEmployee(), empdto.getIdEmployee()) );
+               
+            }
+        }
+        return this.companyMapper
+                   .companyToDto( this.dataCompanyService
+                                      .update( this.companyMapper.dtoToCompany(companyDto)) 
+                                );   
+    }
+    
+    /**
+     * /v1/ - 7 az osszes munkavallalo csereje egyszerre (egy Lista-O_tombbol)<br>
+     * @param companyId a ceg azonositoja<br>
+     * @param newEmployeesDto a dolgozo adatokat atrtalmazo Objektum-tomb<br>
+     * @return a JSON body-ban a ceg komplex adatait adja vissza<br>
+     */
+    @PutMapping("/v0/{companyId}/replaceEmployees/")
+    public CompanyDto replaceAllEmployeeWithinTheCompany(  @PathVariable long companyId,                                         
+                                                           @RequestBody 
+                                                           @Valid List<EmployeeDto> newEmployeesDto){    
+    
+        CompanyDto companyDto = this.companyMapper.companyToDto( 
+                                this.dataCompanyService.findById(companyId).get() 
+                                                                );
+        if( companyDto != null ){ 
+    
+            // kitoroljuk az osszeset
+            companyDto.getEmployees().clear();
+    
+            // most hozzaadjuk az ujakat:
+            companyDto.setEmployees(newEmployeesDto);  
+        }
+        
+        return this.companyMapper
+                   .companyToDto( this.dataCompanyService
+                                      .update( this.companyMapper.dtoToCompany(companyDto)) 
+                                );  
     }
     
     ///**
@@ -399,7 +524,7 @@ public final class CompanyRestController {
     //}
     //
     ///**
-    // * /v1/ - 4, POST - metodus, egy Munkavallalo felvitele egy meglevo ceg dolgozoi koze<br>
+    // * /v0/ - 4, POST - metodus, egy Munkavallalo felvitele egy meglevo ceg dolgozoi koze<br>
     // * @param companyId a ceg azonositoja<br>
     // * @param employeeDto a dolgozo azonositoja<br>
     // * @return ha letezik a ceg es nincs ilyen melos, felviszi az uj melost<br>
@@ -409,7 +534,9 @@ public final class CompanyRestController {
     //                                                 @RequestBody @Valid EmployeeDto employeeDto){
     //
     //    ResponseEntity entity = ResponseEntity.notFound().build();
-    //    CompanyDto companyDto = this.allCompanies.get(companyId);
+    //    CompanyDto companyDto = this.companyMapper.companyToDto( 
+    //                            this.dataCompanyService.findById(companyId).get() 
+    //                                                            );
     //
     //    if( companyDto != null ){
     //
@@ -429,6 +556,7 @@ public final class CompanyRestController {
     //    return entity;        
     //}
     //
+    ////
     ///**
     // * /v1/ - 5, PUT - metodus, egy Munkavallalo modositasa egy meglevo ceg dolgozoi kozott<br>
     // * @param companyId a ceg azonositoja<br>
@@ -442,8 +570,9 @@ public final class CompanyRestController {
     //                                                  @RequestBody @Valid EmployeeDto employeeDto){
     //
     //    ResponseEntity entity;
-    //    CompanyDto companyDto = this.allCompanies.get(companyId);
-    //
+    //    CompanyDto companyDto = this.companyMapper.companyToDto( 
+    //                            this.dataCompanyService.findById(companyId).get() 
+    //                                                            );
     //    if( companyDto != null ){
     //
     //        EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> Objects.equals(e.getIdEmployee(), employeeDto.getIdEmployee()) ).findFirst().get();
@@ -656,22 +785,22 @@ public final class CompanyRestController {
     //    companyDto.setEmployees(newEmployeesDto);
     //    return companyDto;
     //}
-    //
-    ///**
-    // * Sajat hibaosztalyt prezentalo metodus, hbakezelesi pelda<br>
-    // * @param empList egy adott ceg dolgpzoinak a listaja<br>
-    // * @param value az az ID (employee) munkavalllaoi kod, amely egyezosegere hibat dobunk!<br>
-    // */
-    //private void chechkUniqueIdEmployee( List<EmployeeDto> empList , Long value ) {
-    //
-    //    Optional<EmployeeDto> empdto = empList.stream()
-    //                                          .filter( e -> (e.getIdEmployee().equals( value )))
-    //                                          .findAny();
-    //
-    //    if( empdto.isPresent() ){
-    //
-    //        throw new NonUniqueIdEmployeeException( value.toString() );
-    //    }
-    //}
+    /**
+     * Sajat hibaosztalyt prezentalo metodus, hbakezelesi pelda<br>
+     * @param empList egy adott ceg dolgpzoinak a listaja<br>
+     * @param value az az ID (employee) munkavallaoi kod, amely egyezosegere hibat dobunk!<br>
+     */
+    private void chechkUniqueIdEmployee( List<EmployeeDto> empList , Long value ) {
+    
+        java.util.Optional<EmployeeDto> empdto = 
+                                        empList.stream()
+                                               .filter( e -> (e.getIdEmployee().equals( value )))
+                                               .findAny();
+    
+        if( empdto.isPresent() ){
+    
+            throw new NonUniqueIdException( "a cégnél már létező munkavállalói kód = " + value.toString() );
+        }
+    }
 }
 
