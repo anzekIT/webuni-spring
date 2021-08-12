@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Hozzatartozik az "/temlapte/employees.html"<br>
  * Harom fo egysege van:<br>
  * - az init.blokk, amely kiindulo adatokat tolt be...<br>
- * - a GET metodus : "@GetMapping("/employees") public String getListEmployees( Map[String, Object] model )"<br>
- * - a POST metodus : "@PostMapping("/employees") public String getListEmployees( Map[String, Object] model )"<br>
+ * - a GET metodus : "@GetMapping("/employee") public String getListEmployees( Map[String, Object] model )"<br>
+ * - a POST metodus : "@PostMapping("/employee") public String getListEmployees( Map[String, Object] model )"<br>
  * FONTOS! <br>
  * A webController MINDEN ESETBEN egy "Model model"-t hasznal<br> 
  * "Model model"-t, vagy mar ujabban a map interfeszt a Model helyett: "Map[K,V] model" -t!<br> 
@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author User
  */
 @Controller
-@RequestMapping("/employees")
+@RequestMapping("/employee")
 public final class EmployeeWebController {
 
     @Autowired
@@ -60,7 +60,7 @@ public final class EmployeeWebController {
     /**
      * GET METHOD<br>
      * Siman kiolvassa az adatokat<br>
-     * Az "./employees" URL-re erkezo keres eseten<br>
+     * Az "./employee" URL-re erkezo keres eseten<br>
      * Az "employees.html" -ben, a listat "futtatja"<br>
      * a "model"- adattartalomba behelyez egy "AllEmployees" adatot (egyelore csak memoriabol)<br>
      * @param model a GET metodus altal kiolvasott adatok tarolasara es megjelenjresere valo injektalt parameterr<br>
@@ -80,7 +80,7 @@ public final class EmployeeWebController {
         model.put( "newEmployee", new Employee() );  
         
         // ez konkretabban a : return "employeemodify.html";
-        return "employees";
+        return "employee";
     }
 
     /**
@@ -90,8 +90,8 @@ public final class EmployeeWebController {
      */
     private Map<String, Object> readEmployees( Map<String, Object> model ) {
         
-        // elobb feltolti a listat "outemployees" Kulccsal - ezt olvassa majd mindegyik xxx.html
-        model.put( "outemployees", this.employeRepository.findAll() );     
+        // elobb feltolti a listat "outemployee" Kulccsal - ezt olvassa majd mindegyik xxx.html
+        model.put( "outemployee", this.employeRepository.findAll() );     
         
         // kiiratnam, de nem jut el eddig...
         model.forEach( (k, v) -> System.out.println((k + ":" + v)) );
@@ -101,12 +101,12 @@ public final class EmployeeWebController {
 
     /**
      * POST - METHOD<br>
-     * Az "./employees" URL-re erkezo keres eseten<br>
+     * Az "./employee" URL-re erkezo keres eseten<br>
      * Az "employees.html" -ben, a listat "futtatja"..<br> 
      * DE, mert egy Form-ot is tartalmaz, ha a formot kitoltjuk:<br>
      * Azaz a "newEmployee" objektum erteket kap, akkor azt visszaposztolja a listabe es frissul a lista<br>
      * MODOSITAS (ha letezo kodot adott meg) / UJBEVITEL ha nem letezo kodot adott meg<br>
-     * Az "./employees" URL-re kuldendo "POST keres" kontrollere<br>
+     * Az "./employee" URL-re kuldendo "POST keres" kontrollere<br>
      * @param employee injektalt osztaly, amely az Employees kollekcio eleme lesz<br>
      * @return viszaadja a redirectelt employees.html" tartalmat a beilleszett valtozo adatokkal<br>
      */
@@ -129,7 +129,7 @@ public final class EmployeeWebController {
         // Megkerjuk a bongeszot, hogy maga a bongeszo, egy ujabb GET keressel kerdezze vissza, azaz un.: redirect -eljen... 
         // ...vagyis magatol hivja meg az elozo, fenti "getListEmployees(...)" metodust, 
         // hogy az, mar a modositott adatokkkal terjen vissza 
-        return "redirect:/employees";
+        return "redirect:/employee";
     }    
 
     /////////////////////////// --- INNEN MAR KICSIT OSSZETETTEB, TORLES, MODOSITAS --- //////////////////
@@ -168,7 +168,7 @@ public final class EmployeeWebController {
         // ATALLITJA az ALAPERTELMEZETT "@RequestMapping("...barmi...")" beallitast
         // igy a visszatero adat "nem jo helyen akarja megjelenni a HTML-t!
         // Vagyis itt a redirect utan meg kell adni ujra a helyet a visszatero adatokat view -olo HTML-nek!
-        return "redirect:/employees";
+        return "redirect:/employee";
     }    
 
     /**
@@ -223,7 +223,7 @@ public final class EmployeeWebController {
             this.employeRepository.save(employee );
         }
         
-        return "redirect:/employees";
+        return "redirect:/employee";
     } 
 }
 

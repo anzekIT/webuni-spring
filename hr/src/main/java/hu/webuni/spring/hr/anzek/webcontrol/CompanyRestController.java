@@ -12,7 +12,6 @@ import hu.webuni.spring.hr.anzek.service.dataconversion.dto.EmployeeDto;
 import hu.webuni.spring.hr.anzek.service.dataconversion.repository.CompanyRepository;
 import hu.webuni.spring.hr.anzek.service.employee.EmployeeJPADataService;
 import hu.webuni.spring.hr.anzek.service.exceptions.NonUniqueIdException;
-import hu.webuni.spring.hr.anzek.service.model.Company;
 import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 
 @RestController
 @RequestMapping("/api/companies")
@@ -117,8 +115,7 @@ public final class CompanyRestController {
     public List<CompanyDto> getFullCompaniesWithEmployeesForParamesNotOpenView( @RequestParam(required = false) Boolean full){
         
         List<CompanyDto> companyDtos = null;
-        List<Company> companies = null;
-      
+
         boolean withEmployees = false;
        
         if ( ( full != null )  &&  full ){

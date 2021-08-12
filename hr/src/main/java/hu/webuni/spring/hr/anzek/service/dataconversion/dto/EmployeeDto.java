@@ -6,12 +6,8 @@
 package hu.webuni.spring.hr.anzek.service.dataconversion.dto;
 
 import hu.webuni.spring.hr.anzek.service.companies.CompanyJPADataService;
-import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.CompanyMapper;
 import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.EmployeeMapper;
-import hu.webuni.spring.hr.anzek.service.model.Company;
-import hu.webuni.spring.hr.anzek.service.model.Employee;
 import java.time.LocalDateTime;
-import java.util.List;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Positive;
@@ -102,9 +98,10 @@ public class EmployeeDto{
         this.monthlySalary = monthlySalary;
         this.startOfEmployment = startOfEmployment;
         
-//        Company company = this.aDataService.findById( companyId ).get();
-//        company.addEmployee( this.employeeMapper.dtoToEmployee( this ) );
-//        this.aDataService.save(company);
+        // ez sajnos igy (itt) nem mukxik:
+        // Company company = this.aDataService.findById( companyId ).get();
+        // company.addEmployee( this.employeeMapper.dtoToEmployee( this ) );
+        // this.aDataService.save(company);
     }
     
     public Long getIdEmployee() {
