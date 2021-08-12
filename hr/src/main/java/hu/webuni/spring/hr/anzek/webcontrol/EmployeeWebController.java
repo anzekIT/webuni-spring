@@ -6,9 +6,7 @@
 
 package hu.webuni.spring.hr.anzek.webcontrol;
 
-import hu.webuni.spring.hr.anzek.service.dataconversion.mapper.EmployeeMapper;
 import hu.webuni.spring.hr.anzek.service.dataconversion.repository.EmployeeRepository;
-import hu.webuni.spring.hr.anzek.service.employee.EmployeeJPADataService;
 import hu.webuni.spring.hr.anzek.service.model.Employee;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -70,13 +68,12 @@ public final class EmployeeWebController {
      */
     @GetMapping
     public String getListEmployees( Map<String, Object> model ){
-        // leetne meg ezek valamelyike is (de ezek "regi" verziok:    
+        // lehetne meg ezek valamelyike is (de ezek "regi" verziok:
         // public String getListEmployees( ModelMap model ) {
         // public String getListEmployees( Model model ) {
-       
-        // elobb feltolti a listat "outemployees" Kulccsal - ezt olvassa majd mindegyik xxx.html
-        model.put( "outemployees", this.employeRepository.findAll() );
-
+        
+        model = readEmployees( model );
+        
         // Ez itt csak azert kell (amugy ha csak kilistaznank nem kellene), 
         // hogy (majd) mukodjon a Html-oldalrol valo bekeres is 
         // azt majd egy POST metodus oldja meg.. alabb van:
@@ -84,6 +81,22 @@ public final class EmployeeWebController {
         
         // ez konkretabban a : return "employeemodify.html";
         return "employees";
+    }
+
+    /**
+     * Kiemeltem a "getListEmployees()" metodusbol, hogy nem ez okoz-e hibat, de nem tunik ugy<br>
+     * @param model a model MAP<br>
+     * @return a model Map<br>
+     */
+    private Map<String, Object> readEmployees( Map<String, Object> model ) {
+        
+        // elobb feltolti a listat "outemployees" Kulccsal - ezt olvassa majd mindegyik xxx.html
+        model.put( "outemployees", this.employeRepository.findAll() );     
+        
+        // kiiratnam, de nem jut el eddig...
+        model.forEach( (k, v) -> System.out.println((k + ":" + v)) );
+        
+        return model;
     }
 
     /**
@@ -98,7 +111,7 @@ public final class EmployeeWebController {
      * @return viszaadja a redirectelt employees.html" tartalmat a beilleszett valtozo adatokkal<br>
      */
     @PostMapping
-    public String addToListEmployees( Employee employee ){
+    public String addToListEmployee( Employee employee ){
     
         List<Employee> employees = this.employeRepository.findAll();
         
@@ -127,8 +140,8 @@ public final class EmployeeWebController {
      * @param id a torlendo munkavallalo ID -je<br>
      * @return viszaadja az anzekcloud.html-t<br>
      */
-    @GetMapping("/deleteEmployees/{id}")    
-    public String delFromListEmployees( @PathVariable long id ){
+    @GetMapping("/deleteEmployee/{id}")    
+    public String delFromListEmployee( @PathVariable long id ){
         
         // for( int i = 0; i < this.allEmployees.size(); i++ ){
         //
