@@ -302,10 +302,10 @@ public class CompanyJPADataService {
     // * VIZSGALAT NEMLETEZESRE <br>
     // * Ez egy nem tul szep OO alapelveket serto megoldas...<br> 
     // * ...hiszen ket fajta, kulonbozo tipusu kimenete van a metodusnak!<br>
-    // * @param companyId amit keresunk<br>
-    // * @return visszaadja ugyan azt az companyId -t amit bekuldtunk vizsgalatra, vagy -1L -t<br>
+    // * @param IdCompany amit keresunk<br>
+    // * @return visszaadja ugyan azt az IdCompany -t amit bekuldtunk vizsgalatra, vagy -1L -t<br>
     // */
-    //public long noFindByIdOrThrow( long companyId ){
+    //public long noFindByIdOrThrow( long IdCompany ){
     //
     //    // Elviekben ez is egy logikai kiertkeles lenne
     //    // ... de valami miatt nem jo..
@@ -313,20 +313,20 @@ public class CompanyJPADataService {
     //    // Optional<Company> optional = this.companies
     //    //                                  .values()
     //    //                                  .stream()
-    //    //                                  .filter( c -> ( c.getIdCompany() == companyId ) )
+    //    //                                  .filter( c -> ( c.getIdCompany() == IdCompany ) )
     //    //                                  .findAny();
     //    // if ( optional.isPresent() ){...}
     //    //
     //    // helyette :
-    //    if( this.companies.containsKey( companyId ) ){
+    //    if( this.companies.containsKey( IdCompany ) ){
     //
     //        // letezik ez a kulcs:
-    //        companyId = -1L;
+    //        IdCompany = -1L;
     //
     //        throw new ResponseStatusException( HttpStatus.ALREADY_REPORTED );
     //
     //    }
-    //    return companyId;
+    //    return IdCompany;
     //}
     
     
@@ -334,16 +334,16 @@ public class CompanyJPADataService {
     // * VIZSGALAT LETEZESRE! <br>
     // * Ez egy nem tul szep OO alapelveket serto megoldas...<br> 
     // * ...hiszen ket fajta, kulonbozo tipusu kimenete van a metodusnak!<br>
-    // * @param companyId amit keresunk<br>
+    // * @param IdCompany amit keresunk<br>
     // * @return es ket fajta kimenet, vagy az osztalypeldany, vagy hibauzenet<br>
     // */
-    //public CompanyDto findByIdOrThrow( long companyId ){
+    //public CompanyDto findByIdOrThrow( long IdCompany ){
     //
     //    Company company = null;
     //
-    //    if( this.companies.containsKey( companyId ) ){
+    //    if( this.companies.containsKey( IdCompany ) ){
     //
-    //        company = this.companies.get( companyId ); 
+    //        company = this.companies.get( IdCompany ); 
     //
     //        if( company == null ){
     //

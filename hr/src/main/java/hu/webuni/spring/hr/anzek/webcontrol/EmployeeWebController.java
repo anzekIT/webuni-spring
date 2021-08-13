@@ -61,7 +61,7 @@ public final class EmployeeWebController {
      * GET METHOD<br>
      * Siman kiolvassa az adatokat<br>
      * Az "./employee" URL-re erkezo keres eseten<br>
-     * Az "employees.html" -ben, a listat "futtatja"<br>
+     * Az "employee.html" -ben, a listat "futtatja"<br>
      * a "model"- adattartalomba behelyez egy "AllEmployees" adatot (egyelore csak memoriabol)<br>
      * @param model a GET metodus altal kiolvasott adatok tarolasara es megjelenjresere valo injektalt parameterr<br>
      * @return viszaadja az "employees.html" tartalmat a beilleszett valtozo adatokkal<br>

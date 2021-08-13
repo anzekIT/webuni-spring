@@ -5,7 +5,6 @@
  */
 package hu.webuni.spring.hr.anzek.service.model;
 
-import hu.webuni.spring.hr.anzek.service.companies.CompanyJPADataService;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;

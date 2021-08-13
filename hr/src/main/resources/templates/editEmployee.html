@@ -23,15 +23,15 @@
         
         <!--        
             Nem ezzel kezdodik...
-            A sima "employees.html" a gyoker szolgaltatasi URL-en megjeleno lista minden soraban tartalmaz egy linket.
-            Ez a link egy ID-t kuld az "./employees/updateEmployee" URL-re.
+            A sima "employee.html" a gyoker szolgaltatasi URL-en megjeleno lista minden soraban tartalmaz egy linket.
+            Ez a link egy IdEmployee-t kuld az "./employee/updateEmployee" URL-re.
             Ezt "eszleli" egy GET metodus, az "EmployeeWebController.editEmployees()" amely megkeresi ezt az ID-ju peldany
-            ...azt betolti egy "modifyEmployee" Kulccsala a MAP<K,V> .be... majd 
-            atdob erre a (editEmployee) html feldolgozora. 
+            ...azt betolti egy "modifyEmployee" Kulccsal a MAP<K,V> .be... majd 
+            atdob erre a (editEmployee.html) feldolgozora. 
             Ez kiolvassa a "modifyEmployee" peldanyt...
             ... es felposztolja azt!    
             Ez a html ezutan az ADATMENT gomb lenyomasra ezt a "modifyEmployee" peldanyt visszaposztolja ugyan ide az URL-re...
-            ...es ezt eszleli a POST-, az "EmployeeWebController.updateEmployees()" metodus, 
+            ...es ezt eszleli a POST-, az "EmployeeWebController.updateEmployee()" metodus, 
             amely a bemeno parametereben, egy Model-ben, egy "employee" objektumpeldanyt var!
             Azt beemeli a ListaTombbe (kikeresi melyik adatait modositottuk es kicsereli) ...
             ...es redirectel ujralistazza (frissiti) a bongeszoben a listat!
@@ -42,18 +42,18 @@
             - visszadjuk a kitoltott peldanyt a POST metodusnak, 
             - amely majd kikeresi melyik adatait modositottuk es kicsereli
         -->
-        <form th:action="@{/employees/updateEmployee}" method="post" th:object="${modifyEmployee}">
+        <form th:action="@{/employee/updateEmployee}" method="post" th:object="${modifyEmployee}">
             <!--            
                 ez itt egy kis rafineria
-                azert van, hogy ne fogadjon el masik "ID"-t, hiszen az egy azonosito, 
+                azert van, hogy ne fogadjon el masik "IdEmployee"-t, hiszen az egy azonosito, 
                 viszont legyen lathato, hogy mivel dolgozunk,tehat csak a spam- tag-ben kiirjuk!
                 De!
                 Kell ide ez a hidden input is!
                 Megpedig azert, hogy (bar valtoztatni nem lehet) de kitoltott legyen a visszatero Model-be az ID is!
             -->
             
-            Id: <span th:text="*{id}"> </span><br>            
-            <input th:field="*{id}" type="hidden" />
+            Id: <span th:text="*{IdEmployee}"> </span><br>            
+            <input th:field="*{IdEmployee}" type="hidden" />
             <!--           
                 innen mar normal adatbevitel
             -->

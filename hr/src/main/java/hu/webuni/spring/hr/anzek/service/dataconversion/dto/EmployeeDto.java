@@ -83,7 +83,7 @@ public class EmployeeDto{
      * @param jobPosition Munkakori beosztasa <br>
      * @param monthlySalary A havi jovedelme <br>
      * @param startOfEmployment A munkaviszony kezdete <br> 
-     * @param companyId a munkvallalo munkahelye cegId -je<br>
+     * @param IdCompany a munkvallalo munkahelye cegId -je<br>
      */
     @SuppressWarnings("LeakingThisInConstructor")
     public EmployeeDto(Long idEmployee,
@@ -91,7 +91,7 @@ public class EmployeeDto{
                     String jobPosition,
                     Integer monthlySalary,
                     LocalDateTime startOfEmployment,
-                    Long companyId ) {
+                    Long IdCompany ) {
         this.idEmployee = idEmployee;
         this.workerName = workerName;
         this.jobPosition = jobPosition;
@@ -99,7 +99,7 @@ public class EmployeeDto{
         this.startOfEmployment = startOfEmployment;
         
         // ez sajnos igy (itt) nem mukxik:
-        // Company company = this.aDataService.findById( companyId ).get();
+        // Company company = this.aDataService.findById( IdCompany ).get();
         // company.addEmployee( this.employeeMapper.dtoToEmployee( this ) );
         // this.aDataService.save(company);
     }

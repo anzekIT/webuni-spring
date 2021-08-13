@@ -180,24 +180,24 @@ public final class CompanyRestController {
      * /v0/ - 1, GET - Egy ceg-komlex osztalypeldanyt ad vissza egy JSON entitasban, vagy<br>
      * ugyancsak egy JSON BODY-ban egy NOT-FOUND()-ot!<br>
      * Mapper es a szerviz reteg hasznalataval<br>
-     * @param companyId amit keresunk<br>
+     * @param IdCompany amit keresunk<br>
      * @return a JSON body, amelben vagy a lekerdezett peldany adatai, vagy NOT-FOUND() talalhato<br>
      */
-    @GetMapping("/v0/{companyId}")
-    public CompanyDto getV0ById( @PathVariable long companyId ){
+    @GetMapping("/v0/{IdCompany}")
+    public CompanyDto getV0ById( @PathVariable long IdCompany ){
  
-        return this.companyMapper.companyToDto( this.dataCompanyService.findById(companyId).get() );       
+        return this.companyMapper.companyToDto( this.dataCompanyService.findById(IdCompany).get() );       
     } 
     
      /**
      * /v0/ - 2, PUT - modosito metodus<br>
-     * @param companyId Azonosito, amit keresunk es amely ceg adataibol valamit modositani szeretnenk<br>
+     * @param IdCompany Azonosito, amit keresunk es amely ceg adataibol valamit modositani szeretnenk<br>
      * @param companyDto a request keresben utazo JSON formatumu modosito osztalypeldany- mezo adatok (nem kell a komplett peldany)<br>
      * @return  a JSON body, amelben vagy a lekerdezett peldany adatai, vagy NOT-FOUND() talalhato<br>
      */
     // @Transactional
-    @PutMapping("/v0/{companyId}")
-    public CompanyDto modifyV0Company(  @PathVariable long companyId, 
+    @PutMapping("/v0/{IdCompany}")
+    public CompanyDto modifyV0Company(  @PathVariable long IdCompany, 
                                         @RequestBody @Valid CompanyDto companyDto ){
         
         return this.companyMapper
@@ -208,28 +208,28 @@ public final class CompanyRestController {
     
     /**
      * /v0/ - 3, DELETE - torles<br>
-     * @param companyId amit torolni szeretnenk<br>
+     * @param IdCompany amit torolni szeretnenk<br>
      */
     // @Transactional
-    @DeleteMapping("/v0/{companyId}")
-    public void deleteV0Company( @PathVariable long companyId ){
+    @DeleteMapping("/v0/{IdCompany}")
+    public void deleteV0Company( @PathVariable long IdCompany ){
     
-        this.dataCompanyService.delete( companyId );            
+        this.dataCompanyService.delete( IdCompany );            
     }
    
     /**
      * /v0/ - 4, POST - metodus, egy Munkavallalo felvitele egy meglevo ceg dolgozoi koze<br>
-     * @param companyId a ceg azonositoja<br>
+     * @param IdCompany a ceg azonositoja<br>
      * @param employeeDto a dolgozo azonositoja<br>
      * @return ha letezik a ceg es nincs ilyen melos, felviszi az uj melost<br>
      */
-    @PostMapping("/v0/{companyId}/employee/")
-    public CompanyDto addNewEmployeeWithinTheCompany( @PathVariable long companyId, 
+    @PostMapping("/v0/{IdCompany}/employee/")
+    public CompanyDto addNewEmployeeWithinTheCompany( @PathVariable long IdCompany, 
                                                       @RequestBody 
                                                       @Valid EmployeeDto employeeDto ){
    
         CompanyDto companyDto = this.companyMapper.companyToDto( 
-                                this.dataCompanyService.findById(companyId).get() 
+                                this.dataCompanyService.findById(IdCompany).get() 
                                                                 );
     
         if( companyDto != null ){
@@ -249,19 +249,19 @@ public final class CompanyRestController {
 
     /**
      * /v1/ - 5, PUT - metodus, egy Munkavallalo modositasa egy meglevo ceg dolgozoi kozott<br>
-     * @param companyId a ceg azonositoja<br>
-     * @param employeeId a modositando dolgozo azonositoja<br>
+     * @param IdCompany a ceg azonositoja<br>
+     * @param idEmployee a modositando dolgozo azonositoja<br>
      * @param employeeDto a dolgozo azonositoja<br>
      * @return ha letezik a ceg es nincs ilyen melos, felviszi, ha van ilyen melos, modositja<br>
      */
-    @PutMapping("/v0/{companyId}/employee/{employeeId}")
-    public CompanyDto modifyTheEmployeeWithinTheCompany( @PathVariable long companyId, 
-                                                         @PathVariable long employeeId, 
+    @PutMapping("/v0/{IdCompany}/employee/{idEmployee}")
+    public CompanyDto modifyTheEmployeeWithinTheCompany( @PathVariable long IdCompany, 
+                                                         @PathVariable long idEmployee, 
                                                          @RequestBody 
                                                          @Valid EmployeeDto employeeDto){
     
         CompanyDto companyDto = this.companyMapper.companyToDto( 
-                                this.dataCompanyService.findById(companyId).get() 
+                                this.dataCompanyService.findById(IdCompany).get() 
                                                                 );
         if( companyDto != null ){
     
@@ -284,20 +284,20 @@ public final class CompanyRestController {
     /**
      * /v1/ - 6, DELETE - metods, egy Munkavallalot torol a meglevo ceg, meglevo dolgozoi kozul<br> 
      * Megjegyzes: NOT-FOUND() mindket hibas azonosito eseten, vagyis a valaszbol nem dontheto el, melyik nem letezett!<br>
-     * @param companyId a ceg azonositoja<br>
-     * @param employeeId a dolgozo azonositoja<br>
+     * @param IdCompany a ceg azonositoja<br>
+     * @param idEmployee a dolgozo azonositoja<br>
      * @return  a JSON body, amelyben vagy a torlest kovetoen a ceg adatai, vagy NOT-FOUND() talalhato<br> 
      */
-    @DeleteMapping("/v0/{companyId}/deleteEmployee/{employeeId}")
-    public CompanyDto deleteEmployeeWithinTheCompany( @PathVariable long companyId, 
-                                                      @PathVariable long employeeId ){
+    @DeleteMapping("/v0/{IdCompany}/deleteEmployee/{idEmployee}")
+    public CompanyDto deleteEmployeeWithinTheCompany( @PathVariable long IdCompany, 
+                                                      @PathVariable long idEmployee ){
     
         CompanyDto companyDto = this.companyMapper.companyToDto( 
-                                this.dataCompanyService.findById(companyId).get() 
+                                this.dataCompanyService.findById(IdCompany).get() 
                                                                 );
         if( companyDto != null ){
     
-            EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> e.getIdEmployee() == employeeId ).findFirst().get();
+            EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> e.getIdEmployee() == idEmployee ).findFirst().get();
             if ( empdto != null ){  
     
                 // Mivel letezik, igy kitoroljuk es ujrairjuk:
@@ -313,17 +313,17 @@ public final class CompanyRestController {
     
     /**
      * /v1/ - 7 az osszes munkavallalo csereje egyszerre (egy Lista-O_tombbol)<br>
-     * @param companyId a ceg azonositoja<br>
+     * @param IdCompany a ceg azonositoja<br>
      * @param newEmployeesDto a dolgozo adatokat atrtalmazo Objektum-tomb<br>
      * @return a JSON body-ban a ceg komplex adatait adja vissza<br>
      */
-    @PutMapping("/v0/{companyId}/replaceEmployees/")
-    public CompanyDto replaceAllEmployeeWithinTheCompany(  @PathVariable long companyId,                                         
+    @PutMapping("/v0/{IdCompany}/replaceEmployees/")
+    public CompanyDto replaceAllEmployeeWithinTheCompany(  @PathVariable long IdCompany,                                         
                                                            @RequestBody 
                                                            @Valid List<EmployeeDto> newEmployeesDto){    
     
         CompanyDto companyDto = this.companyMapper.companyToDto( 
-                                this.dataCompanyService.findById(companyId).get() 
+                                this.dataCompanyService.findById(IdCompany).get() 
                                                                 );
         if( companyDto != null ){ 
     
@@ -437,14 +437,14 @@ public final class CompanyRestController {
     // * /v1/ - 1, GET - Egy ceg-komlex osztalypeldanyt ad vissza egy JSON entitasban, vagy<br>
     // * ugyancsak egy JSON BODY-ban egy NOT-FOUND()-ot!<br>
     // * Nelkulozi a szerviz es a mapper retegeket, responseEntityvel dolgozik<br>
-    // * @param companyId amit keresunk<br>
+    // * @param IdCompany amit keresunk<br>
     // * @return a JSON body, amelben vagy a lekerdezett peldany adatai, vagy NOT-FOUND() talalhato<br>
     // */
-    //@GetMapping("/v1/{companyId}")
-    //public ResponseEntity<CompanyDto> getV1ById( @PathVariable long companyId ){
+    //@GetMapping("/v1/{IdCompany}")
+    //public ResponseEntity<CompanyDto> getV1ById( @PathVariable long IdCompany ){
     //
     //    ResponseEntity entity;
-    //    CompanyDto companyDto = this.allCompanies.get(companyId);
+    //    CompanyDto companyDto = this.allCompanies.get(IdCompany);
     //
     //    if( companyDto != null ){
     //
@@ -461,35 +461,35 @@ public final class CompanyRestController {
     // * /v2/ - 1, GET - Egy ceg-komlex osztalypeldanyt ad vissza egy JSON entitasban, vagy<br>
     // * ugyancsak egy JSON BODY-ban egy NOT-FOUND()-ot!<br>
     // * Csak a szerviz reteg hasznalataval<br>
-    // * @param companyId amit keresunk<br>
+    // * @param IdCompany amit keresunk<br>
     // * @return a JSON body, amelben vagy a lekerdezett peldany adatai, vagy NOT-FOUND() talalhato<br>
     // */
-    //@GetMapping("/v2/{companyId}")
-    //public CompanyDto getV2ById( @PathVariable long companyId ){
+    //@GetMapping("/v2/{IdCompany}")
+    //public CompanyDto getV2ById( @PathVariable long IdCompany ){
     //
     //    CompanyDto companyDto = null;
-    //    companyDto = this.dataCompanyService.findByIdOrThrow(companyId);        
+    //    companyDto = this.dataCompanyService.findByIdOrThrow(IdCompany);        
     //    return companyDto;
     //}
     //
     ///**
     // * /v1/ - 2, PUT - modosito metodus<br>
-    // * @param companyId Azonosito, amit keresunk es amely ceg adataibol valamit modositani szeretnenk<br>
+    // * @param IdCompany Azonosito, amit keresunk es amely ceg adataibol valamit modositani szeretnenk<br>
     // * @param companyDto a request keresben utazo JSON formatumu modosito osztalypeldany- mezo adatok (nem kell a komplett peldany)<br>
     // * @return  a JSON body, amelben vagy a lekerdezett peldany adatai, vagy NOT-FOUND() talalhato<br>
     // */
-    //@PutMapping("/v1/{companyId}")
-    //public ResponseEntity<CompanyDto> modifyV1Company(  @PathVariable long companyId, 
+    //@PutMapping("/v1/{IdCompany}")
+    //public ResponseEntity<CompanyDto> modifyV1Company(  @PathVariable long IdCompany, 
     //                                                    @RequestBody @Valid CompanyDto companyDto ){
     //
     //    ResponseEntity entity;
-    //    if( ! this.allCompanies.containsKey(companyId)){
+    //    if( ! this.allCompanies.containsKey(IdCompany)){
     //
     //        entity = ResponseEntity.notFound().build();
     //    }else{
     //
-    //        companyDto.setIdCompany(companyId);
-    //        this.allCompanies.put(companyId, companyDto);
+    //        companyDto.setIdCompany(IdCompany);
+    //        this.allCompanies.put(IdCompany, companyDto);
     //
     //        entity = ResponseEntity.ok(companyDto);
     //    }
@@ -499,18 +499,18 @@ public final class CompanyRestController {
     //
     ///**
     // * /v1/ - 3, DELETE - torles<br>
-    // * @param companyId amit torolni szeretnenk<br>
+    // * @param IdCompany amit torolni szeretnenk<br>
     // * @return  a JSON body, amelyben vagy a torles sikeres volta OK(), vagy NOT-FOUND() talalhato<br>  
     // */
-    //@DeleteMapping("/v1/{companyId}")
-    //public ResponseEntity<CompanyDto> deleteV1Company( @PathVariable long companyId ){
+    //@DeleteMapping("/v1/{IdCompany}")
+    //public ResponseEntity<CompanyDto> deleteV1Company( @PathVariable long IdCompany ){
     //
     //    ResponseEntity entity;
-    //    CompanyDto companyDto = this.allCompanies.get(companyId);
+    //    CompanyDto companyDto = this.allCompanies.get(IdCompany);
     //
     //    if( companyDto != null ){        
     //
-    //        this.allCompanies.remove(companyId);
+    //        this.allCompanies.remove(IdCompany);
     //        entity = ResponseEntity.ok().build();
     //    }else{
     //
@@ -522,17 +522,17 @@ public final class CompanyRestController {
     //
     ///**
     // * /v0/ - 4, POST - metodus, egy Munkavallalo felvitele egy meglevo ceg dolgozoi koze<br>
-    // * @param companyId a ceg azonositoja<br>
+    // * @param IdCompany a ceg azonositoja<br>
     // * @param employeeDto a dolgozo azonositoja<br>
     // * @return ha letezik a ceg es nincs ilyen melos, felviszi az uj melost<br>
     // */
-    //@PostMapping("/v1/{companyId}/employees/")
-    //public ResponseEntity<CompanyDto> addNewEmployee(@PathVariable long companyId, 
+    //@PostMapping("/v1/{IdCompany}/employees/")
+    //public ResponseEntity<CompanyDto> addNewEmployee(@PathVariable long IdCompany, 
     //                                                 @RequestBody @Valid EmployeeDto employeeDto){
     //
     //    ResponseEntity entity = ResponseEntity.notFound().build();
     //    CompanyDto companyDto = this.companyMapper.companyToDto( 
-    //                            this.dataCompanyService.findById(companyId).get() 
+    //                            this.dataCompanyService.findById(IdCompany).get() 
     //                                                            );
     //
     //    if( companyDto != null ){
@@ -556,19 +556,19 @@ public final class CompanyRestController {
     ////
     ///**
     // * /v1/ - 5, PUT - metodus, egy Munkavallalo modositasa egy meglevo ceg dolgozoi kozott<br>
-    // * @param companyId a ceg azonositoja<br>
-    // * @param employeeId a modositando dolgozo azonositoja<br>
+    // * @param IdCompany a ceg azonositoja<br>
+    // * @param idEmployee a modositando dolgozo azonositoja<br>
     // * @param employeeDto a dolgozo azonositoja<br>
     // * @return ha letezik a ceg es nincs ilyen melos, felviszi, ha van ilyen melos, modositja<br>
     // */
-    //@PutMapping("/v1/{companyId}/employees/{employeeId}")
-    //public ResponseEntity<CompanyDto> modifyEmployee( @PathVariable long companyId, 
-    //                                                  @PathVariable long employeeId, 
+    //@PutMapping("/v1/{IdCompany}/employees/{idEmployee}")
+    //public ResponseEntity<CompanyDto> modifyEmployee( @PathVariable long IdCompany, 
+    //                                                  @PathVariable long idEmployee, 
     //                                                  @RequestBody @Valid EmployeeDto employeeDto){
     //
     //    ResponseEntity entity;
     //    CompanyDto companyDto = this.companyMapper.companyToDto( 
-    //                            this.dataCompanyService.findById(companyId).get() 
+    //                            this.dataCompanyService.findById(IdCompany).get() 
     //                                                            );
     //    if( companyDto != null ){
     //
@@ -597,20 +597,20 @@ public final class CompanyRestController {
     ///**
     // * /v1/ - 6, DELETE - metods, egy Munkavallalot torol a meglevo ceg, meglevo dolgozoi kozul<br> 
     // * Megjegyzes: NOT-FOUND() mindket hibas azonosito eseten, vagyis a valaszbol nem dontheto el, melyik nem letezett!<br>
-    // * @param companyId a ceg azonositoja<br>
-    // * @param employeeId a dolgozo azonositoja<br>
+    // * @param IdCompany a ceg azonositoja<br>
+    // * @param idEmployee a dolgozo azonositoja<br>
     // * @return  a JSON body, amelyben vagy a torlest kovetoen a ceg adatai, vagy NOT-FOUND() talalhato<br> 
     // */
-    //@DeleteMapping("/v1/{companyId}/employees/{employeeId}")
-    //public ResponseEntity<CompanyDto> deleteEmployeeFromCompany( @PathVariable long companyId, 
-    //                                                             @PathVariable long employeeId ){
+    //@DeleteMapping("/v1/{IdCompany}/employees/{idEmployee}")
+    //public ResponseEntity<CompanyDto> deleteEmployeeFromCompany( @PathVariable long IdCompany, 
+    //                                                             @PathVariable long idEmployee ){
     //
     //    ResponseEntity entity;
-    //    CompanyDto companyDto = this.allCompanies.get(companyId);
+    //    CompanyDto companyDto = this.allCompanies.get(IdCompany);
     //
     //    if( companyDto != null ){
     //
-    //        EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> e.getIdEmployee() == employeeId ).findFirst().get();
+    //        EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> e.getIdEmployee() == idEmployee ).findFirst().get();
     //        if ( empdto != null ){  
     //
     //            // Mivel letezik, igy kitoroljuk es ujrairjuk:
@@ -629,16 +629,16 @@ public final class CompanyRestController {
     //
     ///**
     // * /v1/ - 7 az osszes munkavallalo csereje egyszerre (egy Lista-O_tombbol)<br>
-    // * @param companyId a ceg azonositoja<br>
+    // * @param IdCompany a ceg azonositoja<br>
     // * @param newEmployeesDto a dolgozo adatokat atrtalmazo Objektum-tomb<br>
     // * @return a JSON body-ban a ceg komplex adatait adja vissza<br>
     // */
-    //@PutMapping("/v1/{companyId}/employees/")
-    //public ResponseEntity<CompanyDto> replaceAllEmployee(   @PathVariable long companyId,                                         
+    //@PutMapping("/v1/{IdCompany}/employees/")
+    //public ResponseEntity<CompanyDto> replaceAllEmployee(   @PathVariable long IdCompany,                                         
     //                                                        @RequestBody @Valid List<EmployeeDto> newEmployeesDto){    
     //
     //    ResponseEntity entity;
-    //    CompanyDto companyDto = this.allCompanies.get(companyId);
+    //    CompanyDto companyDto = this.allCompanies.get(IdCompany);
     //
     //    if( companyDto != null ){ 
     //
@@ -657,46 +657,46 @@ public final class CompanyRestController {
     //
     ///**
     // * /v2/ - 2, PUT - modosito metodus<br>
-    // * @param companyId Azonosito, amit keresunk es amely ceg adataibol valamit modositani szeretnenk<br>
+    // * @param IdCompany Azonosito, amit keresunk es amely ceg adataibol valamit modositani szeretnenk<br>
     // * @param companyDto a request keresben utazo JSON formatumu modosito osztalypeldany- mezo adatok (nem kell a komplett peldany)<br>
     // * @return  a JSON body, amelben vagy a lekerdezett peldany adatai, vagy NOT-FOUND() talalhato<br>
     // */
-    //@PutMapping("/v2/{companyId}")
-    //public CompanyDto modifyV2Company(  @PathVariable long companyId, 
+    //@PutMapping("/v2/{IdCompany}")
+    //public CompanyDto modifyV2Company(  @PathVariable long IdCompany, 
     //                                    @RequestBody @Valid CompanyDto companyDto ){
     //
-    //    CompanyDto cmDto = this.dataCompanyService.findByIdOrThrow(companyId);
-    //    cmDto.setIdCompany(companyId);
-    //    this.allCompanies.put(companyId, companyDto);
+    //    CompanyDto cmDto = this.dataCompanyService.findByIdOrThrow(IdCompany);
+    //    cmDto.setIdCompany(IdCompany);
+    //    this.allCompanies.put(IdCompany, companyDto);
     //
     //    return companyDto;
     //} 
     //
     ///**
     // * /v2/ - 3, DELETE - torles<br>
-    // * @param companyId amit torolni szeretnenk<br>
+    // * @param IdCompany amit torolni szeretnenk<br>
     // * @return  a JSON body, amelyben vagy a torles sikeres volta OK(), vagy NOT-FOUND() talalhato<br>  
     // */
-    //@DeleteMapping("/v2/{companyId}")
-    //public CompanyDto deleteV2Company(@PathVariable long companyId){
+    //@DeleteMapping("/v2/{IdCompany}")
+    //public CompanyDto deleteV2Company(@PathVariable long IdCompany){
     //
-    //    CompanyDto companyDto = this.dataCompanyService.findByIdOrThrow(companyId);
-    //    this.allCompanies.remove(companyId);
+    //    CompanyDto companyDto = this.dataCompanyService.findByIdOrThrow(IdCompany);
+    //    this.allCompanies.remove(IdCompany);
     //
     //    return companyDto;             
     //}
     //
     ///**
     // * /v2/ - 4, POST - metodus, egy Munkavallalo felvitele egy meglevo ceg dolgozoi koze<br>
-    // * @param companyId a ceg azonositoja<br>
+    // * @param IdCompany a ceg azonositoja<br>
     // * @param employeeDto a dolgozo azonositoja<br>
     // * @return ha letezik a ceg es nincs ilyen melos, felviszi<br>
     // */
-    //@PostMapping("/v2/{companyId}/employees/")
-    //public CompanyDto addNewV2Employee( @PathVariable long companyId, 
+    //@PostMapping("/v2/{IdCompany}/employees/")
+    //public CompanyDto addNewV2Employee( @PathVariable long IdCompany, 
     //                                    @RequestBody @Valid EmployeeDto employeeDto ){
     //
-    //    CompanyDto companyDto = this.dataCompanyService.findByIdOrThrow(companyId); 
+    //    CompanyDto companyDto = this.dataCompanyService.findByIdOrThrow(IdCompany); 
     //    chechkUniqueIdEmployee( companyDto.getEmployees() ,employeeDto.getIdEmployee() );
     //
     //    // Uj bevitel:
@@ -708,17 +708,17 @@ public final class CompanyRestController {
     //
     ///**
     // * /v2/ - 5, PUT - metodus, egy Munkavallalo modositasa egy meglevo ceg dolgozoi kozott<br>
-    // * @param companyId a ceg azonositoja<br>
-    // * @param employeeId a modositando dolgozo azonositoja<br>
+    // * @param IdCompany a ceg azonositoja<br>
+    // * @param idEmployee a modositando dolgozo azonositoja<br>
     // * @param employeeDto a dolgozo azonositoja<br>
     // * @return ha letezik a ceg es nincs ilyen melos, felviszi, ha van ilyen melos, modositja<br>
     // */
-    //@PutMapping("/v2/{companyId}/employees/{employeeId}")
-    //public CompanyDto modifyV2Employee( @PathVariable long companyId, 
-    //                                    @PathVariable long employeeId, 
+    //@PutMapping("/v2/{IdCompany}/employees/{idEmployee}")
+    //public CompanyDto modifyV2Employee( @PathVariable long IdCompany, 
+    //                                    @PathVariable long idEmployee, 
     //                                    @RequestBody @Valid EmployeeDto employeeDto){
     //
-    //    CompanyDto companyDto = this.dataCompanyService.findByIdOrThrow(companyId);              
+    //    CompanyDto companyDto = this.dataCompanyService.findByIdOrThrow(IdCompany);              
     //    EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> Objects.equals(e.getIdEmployee(), employeeDto.getIdEmployee()) ).findFirst().get();
     //
     //    if ( empdto == null ){
@@ -740,16 +740,16 @@ public final class CompanyRestController {
     ///**
     // * /v2/ - 6, DELETE - metods, egy Munkavallalot torol a meglevo ceg, meglevo dolgozoi kozul<br> 
     // * Megjegyzes: NOT-FOUND() mindket hibas azonosito eseten, vagyis a valaszbol nem dontheto el, melyik nem letezett!<br>
-    // * @param companyId a ceg azonositoja<br>
-    // * @param employeeId a dolgozo azonositoja<br>
+    // * @param IdCompany a ceg azonositoja<br>
+    // * @param idEmployee a dolgozo azonositoja<br>
     // * @return  a JSON body, amelyben vagy a torlest kovetoen a ceg adatai, vagy NOT-FOUND() talalhato<br> 
     // */
-    //@DeleteMapping("/v2/{companyId}/employees/{employeeId}")
-    //public CompanyDto deleteV2EmployeeFromCompany(  @PathVariable long companyId, 
-    //                                                @PathVariable long employeeId ){
+    //@DeleteMapping("/v2/{IdCompany}/employees/{idEmployee}")
+    //public CompanyDto deleteV2EmployeeFromCompany(  @PathVariable long IdCompany, 
+    //                                                @PathVariable long idEmployee ){
     //
-    //    CompanyDto companyDto = this.dataCompanyService.findByIdOrThrow(companyId); 
-    //    EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> e.getIdEmployee() == employeeId ).findFirst().get();
+    //    CompanyDto companyDto = this.dataCompanyService.findByIdOrThrow(IdCompany); 
+    //    EmployeeDto empdto = companyDto.getEmployees().stream().filter( e -> e.getIdEmployee() == idEmployee ).findFirst().get();
     //    if ( empdto != null ){  
     //
     //        // Mivel letezik, igy kitoroljuk es ujrairjuk:
@@ -765,15 +765,15 @@ public final class CompanyRestController {
     //
     ///**
     // * /v2/ - 7 az osszes munkavallalo csereje egyszerre (egy Lista-O_tombbol)<br>
-    // * @param companyId a ceg azonositoja<br>
+    // * @param IdCompany a ceg azonositoja<br>
     // * @param newEmployeesDto a dolgozo adatokat atrtalmazo Objektum-tomb<br>
     // * @return a JSON body-ban a ceg komplex adatait adja vissza<br>
     // */
-    //@PutMapping("/v2/{companyId}/employees/")
-    //public CompanyDto replaceAllV2Employee( @PathVariable long companyId,                                         
+    //@PutMapping("/v2/{IdCompany}/employees/")
+    //public CompanyDto replaceAllV2Employee( @PathVariable long IdCompany,                                         
     //                                        @RequestBody @Valid List<EmployeeDto> newEmployeesDto){    
     //
-    //    CompanyDto companyDto = this.dataCompanyService.findByIdOrThrow(companyId); 
+    //    CompanyDto companyDto = this.dataCompanyService.findByIdOrThrow(IdCompany); 
     //
     //    // Kitoroljuk az osszes dolgozot:
     //    companyDto.getEmployees().clear();
